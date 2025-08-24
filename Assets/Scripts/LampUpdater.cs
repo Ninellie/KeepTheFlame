@@ -2,7 +2,7 @@
 
 public class LampUpdater : ITickable
 {
-    private readonly ILamp _lamp;
-    public LampUpdater(ILamp lamp) => _lamp = lamp;
+    private readonly LampFuelService _lamp;
+    public LampUpdater(LampFuelService lamp) => _lamp = lamp;
     public void Tick() => _lamp.Tick(UnityEngine.Time.deltaTime);
 }

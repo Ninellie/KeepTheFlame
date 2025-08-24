@@ -3,7 +3,7 @@ using VContainer;
 
 public class DebugLampGUI : MonoBehaviour
 {
-    private ILamp _lamp;
+    private LampFuelService _lamp;
     private Rect _win = new Rect(20, 20, 240, 120);
     private bool _visible = true;
     
@@ -14,7 +14,7 @@ public class DebugLampGUI : MonoBehaviour
 #endif
 
     [Inject] 
-    public void Construct(ILamp lamp)
+    public void Construct(LampFuelService lamp)
     {
         _lamp = lamp;
     }

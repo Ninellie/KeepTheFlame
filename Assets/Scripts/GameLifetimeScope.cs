@@ -4,12 +4,12 @@ using VContainer.Unity;
 
 public class GameLifetimeScope : LifetimeScope
 {
-    [SerializeField] private LampConfig lampConfig;
+    [SerializeField] private LampFuelConfig lampFuelConfig;
     
     protected override void Configure(IContainerBuilder builder)
     {
-        builder.RegisterInstance(lampConfig);
-        builder.Register<ILamp, LampService>(Lifetime.Singleton);
+        builder.RegisterInstance(lampFuelConfig);
+        builder.Register<LampFuelService>(Lifetime.Singleton);
         
         
         builder.RegisterEntryPoint<LevelDebugGuiEntryPoint>();

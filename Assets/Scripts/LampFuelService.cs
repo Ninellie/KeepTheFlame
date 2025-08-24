@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class LampService : ILamp
+public class LampFuelService
 {
     public float Current { get; private set; }
     public float Max { get; }
@@ -9,11 +9,11 @@ public class LampService : ILamp
 
     private readonly float _decayPerSecond;
     
-    public LampService(LampConfig config)
+    public LampFuelService(LampFuelConfig fuelConfig)
     {
-        Max = Mathf.Max(0, config.maxValue);
-        Current = Mathf.Clamp(config.startValue, 0, Max);
-        _decayPerSecond = Mathf.Max(0, config.decayPerSecond);
+        Max = Mathf.Max(0, fuelConfig.maxValue);
+        Current = Mathf.Clamp(fuelConfig.startValue, 0, Max);
+        _decayPerSecond = Mathf.Max(0, fuelConfig.decayPerSecond);
     }
 
     public void Tick(float deltaTime)
