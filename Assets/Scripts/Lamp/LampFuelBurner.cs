@@ -4,13 +4,17 @@ namespace Lamp
 {
     public class LampFuelBurner : ITickable
     {
+        public float DecayPerSecond { get; private set; }
+        
         private readonly LampFuel _fuel;
         private readonly LampFuelConfig _config;
-    
+        
         public LampFuelBurner(LampFuel fuel, LampFuelConfig config)
         {
             _fuel = fuel;
             _config = config;
+            
+            DecayPerSecond = config.decayPerSecond;
         }
 
         public void Tick()

@@ -2,8 +2,9 @@
 using UnityEngine;
 using VContainer;
 
-public class DebugLampGUI : MonoBehaviour
+public class DebugLampFuelGUI : MonoBehaviour
 {
+    [Inject]
     private LampFuel _lamp;
     private Rect _win = new Rect(20, 20, 240, 120);
     private bool _visible = true;
@@ -13,12 +14,6 @@ public class DebugLampGUI : MonoBehaviour
 #else
     private const bool EnabledInBuild = true;
 #endif
-
-    [Inject] 
-    public void Construct(LampFuel lamp)
-    {
-        _lamp = lamp;
-    }
     
     private void OnGUI()
     {
