@@ -305,6 +305,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   lampFuelConfig: {fileID: 11400000, guid: 6850186dab79e5e4fba4a201237c7218, type: 2}
+  darknessConfig: {fileID: 11400000, guid: 9de6162548a5da8499841560927a10d9, type: 2}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
