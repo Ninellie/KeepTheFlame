@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using Lamp;
+using UnityEngine;
 using VContainer;
 
 public class DebugLampGUI : MonoBehaviour
 {
-    private LampFuelService _lamp;
+    private LampFuel _lamp;
     private Rect _win = new Rect(20, 20, 240, 120);
     private bool _visible = true;
     
@@ -14,7 +15,7 @@ public class DebugLampGUI : MonoBehaviour
 #endif
 
     [Inject] 
-    public void Construct(LampFuelService lamp)
+    public void Construct(LampFuel lamp)
     {
         _lamp = lamp;
     }
@@ -27,7 +28,7 @@ public class DebugLampGUI : MonoBehaviour
 
     private void DrawWindow(int id)
     {
-        GUILayout.Label($"Value: {_lamp.Current:0.0} / {_lamp.Max:0}");
+        GUILayout.Label($"Value: {_lamp.Value:0.0} / {_lamp.Max:0}");
 
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("-1")) _lamp.Add(-1f);
@@ -35,7 +36,7 @@ public class DebugLampGUI : MonoBehaviour
         if (GUILayout.Button("Fill")) _lamp.Add(_lamp.Max);
         GUILayout.EndHorizontal();
 
-        var pct = Mathf.Approximately(_lamp.Max, 0) ? 0f : _lamp.Current / _lamp.Max;
+        var pct = Mathf.Approximately(_lamp.Max, 0) ? 0f : _lamp.Value / _lamp.Max;
         var bar = GUILayoutUtility.GetRect(200, 18);
         GUI.Box(bar, GUIContent.none);
         var fill = new Rect(bar.x + 2, bar.y + 2, Mathf.Max(0, (bar.width - 4) * pct), bar.height - 4);
