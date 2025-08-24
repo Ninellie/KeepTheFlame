@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Lamp Fuel Config
   m_EditorClassIdentifier: 
   maxValue: 10
+  minValue: 0
   startValue: 5
   decayPerSecond: 0.25

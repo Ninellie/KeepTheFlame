@@ -304,7 +304,7 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
-  lampConfig: {fileID: 11400000, guid: 6850186dab79e5e4fba4a201237c7218, type: 2}
+  lampFuelConfig: {fileID: 11400000, guid: 6850186dab79e5e4fba4a201237c7218, type: 2}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
