@@ -29,6 +29,7 @@ public class DebugLampFuelGUI : MonoBehaviour
         if (GUILayout.Button("-1")) _lamp.Add(-1f);
         if (GUILayout.Button("+1")) _lamp.Add(1f);
         if (GUILayout.Button("Fill")) _lamp.Add(_lamp.Max);
+        if (GUILayout.Button("Init")) _lamp.Init();
         GUILayout.EndHorizontal();
 
         var pct = Mathf.Approximately(_lamp.Max, 0) ? 0f : _lamp.Value / _lamp.Max;
