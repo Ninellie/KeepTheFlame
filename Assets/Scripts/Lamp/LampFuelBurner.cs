@@ -14,7 +14,12 @@ namespace Lamp
             _fuel = fuel;
             _config = config;
             
-            DecayPerSecond = config.decayPerSecond;
+            Init();
+        }
+
+        public void Init()
+        {
+            DecayPerSecond = _config.decayPerSecond;
         }
 
         public void Tick()
