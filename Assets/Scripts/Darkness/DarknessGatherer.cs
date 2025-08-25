@@ -3,7 +3,7 @@ using VContainer.Unity;
 
 namespace Darkness
 {
-    public class DarknessGatherer : ITickable
+    public class DarknessGatherer : IFixedTickable
     {
         public float PowerIncreaseRate => _powerIncreaseRateCurve.Evaluate(Time.timeSinceLevelLoad);
 
@@ -25,7 +25,7 @@ namespace Darkness
             _powerIncreaseRateCurve = _config.PowerIncreaseRateCurve;
         }
 
-        public void Tick()
+        public void FixedTick()
         {
             if (_darkness.Value >= _darkness.Max) return;
             if (PowerIncreaseRate <= 0f) return;
