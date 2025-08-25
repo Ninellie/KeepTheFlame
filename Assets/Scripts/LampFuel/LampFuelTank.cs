@@ -2,17 +2,18 @@
 
 namespace Lamp
 {
-    public class LampFuel
+    public class LampFuelTank
     {
         public float Value { get; private set; }
         public float Min { get; private set; }
         public float Max { get; private set; }
 
         public event System.Action<float> OnChanged;
-
+        public event System.Action<float> OnEmpty;
+        
         private readonly LampFuelConfig _config;
     
-        public LampFuel(LampFuelConfig fuelConfig)
+        public LampFuelTank(LampFuelConfig fuelConfig)
         {
             _config = fuelConfig;
             Init();
@@ -35,6 +36,9 @@ namespace Lamp
             if (Mathf.Approximately(clamped, Value)) return;
             Value = clamped;
             OnChanged?.Invoke(Value);
+            
+            if (!Mathf.Approximately(Value, Min)) return;
+            OnEmpty?.Invoke(Value);
         }
     }
 }

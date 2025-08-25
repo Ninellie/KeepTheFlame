@@ -15,7 +15,7 @@ public class GameLifetimeScope : LifetimeScope
         
         // Lamp
         builder.RegisterInstance(lampFuelConfig);
-        builder.Register<LampFuel>(Lifetime.Singleton);
+        builder.Register<LampFuelTank>(Lifetime.Singleton);
         
         var lampFuelGUI = GetLampFuelGUI(levelDebugGUIGameObject);
         builder.RegisterComponent(lampFuelGUI);

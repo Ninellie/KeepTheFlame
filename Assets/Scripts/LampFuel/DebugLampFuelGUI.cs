@@ -6,7 +6,7 @@ namespace Lamp
     public class DebugLampFuelGUI : MonoBehaviour
     {
         [Inject]
-        private LampFuel _lamp;
+        private LampFuelTank _lamp;
         private Rect _win = new Rect(20, 20, 240, 120);
         private bool _visible = true;
     

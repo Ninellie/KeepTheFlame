@@ -6,12 +6,12 @@ namespace Lamp
     {
         public float DecayPerSecond { get; private set; }
         
-        private readonly LampFuel _fuel;
+        private readonly LampFuelTank _fuelTank;
         private readonly LampFuelConfig _config;
         
-        public LampFuelBurner(LampFuel fuel, LampFuelConfig config)
+        public LampFuelBurner(LampFuelTank fuelTank, LampFuelConfig config)
         {
-            _fuel = fuel;
+            _fuelTank = fuelTank;
             _config = config;
             
             Init();
@@ -24,9 +24,9 @@ namespace Lamp
 
         public void Tick()
         {
-            if (_fuel.Value <= _fuel.Min) return;
+            if (_fuelTank.Value <= _fuelTank.Min) return;
             if (_config.decayPerSecond <= 0f) return;
-            _fuel.Subtract(_config.decayPerSecond * UnityEngine.Time.deltaTime);
+            _fuelTank.Subtract(_config.decayPerSecond * UnityEngine.Time.deltaTime);
         }
     }
 }
