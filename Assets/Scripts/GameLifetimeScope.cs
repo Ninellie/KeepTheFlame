@@ -1,6 +1,7 @@
 using Darkness;
 using LampFuel;
 using PlayerHealth;
+using PlayerMovement;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -10,16 +11,19 @@ public class GameLifetimeScope : LifetimeScope
     [SerializeField] private LampFuelConfig lampFuelConfig;
     [SerializeField] private DarknessConfig darknessConfig;
     [SerializeField] private PlayerHealthConfig healthConfig;
+    [SerializeField] private PlayerMovementConfig playerMovementConfig;
+    
+    [SerializeField] private PlayerMovementInputHandler playerMovementInputHandler;
     
     protected override void Configure(IContainerBuilder builder)
     {
-        var levelDebugGUIGameObject = GetLevelDebugGUIGameObject();
+        var levelDebugGUIGameObject = new GameObject("[LevelDebugGUI]");
         
         // Lamp
         builder.RegisterInstance(lampFuelConfig);
         builder.Register<LampFuelTank>(Lifetime.Singleton);
         
-        var lampFuelGUI = GetLampFuelGUI(levelDebugGUIGameObject);
+        var lampFuelGUI = levelDebugGUIGameObject.AddComponent<DebugLampFuelGUI>();
         builder.RegisterComponent(lampFuelGUI);
         
         builder.RegisterEntryPoint<LampFuelBurner>();
@@ -27,8 +31,8 @@ public class GameLifetimeScope : LifetimeScope
         // Darkness
         builder.RegisterInstance(darknessConfig);
         builder.Register<DarknessPower>(Lifetime.Singleton);
-        
-        var darknessPowerGUI = GetDarknessPowerGUI(levelDebugGUIGameObject);
+
+        var darknessPowerGUI = levelDebugGUIGameObject.AddComponent<DebugDarknessPowerGUI>();
         builder.RegisterComponent(darknessPowerGUI);
         
         builder.RegisterEntryPoint<DarknessGatherer>();
@@ -36,28 +40,16 @@ public class GameLifetimeScope : LifetimeScope
         // Health
         builder.RegisterInstance(healthConfig);
         builder.Register<PlayerHealth.PlayerHealth>(Lifetime.Singleton);
-        
-        var healthGUI = GetHealthGUI(levelDebugGUIGameObject);
-        builder.RegisterComponent(healthGUI);
-    }
 
-    private static GameObject GetLevelDebugGUIGameObject()
-    {
-        return new GameObject("[LevelDebugGUI]");
-    }
-    
-    private static DebugPlayerHealthGUI GetHealthGUI(GameObject levelDebugGUIGameObject)
-    {
-        return levelDebugGUIGameObject.AddComponent<DebugPlayerHealthGUI>();
-    }
-    
-    private static DebugLampFuelGUI GetLampFuelGUI(GameObject levelDebugGUIGameObject)
-    {
-        return levelDebugGUIGameObject.AddComponent<DebugLampFuelGUI>();
-    }
-    
-    private static DebugDarknessPowerGUI GetDarknessPowerGUI(GameObject levelDebugGUIGameObject)
-    {
-        return levelDebugGUIGameObject.AddComponent<DebugDarknessPowerGUI>();
+        var healthGUI = levelDebugGUIGameObject.AddComponent<DebugPlayerHealthGUI>(); 
+        builder.RegisterComponent(healthGUI);
+        
+        // Movement
+        builder.RegisterInstance(playerMovementConfig);
+        var player = Instantiate(playerMovementInputHandler);
+        var playerTransform = new PlayerTransform(player.transform);
+        builder.RegisterInstance(playerTransform);
+        builder.RegisterComponent(player);
+        builder.RegisterEntryPoint<PlayerMover>();
     }
 }
