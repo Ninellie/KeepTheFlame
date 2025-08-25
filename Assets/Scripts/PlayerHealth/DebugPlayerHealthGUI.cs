@@ -19,7 +19,7 @@ namespace PlayerHealth
         private void OnGUI()
         {
             if (!EnabledInBuild || !_visible) return;
-            _win = GUI.Window(42, _win, DrawWindow, "Lamp Debug");
+            _win = GUI.Window(44, _win, DrawWindow, "Player Health Debug");
         }
 
         private void DrawWindow(int id)
@@ -27,8 +27,8 @@ namespace PlayerHealth
             GUILayout.Label($"Value: {_playerHealth.Value:0.0} / {_playerHealth.Max:0}");
 
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("-1")) _playerHealth.Increase(1);
-            if (GUILayout.Button("+1")) _playerHealth.Decrease(1);
+            if (GUILayout.Button("+1")) _playerHealth.Increase(1);
+            if (GUILayout.Button("-1")) _playerHealth.Decrease(1);
             if (GUILayout.Button("Fill")) _playerHealth.Increase(_playerHealth.Max);
             if (GUILayout.Button("Init")) _playerHealth.Init();
             GUILayout.EndHorizontal();
