@@ -1,5 +1,5 @@
 using Darkness;
-using Lamp;
+using LampFuel;
 using PlayerHealth;
 using UnityEngine;
 using VContainer;
