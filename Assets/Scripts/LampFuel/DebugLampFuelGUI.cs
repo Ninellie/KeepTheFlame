@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using VContainer;
 
-namespace Lamp
+namespace LampFuel
 {
     public class DebugLampFuelGUI : MonoBehaviour
     {

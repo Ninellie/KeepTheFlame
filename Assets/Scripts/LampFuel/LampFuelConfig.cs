@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Lamp
+namespace LampFuel
 {
     [CreateAssetMenu(menuName = "Config/LampConfig")]
     public class LampFuelConfig : ScriptableObject

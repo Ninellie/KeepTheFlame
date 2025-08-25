@@ -1,6 +1,6 @@
 ﻿using VContainer.Unity;
 
-namespace Lamp
+namespace LampFuel
 {
     public class LampFuelBurner : ITickable
     {
