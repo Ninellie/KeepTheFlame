@@ -24,7 +24,7 @@ namespace PlayerHealth
 
         private void DrawWindow(int id)
         {
-            GUILayout.Label($"Value: {_playerHealth.Value:0.0} / {_playerHealth.Max:0}");
+            GUILayout.Label($"Value: {_playerHealth.Value:0} / {_playerHealth.Max:0}");
 
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("+1")) _playerHealth.Increase(1);
