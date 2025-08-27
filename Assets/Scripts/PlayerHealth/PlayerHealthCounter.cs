@@ -2,7 +2,7 @@
 
 namespace PlayerHealth
 {
-    public class PlayerHealth
+    public class PlayerHealthCounter
     {
         public int Value { get; private set; }
         public int Min { get; private set; }
@@ -13,7 +13,7 @@ namespace PlayerHealth
         
         private readonly PlayerHealthConfig _config;
 
-        public PlayerHealth(PlayerHealthConfig config)
+        public PlayerHealthCounter(PlayerHealthConfig config)
         {
             _config = config;
 

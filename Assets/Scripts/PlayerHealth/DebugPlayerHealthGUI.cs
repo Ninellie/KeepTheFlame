@@ -6,7 +6,7 @@ namespace PlayerHealth
     public class DebugPlayerHealthGUI : MonoBehaviour
     {
         [Inject]
-        private PlayerHealth _playerHealth;
+        private PlayerHealthCounter _playerHealthCounter;
         private Rect _win = new Rect(20, 20, 240, 120);
         private bool _visible = true;
     
@@ -24,16 +24,16 @@ namespace PlayerHealth
 
         private void DrawWindow(int id)
         {
-            GUILayout.Label($"Value: {_playerHealth.Value:0} / {_playerHealth.Max:0}");
+            GUILayout.Label($"Value: {_playerHealthCounter.Value:0} / {_playerHealthCounter.Max:0}");
 
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("+1")) _playerHealth.Increase(1);
-            if (GUILayout.Button("-1")) _playerHealth.Decrease(1);
-            if (GUILayout.Button("Fill")) _playerHealth.Increase(_playerHealth.Max);
-            if (GUILayout.Button("Init")) _playerHealth.Init();
+            if (GUILayout.Button("+1")) _playerHealthCounter.Increase(1);
+            if (GUILayout.Button("-1")) _playerHealthCounter.Decrease(1);
+            if (GUILayout.Button("Fill")) _playerHealthCounter.Increase(_playerHealthCounter.Max);
+            if (GUILayout.Button("Init")) _playerHealthCounter.Init();
             GUILayout.EndHorizontal();
 
-            var pct = Mathf.Approximately(_playerHealth.Max, 0) ? 0f : _playerHealth.Value / _playerHealth.Max;
+            var pct = Mathf.Approximately(_playerHealthCounter.Max, 0) ? 0f : _playerHealthCounter.Value / _playerHealthCounter.Max;
             var bar = GUILayoutUtility.GetRect(200, 18);
             GUI.Box(bar, GUIContent.none);
             var fill = new Rect(bar.x + 2, bar.y + 2, Mathf.Max(0, (bar.width - 4) * pct), bar.height - 4);
@@ -44,7 +44,7 @@ namespace PlayerHealth
 
         private void OnDestroy()
         {
-            if (_playerHealth != null) _playerHealth.OnChanged -= null; // на случай подписок в будущем
+            if (_playerHealthCounter != null) _playerHealthCounter.OnChanged -= null; // на случай подписок в будущем
         }
     }
 }
