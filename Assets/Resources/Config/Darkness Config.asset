@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3815e5bfa2e94b448eef507dfe71e54d, type: 3}
   m_Name: Darkness Config
   m_EditorClassIdentifier: 
-  maxValue: 100
+  maxValue: 20
   minValue: 0
-  startValue: 5
+  startValue: 0
   PowerIncreaseRateCurve:
     serializedVersion: 2
     m_Curve:
