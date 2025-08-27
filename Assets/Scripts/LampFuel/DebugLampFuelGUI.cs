@@ -19,7 +19,7 @@ namespace LampFuel
         private void OnGUI()
         {
             if (!EnabledInBuild || !_visible) return;
-            _win = GUI.Window(42, _win, DrawWindow, "Lamp Debug");
+            _win = GUI.Window(42, _win, DrawWindow, "Lamp Fuel Debug");
         }
 
         private void DrawWindow(int id)
