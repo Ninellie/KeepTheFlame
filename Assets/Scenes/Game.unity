@@ -305,9 +305,11 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   lampFuelConfig: {fileID: 11400000, guid: 6850186dab79e5e4fba4a201237c7218, type: 2}
+  lampFlameConfig: {fileID: 11400000, guid: 046d8b8919d555849919d969c0a9cef3, type: 2}
   darknessConfig: {fileID: 11400000, guid: 9de6162548a5da8499841560927a10d9, type: 2}
   healthConfig: {fileID: 11400000, guid: 9bedcdf2f58270c4f96c390f311ac7f7, type: 2}
   playerMovementConfig: {fileID: 11400000, guid: 13c878dc8d77b8f4ea1b462cc6ec425a, type: 2}
+  darknessDamageConfig: {fileID: 11400000, guid: c76d20a434bac324a9b77acda6618ebf, type: 2}
   playerMovementInputHandler: {fileID: 240103792151939190, guid: b7a08a0c0476e224dac121dc2a57f6f6, type: 3}
 --- !u!1 &619394800
 GameObject:
