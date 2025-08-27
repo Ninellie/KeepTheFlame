@@ -2,7 +2,7 @@
 
 namespace Darkness
 {
-    [CreateAssetMenu(menuName = "Config/DarknessConfig")]
+    [CreateAssetMenu(menuName = "Config/Darkness Power")]
     public class DarknessConfig : ScriptableObject
     {
         [Range(0, 1000)] public float maxValue = 100f;

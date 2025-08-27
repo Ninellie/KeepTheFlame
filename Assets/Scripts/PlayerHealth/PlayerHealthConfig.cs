@@ -2,7 +2,7 @@
 
 namespace PlayerHealth
 {
-    [CreateAssetMenu(menuName = "Config/PlayerHealthConfig")]
+    [CreateAssetMenu(menuName = "Config/Player Health")]
     public class PlayerHealthConfig : ScriptableObject
     {
         [Range(0, 20)] public int maxValue = 3;

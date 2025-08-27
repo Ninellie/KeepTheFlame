@@ -2,7 +2,7 @@
 
 namespace DarknessDamage
 {
-    [CreateAssetMenu(menuName = "Config/DarknessDamageConfig")]
+    [CreateAssetMenu(menuName = "Config/Darkness Damage")]
     public class DarknessDamageConfig : ScriptableObject
     {
         [Range(0, 10)] public int damage = 1;

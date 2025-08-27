@@ -2,7 +2,7 @@
 
 namespace LampFuel
 {
-    [CreateAssetMenu(menuName = "Config/LampConfig")]
+    [CreateAssetMenu(menuName = "Config/Lamp Fuel")]
     public class LampFuelConfig : ScriptableObject
     {
         [Range(0, 20)] public float maxValue = 10f;
