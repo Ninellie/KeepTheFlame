@@ -9,7 +9,8 @@ namespace LampFuel
         public float Max { get; private set; }
 
         public event System.Action<float> OnChanged;
-        public event System.Action<float> OnEmpty;
+        public event System.Action OnEmpty;
+        public event System.Action OnNonEmpty;
         
         private readonly LampFuelConfig _config;
     
@@ -34,11 +35,20 @@ namespace LampFuel
         {
             var clamped = Mathf.Clamp(v, Min, Max);
             if (Mathf.Approximately(clamped, Value)) return;
+            
+            var oldValue = Value;
             Value = clamped;
             OnChanged?.Invoke(Value);
             
+            // Если было пусто
+            if (Mathf.Approximately(oldValue, Min))
+            {
+                OnNonEmpty?.Invoke();
+                return;
+            }
+            
             if (!Mathf.Approximately(Value, Min)) return;
-            OnEmpty?.Invoke(Value);
+            OnEmpty?.Invoke();
         }
     }
 }
