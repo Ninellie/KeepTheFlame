@@ -44,7 +44,7 @@ namespace FirefliesSpawn
 
         public void ReturnAllToPool()
         {
-            foreach (var activeFirefly in _activeFireflies)
+            foreach (var activeFirefly in _activeFireflies.ToList())
             {
                 if (activeFirefly != null) ReturnToPool(activeFirefly);
             }
