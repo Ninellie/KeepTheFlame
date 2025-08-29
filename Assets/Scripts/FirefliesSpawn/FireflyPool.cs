@@ -50,27 +50,6 @@ namespace FirefliesSpawn
             }
         }
         
-        private void Cleanup()
-        {
-            if (_inactiveFireflies != null)
-            {
-                foreach (var firefly in _inactiveFireflies.ToList())
-                {
-                    _inactiveFireflies.Remove(firefly);
-                    Object.Destroy(firefly.gameObject);
-                }
-            }
-
-            if (_activeFireflies != null)
-            {
-                foreach (var firefly in _activeFireflies.ToList())
-                {
-                    _activeFireflies.Remove(firefly);
-                    Object.Destroy(firefly.gameObject);
-                }
-            }
-        }
-        
         public Firefly GetFromPool()
         {
             Firefly firefly;
@@ -132,6 +111,27 @@ namespace FirefliesSpawn
             }
             
             return farthestFirefly;
+        }
+        
+        private void Cleanup()
+        {
+            if (_inactiveFireflies != null)
+            {
+                foreach (var firefly in _inactiveFireflies.ToList())
+                {
+                    _inactiveFireflies.Remove(firefly);
+                    Object.Destroy(firefly.gameObject);
+                }
+            }
+
+            if (_activeFireflies != null)
+            {
+                foreach (var firefly in _activeFireflies.ToList())
+                {
+                    _activeFireflies.Remove(firefly);
+                    Object.Destroy(firefly.gameObject);
+                }
+            }
         }
     }
 }
