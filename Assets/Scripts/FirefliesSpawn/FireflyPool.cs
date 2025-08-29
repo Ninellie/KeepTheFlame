@@ -42,6 +42,14 @@ namespace FirefliesSpawn
             }
         }
 
+        public void ReturnAllToPool()
+        {
+            foreach (var activeFirefly in _activeFireflies)
+            {
+                if (activeFirefly != null) ReturnToPool(activeFirefly);
+            }
+        }
+        
         private void Cleanup()
         {
             if (_inactiveFireflies != null)
@@ -89,6 +97,22 @@ namespace FirefliesSpawn
             return firefly;
         }
         
+        public bool IsSectorFull(Vector2Int sector)
+        {
+            var firefliesInSector = _activeFireflies.Count(firefly => firefly.Sector == sector);
+            return firefliesInSector >= _config.maxFirefliesPerSector;
+        }
+        
+        public void ReturnToPool(Firefly firefly)
+        {
+            OnFireflyCollected?.Invoke(firefly);
+            
+            _activeFireflies.Remove(firefly);
+            firefly.gameObject.SetActive(false);
+            _inactiveFireflies.Add(firefly);
+            Active = _activeFireflies.Count;
+        }
+        
         private Firefly FindFarthestFirefly()
         {
             if (_activeFireflies.Count == 0) return null;
@@ -108,22 +132,6 @@ namespace FirefliesSpawn
             }
             
             return farthestFirefly;
-        }
-        
-        public bool IsSectorFull(Vector2Int sector)
-        {
-            var firefliesInSector = _activeFireflies.Count(firefly => firefly.Sector == sector);
-            return firefliesInSector >= _config.maxFirefliesPerSector;
-        }
-        
-        public void ReturnToPool(Firefly firefly)
-        {
-            OnFireflyCollected?.Invoke(firefly);
-            
-            _activeFireflies.Remove(firefly);
-            firefly.gameObject.SetActive(false);
-            _inactiveFireflies.Add(firefly);
-            Active = _activeFireflies.Count;
         }
     }
 }

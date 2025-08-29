@@ -5,6 +5,7 @@ namespace FirefliesSpawn
     public class Firefly : MonoBehaviour
     {
         public Vector2Int Sector { get; set; }
+        
         private FireflyPool _pool;
     
         public void Init(FireflyPool pool)

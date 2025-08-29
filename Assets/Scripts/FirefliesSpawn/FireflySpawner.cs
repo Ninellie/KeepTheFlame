@@ -10,16 +10,31 @@ namespace FirefliesSpawn
         private readonly SpawnerConfig _spawnerConfig;
         private readonly PlayerTransform _playerTransform;
         private readonly Camera _mainCamera;
-        private float _timeToNextSpawn;   
+        private readonly SpawnTimer _timer;
 
-        public FireflySpawner(FireflyPool fireflyPool, SpawnerConfig spawnerConfig, PlayerTransform playerTransform, Camera mainCamera)
+        public FireflySpawner(FireflyPool fireflyPool, SpawnerConfig spawnerConfig, PlayerTransform playerTransform,
+            Camera mainCamera, SpawnTimer timer)
         {
             _fireflyPool = fireflyPool;
             _spawnerConfig = spawnerConfig;
             _playerTransform = playerTransform;
             _mainCamera = mainCamera;
+            _timer = timer;
             
             InitializeStartingFireflies();
+        }
+        
+        public void FixedTick()
+        {
+            _timer.Tick(Time.deltaTime);
+            
+            if (_timer.TimeToNextSpawn > 0) return;
+            
+            var spawnInterval = GetSpawnInterval();
+            
+            _timer.Set(spawnInterval);
+            
+            SpawnFirefly();
         }
         
         private void InitializeStartingFireflies()
@@ -33,8 +48,8 @@ namespace FirefliesSpawn
             var minRadius = _spawnerConfig.spawnCircleOffset;
             
             // Спавним пока есть место в пуле и не заполнили экран
-            int attempts = 0;
-            int maxAttempts = _fireflyPool.Size * 2; // избегаем бесконечного цикла
+            var attempts = 0;
+            var maxAttempts = _fireflyPool.Size * 2; // избегаем бесконечного цикла
             
             while (_fireflyPool.Active < _fireflyPool.Size / 2 && attempts < maxAttempts)
             {
@@ -64,16 +79,6 @@ namespace FirefliesSpawn
                 firefly.transform.position = point;
                 firefly.gameObject.SetActive(true);
             }
-        }
-
-        public void FixedTick()
-        {
-            _timeToNextSpawn -= Time.deltaTime;
-            
-            if (_timeToNextSpawn > 0) return;
-            
-            _timeToNextSpawn = GetSpawnInterval();
-            SpawnFirefly();
         }
 
         private float GetSpawnInterval()
@@ -134,7 +139,7 @@ namespace FirefliesSpawn
         {
             var x = Mathf.FloorToInt(position.x / _spawnerConfig.sectorSize);
             var y = Mathf.FloorToInt(position.y / _spawnerConfig.sectorSize);
-            return new Vector2Int(x, y);
+            return new Vector2Int(x, y); 
         }
-    }
-}
+     }
+ }
