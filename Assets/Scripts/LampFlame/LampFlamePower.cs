@@ -7,7 +7,7 @@ namespace LampFlame
         public float Value { get; private set; }
         public float Max { get; private set; }
         public float Min { get; private set; }
-        public bool IsLit => Value == Min;
+        public bool IsLit => !Mathf.Approximately(Value, Min);
         
         public event System.Action<float> OnChanged;
         public event System.Action OnExtinguished;
