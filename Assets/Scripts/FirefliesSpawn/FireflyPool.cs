@@ -8,8 +8,8 @@ namespace FirefliesSpawn
 {
     public class FireflyPool
     {
-        public int Size { get; private set; }
-        public int Active { get; private set; }
+        public int Size => _activeFireflies.Count + _inactiveFireflies.Count;
+        public int Active => _activeFireflies.Count;
 
         public static event System.Action<Firefly> OnFireflyCollected;
 
@@ -29,9 +29,6 @@ namespace FirefliesSpawn
         public void Init()
         {
             Cleanup();
-
-            Size = _config.poolSize;
-            Active = 0;
 
             // Создаем пул светлячков
             for (var i = 0; i < _config.poolSize; i++)
@@ -72,7 +69,6 @@ namespace FirefliesSpawn
             }
             
             _activeFireflies.Add(firefly);
-            Active = _activeFireflies.Count;
             
             return firefly;
         }
@@ -90,7 +86,6 @@ namespace FirefliesSpawn
             _activeFireflies.Remove(firefly);
             firefly.gameObject.SetActive(false);
             _inactiveFireflies.Add(firefly);
-            Active = _activeFireflies.Count;
         }
         
         private Firefly FindFarthestFirefly()

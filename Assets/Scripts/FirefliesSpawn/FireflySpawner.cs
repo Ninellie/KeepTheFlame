@@ -87,10 +87,28 @@ namespace FirefliesSpawn
         {
             var interval = _spawnerConfig.interval;
             var balanceFactor = _spawnerConfig.balanceFactor;
-            var activeFireflies = _fireflyPool.Active;
-            var poolSize = _fireflyPool.Size;
+            var poolSizeScale = GetPoolSizeIntervalScale();
+            
+            return interval * poolSizeScale * balanceFactor;
+        }
 
-            return interval * (activeFireflies / poolSize) * balanceFactor;
+        private float GetPoolSizeIntervalScale()
+        {
+            float activeFireflies = _fireflyPool.Active;
+            float poolSize = _fireflyPool.Size;
+
+            float poolSizeScale;
+            
+            if (poolSize == 0)
+            {
+                poolSizeScale = 1f;
+            }
+            else
+            {
+                poolSizeScale = activeFireflies / poolSize;
+            }
+
+            return poolSizeScale;
         }
 
         private Vector2 GetRandomPoint()

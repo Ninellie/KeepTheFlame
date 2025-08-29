@@ -28,11 +28,12 @@ namespace FirefliesSpawn
         private void DrawWindow(int id)
         {
             GUILayout.Label($"Active: {_fireflyPool.Active} / {_fireflyPool.Size}");
-            GUILayout.Label($"Time to spawn: {_spawnTimer.TimeToNextSpawn:0.1}s");
+            GUILayout.Label($"Time to spawn: {_spawnTimer.TimeToNextSpawn:0.00}s");
 
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Spawn")) _spawnTimer.Set(0);
             if (GUILayout.Button("Clear")) _fireflyPool.ReturnAllToPool();
+            if (GUILayout.Button("Init")) _fireflyPool.Init();
             GUILayout.EndHorizontal();
 
             var pct = _fireflyPool.Size == 0 ? 0f : (float)_fireflyPool.Active / _fireflyPool.Size;
