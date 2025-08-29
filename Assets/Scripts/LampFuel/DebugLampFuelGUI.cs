@@ -42,6 +42,23 @@ namespace LampFuel
             GUI.DragWindow(new Rect(0, 0, 10000, 20));
         }
 
+        public Vector2 GetWindowSize()
+        {
+            return new Vector2(_win.width, _win.height);
+        }
+        
+        public void SetWindowPosition(Vector2 position)
+        {
+            _win.x = position.x;
+            _win.y = position.y;
+        }
+        
+        public void SetWindowSize(Vector2 size)
+        {
+            _win.width = size.x;
+            _win.height = size.y;
+        }
+
         private void OnDestroy()
         {
             if (_lamp != null) _lamp.OnChanged -= null; // на случай подписок в будущем
