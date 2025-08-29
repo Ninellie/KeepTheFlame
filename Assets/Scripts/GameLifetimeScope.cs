@@ -1,5 +1,6 @@
 using Darkness;
 using DarknessDamage;
+using FirefliesSpawn;
 using LampFlame;
 using LampFuel;
 using PlayerHealth;
@@ -15,14 +16,25 @@ public class GameLifetimeScope : LifetimeScope
     [SerializeField] private DarknessConfig darknessConfig;
     [SerializeField] private PlayerHealthConfig healthConfig;
     [SerializeField] private PlayerMovementConfig playerMovementConfig;
-    
     [SerializeField] private DarknessDamageConfig darknessDamageConfig;
+    [SerializeField] private SpawnerConfig spawnerConfig;
     
     [SerializeField] private PlayerMovementInputHandler playerMovementInputHandler;
     
     protected override void Configure(IContainerBuilder builder)
     {
         var levelDebugGUIGameObject = new GameObject("[LevelDebugGUI]");
+        
+        // Камера
+        builder.RegisterInstance(Camera.main);
+        
+        // Spawner
+        builder.RegisterInstance(spawnerConfig);
+        builder.Register<FireflyPool>(Lifetime.Singleton);
+        builder.Register<SpawnTimer>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<FireflySpawner>();
+        var spawnerGUI = levelDebugGUIGameObject.AddComponent<DebugFireflySpawnerGUI>();
+        builder.RegisterComponent(spawnerGUI);
         
         // Lamp
         builder.RegisterInstance(lampFuelConfig);
