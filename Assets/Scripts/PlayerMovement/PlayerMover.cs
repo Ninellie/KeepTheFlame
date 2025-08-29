@@ -1,21 +1,23 @@
 ﻿using UnityEngine;
+using VContainer;
 using VContainer.Unity;
 
 namespace PlayerMovement
 {
     public class PlayerMover : IFixedTickable
     {
-        public float Speed {get; private set;}
-        public float MaxSpeed {get; private set;}
-        public float MinSpeed {get; private set;}
+        public float Speed { get; private set; }
+        public float MaxSpeed { get; private set; }
+        public float MinSpeed { get; private set; }
         
         private readonly PlayerMovementInputHandler _playerMovementInputHandler;
-        private readonly PlayerTransform _playerTransform;
+        private readonly Transform _playerTransform;
         private readonly PlayerMovementConfig _playerMovementConfig;
         
         private Vector2 _direction = Vector2.zero;
         
-        public PlayerMover(PlayerMovementInputHandler playerMovementInputHandler, PlayerTransform playerTransform, PlayerMovementConfig playerMovementConfig)
+        public PlayerMover(PlayerMovementInputHandler playerMovementInputHandler,
+            [Key("Player")] Transform playerTransform, PlayerMovementConfig playerMovementConfig)
         {
             _playerMovementInputHandler = playerMovementInputHandler;
             _playerTransform = playerTransform;
@@ -36,7 +38,7 @@ namespace PlayerMovement
         
         public void FixedTick()
         {
-            _playerTransform.Value.Translate(_direction * Speed * Time.deltaTime, Space.World);
+            _playerTransform.Translate(_direction * Speed * Time.deltaTime, Space.World);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Linq;
 using PlayerMovement;
 using UnityEngine;
+using VContainer;
 
 namespace FirefliesSpawn
 {
@@ -15,10 +16,10 @@ namespace FirefliesSpawn
         private readonly List<Firefly> _inactiveFireflies = new();
         private readonly List<Firefly> _activeFireflies = new();
         
-        private readonly PlayerTransform _playerTransform;
+        private readonly Transform _playerTransform;
         private readonly SpawnerConfig _config;
 
-        public FireflyPool(SpawnerConfig config, PlayerTransform playerTransform)
+        public FireflyPool(SpawnerConfig config, [Key("Player")] Transform playerTransform)
         {
             _config = config;
             _playerTransform = playerTransform;
@@ -96,7 +97,7 @@ namespace FirefliesSpawn
         {
             if (_activeFireflies.Count == 0) return null;
             
-            var playerPosition = _playerTransform.Value.position;
+            var playerPosition = _playerTransform.position;
             Firefly farthestFirefly = null;
             var maxDistance = 0f;
             

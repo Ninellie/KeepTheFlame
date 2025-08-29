@@ -59,8 +59,8 @@ public class GameLifetimeScope : LifetimeScope
         // Movement
         builder.RegisterInstance(playerMovementConfig);
         var player = Instantiate(playerMovementInputHandler);
-        var playerTransform = new PlayerTransform(player.transform);
-        builder.RegisterInstance(playerTransform);
+        var playerTransform = player.transform;
+        builder.RegisterInstance(playerTransform).Keyed("Player");
         builder.RegisterComponent(player);
         builder.RegisterEntryPoint<PlayerMover>();
         

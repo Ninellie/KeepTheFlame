@@ -1,5 +1,6 @@
 ﻿using PlayerMovement;
 using UnityEngine;
+using VContainer;
 using VContainer.Unity;
 
 namespace FirefliesSpawn
@@ -8,11 +9,12 @@ namespace FirefliesSpawn
     {
         private readonly FireflyPool _fireflyPool;
         private readonly SpawnerConfig _spawnerConfig;
-        private readonly PlayerTransform _playerTransform;
+        private readonly Transform _playerTransform;
         private readonly Camera _mainCamera;
         private readonly SpawnTimer _timer;
 
-        public FireflySpawner(FireflyPool fireflyPool, SpawnerConfig spawnerConfig, PlayerTransform playerTransform,
+        public FireflySpawner(FireflyPool fireflyPool, SpawnerConfig spawnerConfig, 
+            [Key("Player")] Transform playerTransform,
             Camera mainCamera, SpawnTimer timer)
         {
             _fireflyPool = fireflyPool;
@@ -59,8 +61,8 @@ namespace FirefliesSpawn
                 var angle = Random.Range(0f, 2f * Mathf.PI);
                 var radius = Random.Range(minRadius, cameraRadius);
                 
-                var x = _playerTransform.Value.position.x + radius * Mathf.Cos(angle);
-                var y = _playerTransform.Value.position.y + radius * Mathf.Sin(angle);
+                var x = _playerTransform.position.x + radius * Mathf.Cos(angle);
+                var y = _playerTransform.position.y + radius * Mathf.Sin(angle);
                 var point = new Vector2(x, y);
                 
                 var sector = GetSector(point);
@@ -109,8 +111,8 @@ namespace FirefliesSpawn
             var radius = Mathf.Sqrt(Random.Range(innerRadius * innerRadius, outerRadius * outerRadius));
             
             // Конвертируем в декартовы координаты относительно игрока
-            var x = _playerTransform.Value.position.x + radius * Mathf.Cos(angle);
-            var y = _playerTransform.Value.position.y + radius * Mathf.Sin(angle);
+            var x = _playerTransform.position.x + radius * Mathf.Cos(angle);
+            var y = _playerTransform.position.y + radius * Mathf.Sin(angle);
             
             return new Vector2(x, y);
         }
