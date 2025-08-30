@@ -31,6 +31,17 @@ public class GameLifetimeScope : LifetimeScope
         // Камера
         builder.RegisterInstance(Camera.main);
         
+        // Movement
+        builder.RegisterInstance(playerMovementConfig);
+        builder.RegisterEntryPoint<PlayerMover>();
+        var player = Instantiate(playerMovementInputHandler);
+        builder.RegisterComponent(player);
+        
+        // Player position
+        var playerTransform = player.transform;
+        builder.RegisterInstance(playerTransform).Keyed("Player");
+        if (Camera.main != null) Camera.main.transform.SetParent(transform);
+        
         // Spawner
         builder.RegisterInstance(spawnerConfig);
         builder.RegisterEntryPoint<FireflySpawner>();
@@ -38,11 +49,17 @@ public class GameLifetimeScope : LifetimeScope
         builder.Register<SpawnTimer>(Lifetime.Singleton);
         builder.Register<IDebugGUIWindow, DebugFireflySpawnerGUI>(Lifetime.Singleton);
         
-        // Lamp
+        // Fuel
         builder.RegisterInstance(lampFuelConfig);
         builder.RegisterEntryPoint<LampFuelBurner>();
         builder.Register<LampFuelTank>(Lifetime.Singleton);
         builder.Register<IDebugGUIWindow, DebugLampFuelGUI>(Lifetime.Singleton);
+        
+        // Flame
+        builder.RegisterInstance(lampFlameConfig);
+        builder.Register<LampFlamePower>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<LampFlamer>();
+        builder.Register<IDebugGUIWindow, DebugLampFlameGUI>(Lifetime.Singleton);
         
         // Darkness
         builder.RegisterInstance(darknessConfig);
@@ -55,21 +72,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.Register<PlayerHealthCounter>(Lifetime.Singleton);
         builder.Register<IDebugGUIWindow, DebugPlayerHealthGUI>(Lifetime.Singleton);
         
-        // Movement
-        builder.RegisterInstance(playerMovementConfig);
-        builder.RegisterEntryPoint<PlayerMover>();
-        var player = Instantiate(playerMovementInputHandler);
-        builder.RegisterComponent(player);
         
-        // Player position
-        var playerTransform = player.transform;
-        builder.RegisterInstance(playerTransform).Keyed("Player");
-        
-        // Flame
-        builder.RegisterInstance(lampFlameConfig);
-        builder.Register<LampFlamePower>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<LampFlamer>();
-        builder.Register<IDebugGUIWindow, DebugLampFlameGUI>(Lifetime.Singleton);
         
         // Darkness Damage
         builder.RegisterInstance(darknessDamageConfig);
