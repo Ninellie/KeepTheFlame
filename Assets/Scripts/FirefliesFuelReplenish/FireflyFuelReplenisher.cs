@@ -1,10 +1,11 @@
 ﻿using System;
 using FirefliesSpawn;
 using LampFuel;
+using VContainer.Unity;
 
 namespace FirefliesFuelReplenish
 {
-    public class FireflyFuelReplenisher : IDisposable
+    public class FireflyFuelReplenisher : IDisposable, IStartable
     {
         public event Action OnFireflyReplenish; 
         
@@ -15,7 +16,10 @@ namespace FirefliesFuelReplenish
         {
             _pool = pool;
             _fuelTank = fuelTank;
-            
+        }
+        
+        public void Start()
+        {
             _pool.OnFireflyCollected += Replenish; 
         }
 

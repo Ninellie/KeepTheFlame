@@ -57,7 +57,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.Register<IDebugGUIWindow, DebugLampFuelGUI>(Lifetime.Singleton);
         
         // Replenish
-        builder.Register<FireflyFuelReplenisher>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<FireflyFuelReplenisher>();
         
         // Flame
         builder.RegisterInstance(lampFlameConfig);
@@ -75,8 +75,6 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterInstance(healthConfig);
         builder.Register<PlayerHealthCounter>(Lifetime.Singleton);
         builder.Register<IDebugGUIWindow, DebugPlayerHealthGUI>(Lifetime.Singleton);
-        
-        
         
         // Darkness Damage
         builder.RegisterInstance(darknessDamageConfig);
