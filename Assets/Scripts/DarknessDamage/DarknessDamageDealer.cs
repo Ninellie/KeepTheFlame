@@ -1,6 +1,7 @@
 ﻿using LampFlame;
 using PlayerHealth;
 using UnityEngine;
+using VContainer;
 using VContainer.Unity;
 
 namespace DarknessDamage
@@ -27,7 +28,7 @@ namespace DarknessDamage
             Init();
             Subscribe();
             
-            debugDarknessDamageGUI.Init(this);
+            debugDarknessDamageGUI.SetDealer(this);
         }
 
         public void FixedTick()

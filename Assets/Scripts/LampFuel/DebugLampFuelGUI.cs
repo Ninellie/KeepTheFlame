@@ -1,28 +1,21 @@
-﻿using UnityEngine;
-using VContainer;
+﻿using DebugGUI;
+using UnityEngine;
 
 namespace LampFuel
 {
-    public class DebugLampFuelGUI : MonoBehaviour
+    public class DebugLampFuelGUI : IDebugGUIWindow
     {
-        [Inject]
-        private LampFuelTank _lamp;
-        private Rect _win = new Rect(20, 20, 240, 120);
-        private bool _visible = true;
-    
-#if !UNITY_EDITOR
-    private const bool EnabledInBuild = true; // Поставить false, чтобы скрыть в билде
-#else
-        private const bool EnabledInBuild = true;
-#endif
-    
-        private void OnGUI()
+        public Rect Rect { get; set; } = new Rect(20, 20, 240, 120);
+        public string Name { get; set; } = "Lamp Fuel Debug";
+        
+        private readonly LampFuelTank _lamp;
+        
+        public DebugLampFuelGUI(LampFuelTank lamp)
         {
-            if (!EnabledInBuild || !_visible) return;
-            _win = GUI.Window(42, _win, DrawWindow, "Lamp Fuel Debug");
+            _lamp = lamp;
         }
 
-        private void DrawWindow(int id)
+        public void DrawWindow(int id)
         {
             GUILayout.Label($"Value: {_lamp.Value:0.0} / {_lamp.Max:0}");
 
@@ -40,28 +33,6 @@ namespace LampFuel
             GUI.Box(fill, GUIContent.none);
 
             GUI.DragWindow(new Rect(0, 0, 10000, 20));
-        }
-
-        public Vector2 GetWindowSize()
-        {
-            return new Vector2(_win.width, _win.height);
-        }
-        
-        public void SetWindowPosition(Vector2 position)
-        {
-            _win.x = position.x;
-            _win.y = position.y;
-        }
-        
-        public void SetWindowSize(Vector2 size)
-        {
-            _win.width = size.x;
-            _win.height = size.y;
-        }
-
-        private void OnDestroy()
-        {
-            if (_lamp != null) _lamp.OnChanged -= null; // на случай подписок в будущем
         }
     }
 }
