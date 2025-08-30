@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using PlayerMovement;
 using UnityEngine;
 using VContainer;
 
@@ -11,7 +10,7 @@ namespace FirefliesSpawn
         public int Size => _activeFireflies.Count + _inactiveFireflies.Count;
         public int Active => _activeFireflies.Count;
 
-        public static event System.Action<Firefly> OnFireflyCollected;
+        public event System.Action<Firefly> OnFireflyCollected;
 
         private readonly List<Firefly> _inactiveFireflies = new();
         private readonly List<Firefly> _activeFireflies = new();
