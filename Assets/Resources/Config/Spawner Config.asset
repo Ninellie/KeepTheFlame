@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Spawner Config
   m_EditorClassIdentifier: 
   poolSize: 100
-  sectorSize: 10
+  sectorSize: 20
   maxFirefliesPerSector: 1
   interval: 1
   balanceFactor: 1
