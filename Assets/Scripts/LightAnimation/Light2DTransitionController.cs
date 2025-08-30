@@ -3,32 +3,36 @@ using DG.Tweening.Core;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class Light2DTransitionController : MonoBehaviour
+namespace LightAnimation
 {
-    [SerializeField] private Ease ease = Ease.Linear;
-    [SerializeField] private LoopType loopType = LoopType.Yoyo;
-    [SerializeField] private  float duration = 3f;
-    [SerializeField] private  float endValue = 5f;
+    public class Light2DTransitionController : MonoBehaviour
+    {
+        [SerializeField] private Light2DTransitionConfig _config;
     
-    private Light2D _light;
+        private Light2D _light;
     
-    private void Awake()
-    {
-        _light = GetComponent<Light2D>();
-    }
+        private void Awake()
+        {
+            _light = GetComponent<Light2D>();
+        }
 
-    private void OnEnable()
-    {
-        DOTween.To(Getter(), Setter, endValue, duration).SetEase(ease).SetLoops(-1, loopType);
-    }
+        private void OnEnable()
+        {
+            _light.intensity = _config.startValue;
+            
+            DOTween.To(Get(), Set, _config.endValue, _config.duration)
+                .SetEase(_config.ease)
+                .SetLoops(-1, _config.loopType);
+        }
 
-    private void Setter(float value)
-    {
-        _light.intensity = value;
-    }
+        private void Set(float value)
+        {
+            _light.intensity = value;
+        }
 
-    private DOGetter<float> Getter()
-    {
-        return () => _light.intensity;
+        private DOGetter<float> Get()
+        {
+            return () => _light.intensity;
+        }
     }
 }
