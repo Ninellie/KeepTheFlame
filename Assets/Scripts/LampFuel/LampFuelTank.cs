@@ -7,8 +7,9 @@ namespace LampFuel
         public float Value { get; private set; }
         public float Min { get; private set; }
         public float Max { get; private set; }
-
+        
         public event System.Action<float> OnChanged;
+        public event System.Action OnReplenish;
         public event System.Action OnEmpty;
         public event System.Action OnNonEmpty;
         
@@ -38,7 +39,13 @@ namespace LampFuel
             
             var oldValue = Value;
             Value = clamped;
+            
             OnChanged?.Invoke(Value);
+            
+            if (Value > oldValue)
+            {
+                OnReplenish?.Invoke();
+            }
             
             // Если было пусто
             if (Mathf.Approximately(oldValue, Min))
