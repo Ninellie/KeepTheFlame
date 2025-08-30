@@ -41,7 +41,7 @@ public class GameLifetimeScope : LifetimeScope
         // Player position
         var playerTransform = player.transform;
         builder.RegisterInstance(playerTransform).Keyed("Player");
-        if (Camera.main != null) Camera.main.transform.SetParent(transform);
+        if (Camera.main != null) Camera.main.transform.SetParent(playerTransform);
         
         // Spawner
         builder.RegisterInstance(spawnerConfig);
