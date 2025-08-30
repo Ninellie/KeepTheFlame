@@ -2,6 +2,7 @@ using Darkness;
 using DarknessDamage;
 using DebugGUI;
 using FirefliesFuelReplenish;
+using FirefliesPicking;
 using FirefliesSpawn;
 using LampFlame;
 using LampFuel;
@@ -49,6 +50,9 @@ public class GameLifetimeScope : LifetimeScope
         builder.Register<FireflyPool>(Lifetime.Singleton);
         builder.Register<SpawnTimer>(Lifetime.Singleton);
         builder.Register<IDebugGUIWindow, DebugFireflySpawnerGUI>(Lifetime.Singleton);
+        
+        // Picking
+        builder.Register<FireflyPicker>(Lifetime.Singleton);
         
         // Fuel
         builder.RegisterInstance(lampFuelConfig);

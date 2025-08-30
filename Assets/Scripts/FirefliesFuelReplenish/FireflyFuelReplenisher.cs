@@ -1,4 +1,5 @@
 ﻿using System;
+using FirefliesPicking;
 using FirefliesSpawn;
 using LampFuel;
 using VContainer.Unity;
@@ -7,31 +8,28 @@ namespace FirefliesFuelReplenish
 {
     public class FireflyFuelReplenisher : IDisposable, IStartable
     {
-        public event Action OnFireflyReplenish; 
-        
-        private FireflyPool _pool;
+        private FireflyPicker _picker;
         private LampFuelTank _fuelTank;
 
-        public FireflyFuelReplenisher(FireflyPool pool, LampFuelTank fuelTank)
+        public FireflyFuelReplenisher(FireflyPicker picker, LampFuelTank fuelTank)
         {
-            _pool = pool;
+            _picker = picker;
             _fuelTank = fuelTank;
+        }
+        
+        public void Replenish(Firefly firefly)
+        {
+            _fuelTank.Add(firefly.FuelAmount);
         }
         
         public void Start()
         {
-            _pool.OnFireflyCollected += Replenish; 
-        }
-
-        public void Replenish(Firefly firefly)
-        {
-            _fuelTank.Add(1);
-            OnFireflyReplenish?.Invoke();
+            _picker.OnFireflyPickup += Replenish; 
         }
         
         public void Dispose()
         {
-            _pool.OnFireflyCollected -= Replenish;
+            _picker.OnFireflyPickup -= Replenish;
         }
     }
 }

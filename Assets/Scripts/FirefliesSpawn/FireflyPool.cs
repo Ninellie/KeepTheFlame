@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using FirefliesPicking;
 using UnityEngine;
 using VContainer;
 
@@ -7,33 +8,35 @@ namespace FirefliesSpawn
 {
     public class FireflyPool
     {
+        private const float FuelAmount = 1;
         public int Size => _activeFireflies.Count + _inactiveFireflies.Count;
         public int Active => _activeFireflies.Count;
-
-        public event System.Action<Firefly> OnFireflyCollected;
 
         private readonly List<Firefly> _inactiveFireflies = new();
         private readonly List<Firefly> _activeFireflies = new();
         
         private readonly Transform _playerTransform;
         private readonly SpawnerConfig _config;
-
-        public FireflyPool(SpawnerConfig config, [Key("Player")] Transform playerTransform)
+        private readonly FireflyPicker _picker;
+        
+        public FireflyPool(SpawnerConfig config, [Key("Player")] Transform playerTransform, FireflyPicker picker)
         {
             _config = config;
             _playerTransform = playerTransform;
+            _picker = picker;
+
             Init();
         }
 
         public void Init()
         {
             Cleanup();
-
+            
             // Создаем пул светлячков
             for (var i = 0; i < _config.poolSize; i++)
             {
                 var firefly = Object.Instantiate(_config.fireflyPrefab).GetComponent<Firefly>();
-                firefly.Init(this);
+                firefly.Init(this, _picker, FuelAmount);
                 firefly.gameObject.SetActive(false);
                 _inactiveFireflies.Add(firefly);
             }
@@ -80,8 +83,6 @@ namespace FirefliesSpawn
         
         public void ReturnToPool(Firefly firefly)
         {
-            OnFireflyCollected?.Invoke(firefly);
-            
             _activeFireflies.Remove(firefly);
             firefly.gameObject.SetActive(false);
             _inactiveFireflies.Add(firefly);
