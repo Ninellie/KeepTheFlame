@@ -7,7 +7,7 @@ namespace LightAnimation
 {
     public class Light2DTransitionController : MonoBehaviour
     {
-        [SerializeField] private Light2DTransitionConfig _config;
+        [SerializeField] private Light2DTransitionConfig config;
     
         private Light2D _light;
     
@@ -18,11 +18,11 @@ namespace LightAnimation
 
         private void OnEnable()
         {
-            _light.intensity = _config.startValue;
+            _light.intensity = config.startValue;
             
-            DOTween.To(Get(), Set, _config.endValue, _config.duration)
-                .SetEase(_config.ease)
-                .SetLoops(-1, _config.loopType);
+            DOTween.To(Get(), Set, config.endValue, config.duration)
+                .SetEase(config.ease)
+                .SetLoops(-1, config.loopType);
         }
 
         private void Set(float value)

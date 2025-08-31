@@ -9,6 +9,7 @@ using LampFuel;
 using PlayerHealth;
 using PlayerMovement;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using VContainer;
 using VContainer.Unity;
 
@@ -22,52 +23,58 @@ public class GameLifetimeScope : LifetimeScope
     [SerializeField] private DarknessDamageConfig darknessDamageConfig;
     [SerializeField] private SpawnerConfig spawnerConfig;
     
-    [SerializeField] private PlayerMovementInputHandler playerMovementInputHandler;
+    [SerializeField] private GameObject playerPrefab;
     
     protected override void Configure(IContainerBuilder builder)
     {
+        // Debug
         var levelDebugGUIGameObject = new GameObject("[LevelDebugGUI]");
         var debugGUIPositioner = levelDebugGUIGameObject.AddComponent<DebugGUIController>();
         builder.RegisterComponent(debugGUIPositioner);
         
-        // Камера
-        builder.RegisterInstance(Camera.main);
+        // Player
+        var player = Instantiate(playerPrefab);
         
         // Movement
         builder.RegisterInstance(playerMovementConfig);
         builder.RegisterEntryPoint<PlayerMover>();
-        var player = Instantiate(playerMovementInputHandler);
-        builder.RegisterComponent(player);
+        var movementInputHandler = player.GetComponent<PlayerMovementInputHandler>();
+        builder.RegisterComponent(movementInputHandler);
         
         // Player position
-        var playerTransform = player.transform;
-        builder.RegisterInstance(playerTransform).Keyed("Player");
-        if (Camera.main != null) Camera.main.transform.SetParent(playerTransform);
+        builder.RegisterInstance(player.transform).Keyed("Player");
         
-        // Spawner
+        // Camera
+        builder.RegisterInstance(Camera.main);
+        if (Camera.main != null) Camera.main.transform.SetParent(player.transform);
+        
+        // Firefly Spawner
         builder.RegisterInstance(spawnerConfig);
         builder.RegisterEntryPoint<FireflySpawner>();
         builder.Register<FireflyPool>(Lifetime.Singleton);
         builder.Register<SpawnTimer>(Lifetime.Singleton);
         builder.Register<IDebugGUIWindow, DebugFireflySpawnerGUI>(Lifetime.Singleton);
         
-        // Picking
+        // Firefly Picking
         builder.Register<FireflyPicker>(Lifetime.Singleton);
         
-        // Fuel
+        // Lamp Fuel
         builder.RegisterInstance(lampFuelConfig);
         builder.RegisterEntryPoint<LampFuelBurner>();
         builder.Register<LampFuelTank>(Lifetime.Singleton);
         builder.Register<IDebugGUIWindow, DebugLampFuelGUI>(Lifetime.Singleton);
         
-        // Replenish
+        // Firefly Lamp Fuel Replenish
         builder.RegisterEntryPoint<FireflyFuelReplenisher>();
         
-        // Flame
+        // Lamp Flame
         builder.RegisterInstance(lampFlameConfig);
         builder.Register<LampFlamePower>(Lifetime.Singleton);
         builder.RegisterEntryPoint<LampFlamer>();
         builder.Register<IDebugGUIWindow, DebugLampFlameGUI>(Lifetime.Singleton);
+        var lampLight = player.GetComponent<Light2D>(); 
+        builder.RegisterComponent(lampLight);
+        builder.RegisterEntryPoint<LampFlameViewController>();
         
         // Darkness
         builder.RegisterInstance(darknessConfig);

@@ -311,7 +311,7 @@ MonoBehaviour:
   playerMovementConfig: {fileID: 11400000, guid: 13c878dc8d77b8f4ea1b462cc6ec425a, type: 2}
   darknessDamageConfig: {fileID: 11400000, guid: c76d20a434bac324a9b77acda6618ebf, type: 2}
   spawnerConfig: {fileID: 11400000, guid: c36362a65bcf31641a424bccab912d6d, type: 2}
-  playerMovementInputHandler: {fileID: 240103792151939190, guid: b7a08a0c0476e224dac121dc2a57f6f6, type: 3}
+  playerPrefab: {fileID: 8728212012612644347, guid: b7a08a0c0476e224dac121dc2a57f6f6, type: 3}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,8 +345,8 @@ MonoBehaviour:
   m_LightType: 4
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
-  m_Color: {r: 0.049785715, g: 0.068, b: 0.085, a: 1}
-  m_Intensity: 1
+  m_Color: {r: 0.049785715, g: 0.068, b: 0.085, a: 0.5019608}
+  m_Intensity: 0.1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 00000000
