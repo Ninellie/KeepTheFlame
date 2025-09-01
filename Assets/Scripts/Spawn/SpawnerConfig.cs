@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace FirefliesSpawn
+namespace Spawn
 {
     [CreateAssetMenu(menuName = "Config/Spawner")]
     public class SpawnerConfig : ScriptableObject
@@ -10,7 +10,7 @@ namespace FirefliesSpawn
         
         [Header("Sector")]
         public float sectorSize;
-        public int maxFirefliesPerSector;
+        public int maxSpawnsPerSector;
         
         [Header("Spawn delay")]
         public float interval;
@@ -27,6 +27,6 @@ namespace FirefliesSpawn
         public float spawnCircleRadius;
         
         [Header("Prefab")]
-        public Firefly fireflyPrefab;
+        public GameObject prefab;
     }
 }

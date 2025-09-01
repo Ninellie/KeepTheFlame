@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FirefliesPicking;
+using Spawn;
 using UnityEngine;
 using VContainer;
 
@@ -19,7 +20,7 @@ namespace FirefliesSpawn
         private readonly SpawnerConfig _config;
         private readonly FireflyPicker _picker;
         
-        public FireflyPool(SpawnerConfig config, [Key("Player")] Transform playerTransform, FireflyPicker picker)
+        public FireflyPool([Key(nameof(Firefly))] SpawnerConfig config, [Key("Player")] Transform playerTransform, FireflyPicker picker)
         {
             _config = config;
             _playerTransform = playerTransform;
@@ -35,7 +36,7 @@ namespace FirefliesSpawn
             // Создаем пул светлячков
             for (var i = 0; i < _config.poolSize; i++)
             {
-                var firefly = Object.Instantiate(_config.fireflyPrefab).GetComponent<Firefly>();
+                var firefly = Object.Instantiate(_config.prefab).GetComponent<Firefly>();
                 firefly.Init(this, _picker, FuelAmount);
                 firefly.gameObject.SetActive(false);
                 _inactiveFireflies.Add(firefly);
@@ -78,7 +79,7 @@ namespace FirefliesSpawn
         public bool IsSectorFull(Vector2Int sector)
         {
             var firefliesInSector = _activeFireflies.Count(firefly => firefly.Sector == sector);
-            return firefliesInSector >= _config.maxFirefliesPerSector;
+            return firefliesInSector >= _config.maxSpawnsPerSector;
         }
         
         public void ReturnToPool(Firefly firefly)

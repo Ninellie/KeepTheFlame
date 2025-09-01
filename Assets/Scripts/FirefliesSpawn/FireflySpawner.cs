@@ -1,11 +1,11 @@
-﻿using PlayerMovement;
+﻿using Spawn;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
 namespace FirefliesSpawn
 {
-    public class FireflySpawner : IFixedTickable
+    public class FireflySpawner : IFixedTickable, IStartable
     {
         private readonly FireflyPool _fireflyPool;
         private readonly SpawnerConfig _spawnerConfig;
@@ -13,7 +13,7 @@ namespace FirefliesSpawn
         private readonly Camera _mainCamera;
         private readonly SpawnTimer _timer;
 
-        public FireflySpawner(FireflyPool fireflyPool, SpawnerConfig spawnerConfig, 
+        public FireflySpawner(FireflyPool fireflyPool,[Key(nameof(Firefly))] SpawnerConfig spawnerConfig, 
             [Key("Player")] Transform playerTransform,
             Camera mainCamera, SpawnTimer timer)
         {
@@ -22,8 +22,6 @@ namespace FirefliesSpawn
             _playerTransform = playerTransform;
             _mainCamera = mainCamera;
             _timer = timer;
-            
-            InitializeStartingFireflies();
         }
         
         public void FixedTick()
@@ -37,6 +35,11 @@ namespace FirefliesSpawn
             _timer.Set(spawnInterval);
             
             SpawnFirefly();
+        }
+        
+        public void Start()
+        {
+            InitializeStartingFireflies();
         }
         
         private void InitializeStartingFireflies()
@@ -161,5 +164,5 @@ namespace FirefliesSpawn
             var y = Mathf.FloorToInt(position.y / _spawnerConfig.sectorSize);
             return new Vector2Int(x, y); 
         }
-     }
+    }
  }

@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 48b21a91b7d8cb941a9457cc5d5b6243, type: 3}
-  m_Name: Spawner Config
+  m_Name: Fire Pit Spawner Config
   m_EditorClassIdentifier: 
   poolSize: 100
-  sectorSize: 20
-  maxFirefliesPerSector: 1
+  sectorSize: 100
+  maxSpawnsPerSector: 1
   interval: 1
   balanceFactor: 1
   spawnCircleOffset: 5
   spawnCircleRadius: 10
-  fireflyPrefab: {fileID: -6480472332251734857, guid: b6760e6300e34274ca482c4131d66272, type: 3}
+  prefab: {fileID: 6151673042314242652, guid: be08f97aacf9e6c4ba6cb089d7415ca1, type: 3}
