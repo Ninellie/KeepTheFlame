@@ -1,7 +1,7 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-namespace FirePitSpawn
+namespace PopupAnimation
 {
     /// <summary>
     /// Показывает popup когда подходит игрок 
@@ -22,12 +22,14 @@ namespace FirePitSpawn
         
         private void OnTriggerEnter2D(Collider2D other)
         {
+            if (!other.CompareTag("Player")) return;
             popup.SetActive(true);
             popup.transform.DOLocalMoveY(animationEndPosition.localPosition.y, openingDuration);
         }
 
         private void OnTriggerExit2D(Collider2D other)
         {
+            if (!other.CompareTag("Player")) return;
             popup.transform.DOLocalMoveY(animationStartPosition.localPosition.y, closingDuration)
                 .OnComplete( () => popup.SetActive(false));
         }
