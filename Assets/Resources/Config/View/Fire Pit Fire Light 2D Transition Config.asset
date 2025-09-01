@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d62ce632bc2a4bf19c645d3be4a87a14, type: 3}
-  m_Name: Fire Pit Light 2D Transition Config
+  m_Name: Fire Pit Fire Light 2D Transition Config
   m_EditorClassIdentifier: 
   ease: 29
   loopType: 1
   duration: 3
-  endValue: 8
+  endValue: 15
   startValue: 3
