@@ -11,13 +11,16 @@ using LampFuel;
 using PlayerHealth;
 using PlayerMovement;
 using Spawn;
+using TileFloorGeneration;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Tilemaps;
 using VContainer;
 using VContainer.Unity;
 
 public class GameLifetimeScope : LifetimeScope
 {
+    [Header("Config")]
     [SerializeField] private LampFuelConfig lampFuelConfig;
     [SerializeField] private LampFlameConfig lampFlameConfig;
     [SerializeField] private DarknessConfig darknessConfig;
@@ -28,7 +31,11 @@ public class GameLifetimeScope : LifetimeScope
     [SerializeField] private SpawnerConfig fireflySpawnerConfig;
     [SerializeField] private SpawnerConfig firePitSpawnerConfig;
     
+    [Header("Prefab")]
     [SerializeField] private GameObject playerPrefab;
+    
+    [Header("Tile")]
+    [SerializeField] private Tile floorTile;
     
     protected override void Configure(IContainerBuilder builder)
     {
@@ -46,7 +53,6 @@ public class GameLifetimeScope : LifetimeScope
         builder.Register<FirePitFactory>(Lifetime.Singleton);
         builder.RegisterEntryPoint<FirePitPool>().AsSelf();
         builder.RegisterEntryPoint<FirePitSpawner>();
-        
         
         // Player
         var player = Instantiate(playerPrefab);
@@ -110,5 +116,9 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<DarknessDamageDealer>();
         builder.Register<DebugDarknessDamageGUI>(Lifetime.Singleton).AsImplementedInterfaces()
             .AsSelf();
+        
+        // Floor generation
+        builder.RegisterInstance(floorTile);
+        builder.RegisterEntryPoint<FloorGenerator>();
     }
 }
