@@ -43,5 +43,20 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Floor
+    uniqueID: 371378663
+    locked: 0
+  - name: FirePit
+    uniqueID: 2942130373
+    locked: 0
+  - name: Player
+    uniqueID: 2876940187
+    locked: 0
+  - name: Firefly
+    uniqueID: 147776483
+    locked: 0
+  - name: UI
+    uniqueID: 1398982863
+    locked: 0
   m_RenderingLayers:
   - Default
