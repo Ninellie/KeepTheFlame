@@ -107,7 +107,6 @@ namespace TileFloorGeneration
         {
             var cameraHeight = 2f * _mainCamera.orthographicSize;
             var cameraWidth = cameraHeight * _mainCamera.aspect;
-            var cameraSize = new Vector2(cameraWidth, cameraHeight);
             
             var cameraPosition = _mainCamera.transform.position;
             
@@ -126,7 +125,7 @@ namespace TileFloorGeneration
             // Добавляем тайлы справа при движении вправо
             if (direction.x > 0)
             {
-                for (var y = startY; y <= endY; y++)
+                for (var y = startY - 1; y <= endY + 1; y++)
                 {
                     for (var x = endX + 1; x <= endX + offset; x++)
                     {
@@ -142,7 +141,7 @@ namespace TileFloorGeneration
             // Добавляем тайлы слева при движении влево
             if (direction.x < 0)
             {
-                for (var y = startY; y <= endY; y++)
+                for (var y = startY - 1; y <= endY + 1; y++)
                 {
                     for (var x = startX - offset; x <= startX - 1; x++)
                     {
@@ -158,7 +157,7 @@ namespace TileFloorGeneration
             // Добавляем тайлы сверху при движении вверх
             if (direction.y > 0)
             {
-                for (var x = startX; x <= endX; x++)
+                for (var x = startX - 1; x <= endX + 1; x++)
                 {
                     for (var y = endY + 1; y <= endY + offset; y++)
                     {
@@ -174,7 +173,7 @@ namespace TileFloorGeneration
             // Добавляем тайлы снизу при движении вниз
             if (direction.y < 0)
             {
-                for (var x = startX; x <= endX; x++)
+                for (var x = startX - 1; x <= endX + 1; x++)
                 {
                     for (var y = startY - offset; y <= startY - 1; y++)
                     {
