@@ -1,22 +1,22 @@
-﻿using UnityEngine.Rendering.Universal;
+﻿using LightAnimation;
 using VContainer.Unity;
 
 namespace LampFlame
 {
     public class LampFlameViewController : ITickable
     {
-        private readonly Light2D _lampLight;
+        private readonly LightFlicker _lampFlicker;
         private readonly LampFlamePower _flame;
 
-        public LampFlameViewController(Light2D lampLight, LampFlamePower flame)
+        public LampFlameViewController(LightFlicker lampFlicker, LampFlamePower flame)
         {
-            _lampLight = lampLight;
+            _lampFlicker = lampFlicker;
             _flame = flame;
         }
         
         public void Tick()
         {
-            _lampLight.intensity = _flame.Value;
+            _lampFlicker.FlameValue = _flame.Value;
         }
     }
 }

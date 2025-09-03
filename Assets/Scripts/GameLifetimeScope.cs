@@ -8,6 +8,7 @@ using FirePitSpawn;
 using Interacting;
 using LampFlame;
 using LampFuel;
+using LightAnimation;
 using PlayerHealth;
 using PlayerMovement;
 using Spawn;
@@ -96,7 +97,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.Register<LampFlamePower>(Lifetime.Singleton);
         builder.RegisterEntryPoint<LampFlamer>();
         builder.Register<IDebugGUIWindow, DebugLampFlameGUI>(Lifetime.Singleton);
-        var lampLight = player.GetComponent<Light2D>(); 
+        var lampLight = player.GetComponent<LightFlicker>(); 
         builder.RegisterComponent(lampLight);
         builder.RegisterEntryPoint<LampFlameViewController>();
         
