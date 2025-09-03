@@ -5,47 +5,15 @@ using UnityEngine.Tilemaps;
 
 namespace TileFloorGeneration
 {
-    public static class TilePositionCalculator
-    {
-        /// <summary>
-        /// Вычисляет позиции для размещения тайлов на основе размера камеры и тайла
-        /// </summary>
-        /// <param name="tile">Тайл для размещения</param>
-        /// <param name="camera">Камера для определения области размещения</param>
-        /// <param name="offset">Дополнительный отступ с каждой стороны</param>
-        /// <returns>Позиций тайлов</returns>
-        public static IEnumerable<Vector3Int> GetTilePositionsInCameraBounds(Tile tile, Camera camera, int offset)
-        {
-            var tileSize = tile.sprite.bounds.size;
-            var cameraHeight = 2f * camera.orthographicSize;
-            var cameraWidth = cameraHeight * camera.aspect;
-            var cameraSize = new Vector2(cameraWidth, cameraHeight);
-            
-            var tilesX = Mathf.CeilToInt(cameraSize.x / tileSize.x);
-            var tilesY = Mathf.CeilToInt(cameraSize.y / tileSize.y);
-            
-            var startX = -tilesX / 2 - offset;
-            var endX = tilesX / 2 + offset;
-            var startY = -tilesY / 2 - offset;
-            var endY = tilesY / 2 + offset;
-            
-            for (var x = startX; x <= endX; x++)
-            {
-                for (var y = startY; y <= endY; y++)
-                {
-                    yield return new Vector3Int(x, y, 0);
-                }
-            }
-        }
-    }
-
     public class FloorGenerator : ITickable, IStartable
     {
-        private const int tilesPerFrame = 20;
-        private const int offset = 2;
-        private Tile _tile;
-        private Camera _mainCamera;
-        private Vector2 _tileSize;
+        private const int TilesPerFrame = 20;
+        private const int Offset = 2;
+        
+        private readonly Tile _tile;
+        private readonly Camera _mainCamera;
+        private readonly Vector2 _tileSize;
+        
         private Queue<Vector3Int> _positionsToFill;
         private HashSet<Vector3Int> _filledPositions;
         private Tilemap _tilemap;
@@ -60,7 +28,7 @@ namespace TileFloorGeneration
 
         public void Start()
         {
-            var positions = TilePositionCalculator.GetTilePositionsInCameraBounds(_tile, _mainCamera, offset);
+            var positions = TilePositionCalculator.GetTilePositionsInCameraBounds(_tile, _mainCamera, Offset);
             _positionsToFill = new Queue<Vector3Int>();
             _filledPositions = new HashSet<Vector3Int>();
             
@@ -75,7 +43,7 @@ namespace TileFloorGeneration
             
             CreateTilemap();
             FillPositionsFromSet(_positionsToFill.Count);
-            AddPositionsBeyondCamera(Vector2Int.zero, offset);
+            AddPositionsBeyondCamera(Vector2Int.zero, Offset);
         }
 
         public void Tick()
@@ -83,9 +51,9 @@ namespace TileFloorGeneration
             var direction = CheckCenterTilePositionChanged();
             if (direction != Vector2Int.zero)
             {
-                AddPositionsBeyondCamera(direction, offset);
+                AddPositionsBeyondCamera(direction, Offset);
             }
-            FillPositionsFromSet(tilesPerFrame);
+            FillPositionsFromSet(TilesPerFrame);
         }
 
         private void CreateTilemap()
@@ -155,21 +123,66 @@ namespace TileFloorGeneration
             var startY = Mathf.FloorToInt(cameraBottom / _tileSize.y);
             var endY = Mathf.CeilToInt(cameraTop / _tileSize.y);
             
-            // Просто расширяем область на offset тайлов во всех направлениях
-            var extendedStartX = startX - offset;
-            var extendedEndX = endX + offset;
-            var extendedStartY = startY - offset;
-            var extendedEndY = endY + offset;
-            
-            // Добавляем все тайлы в расширенной области, которых нет в текущей
-            for (var x = extendedStartX; x <= extendedEndX; x++)
+            // Добавляем тайлы справа при движении вправо
+            if (direction.x > 0)
             {
-                for (var y = extendedStartY; y <= extendedEndY; y++)
+                for (var y = startY; y <= endY; y++)
                 {
-                    var pos = new Vector3Int(x, y, 0);
-                    if (_filledPositions.Add(pos))
+                    for (var x = endX + 1; x <= endX + offset; x++)
                     {
-                        _positionsToFill.Enqueue(pos);
+                        var pos = new Vector3Int(x, y, 0);
+                        if (_filledPositions.Add(pos))
+                        {
+                            _positionsToFill.Enqueue(pos);
+                        }
+                    }
+                }
+            }
+            
+            // Добавляем тайлы слева при движении влево
+            if (direction.x < 0)
+            {
+                for (var y = startY; y <= endY; y++)
+                {
+                    for (var x = startX - offset; x <= startX - 1; x++)
+                    {
+                        var pos = new Vector3Int(x, y, 0);
+                        if (_filledPositions.Add(pos))
+                        {
+                            _positionsToFill.Enqueue(pos);
+                        }
+                    }
+                }
+            }
+            
+            // Добавляем тайлы сверху при движении вверх
+            if (direction.y > 0)
+            {
+                for (var x = startX; x <= endX; x++)
+                {
+                    for (var y = endY + 1; y <= endY + offset; y++)
+                    {
+                        var pos = new Vector3Int(x, y, 0);
+                        if (_filledPositions.Add(pos))
+                        {
+                            _positionsToFill.Enqueue(pos);
+                        }
+                    }
+                }
+            }
+            
+            // Добавляем тайлы снизу при движении вниз
+            if (direction.y < 0)
+            {
+                for (var x = startX; x <= endX; x++)
+                {
+                    for (var y = startY - offset; y <= startY - 1; y++)
+                    {
+                        var pos = new Vector3Int(x, y, 0);
+                        if (_filledPositions.Add(pos))
+                        {
+                            _positionsToFill.Enqueue(pos);
+                        }
                     }
                 }
             }
