@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -6,7 +7,14 @@ namespace PlayerMovement
 {
     public class PlayerMover : IFixedTickable
     {
-        public float Speed { get; private set; }
+        public float Speed
+        {
+            get => _speed;
+            private set => _speed = Mathf.Clamp(value, MinSpeed, MaxSpeed);
+        }
+
+        private float _speed;
+        
         public float MaxSpeed { get; private set; }
         public float MinSpeed { get; private set; }
         
@@ -31,9 +39,9 @@ namespace PlayerMovement
 
         public void Init()
         {
-            Speed = _playerMovementConfig.startValue;
             MaxSpeed = _playerMovementConfig.maxValue;
             MinSpeed = _playerMovementConfig.minValue;
+            Speed = _playerMovementConfig.startValue;
         }
         
         public void FixedTick()
