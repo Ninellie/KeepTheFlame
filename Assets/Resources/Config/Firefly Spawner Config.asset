@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Firefly Spawner Config
   m_EditorClassIdentifier: 
   poolSize: 100
-  sectorSize: 5
+  sectorSize: 0.5
   maxSpawnsPerSector: 1
   interval: 1
   balanceFactor: 1

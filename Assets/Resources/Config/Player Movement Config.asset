@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62d3c18f772b497fad4a56fcdbefbb55, type: 3}
   m_Name: Player Movement Config
   m_EditorClassIdentifier: 
-  maxValue: 10
-  minValue: 0
-  startValue: 5
+  maxValue: 1
+  minValue: 1
+  startValue: 1

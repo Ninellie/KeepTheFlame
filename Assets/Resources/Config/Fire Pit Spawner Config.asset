@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Fire Pit Spawner Config
   m_EditorClassIdentifier: 
   poolSize: 100
-  sectorSize: 50
+  sectorSize: 5
   maxSpawnsPerSector: 1
   interval: 0.1
   balanceFactor: 1
