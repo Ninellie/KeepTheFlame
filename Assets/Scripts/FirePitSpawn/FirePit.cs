@@ -13,7 +13,6 @@ namespace FirePitSpawn
         [SerializeField] private Light2D ember;
         [SerializeField] private Light2D fire;
         
-        
         [ReadOnly] [SerializeField] private bool isBurned;
         [ReadOnly] [SerializeField] private bool isBurning;
         public Vector2Int Sector { get; set; }
@@ -21,7 +20,6 @@ namespace FirePitSpawn
         private DarknessPower _darknessPower;
         private LampFuelTank _fuelTank;
         private Interactable _interactable;
-        private SpriteRenderer _spriteRenderer;
         
         private float _burningDuration;
         private float _darknessResistancePerSecond;
@@ -45,7 +43,6 @@ namespace FirePitSpawn
         private void Awake()
         {
             _interactable = GetComponent<Interactable>();
-            _spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
         private void Start()
@@ -75,7 +72,6 @@ namespace FirePitSpawn
             
             ember.gameObject.SetActive(false);
             fire.gameObject.SetActive(true);
-            _spriteRenderer.color = Color.red;
             
             _fuelTank.Subtract(_fuelCost);
             _burningTimeLeft = _burningDuration;
@@ -92,7 +88,6 @@ namespace FirePitSpawn
             _darknessPower.Decrease(_darknessResistancePerSecond * deltaTime);
 
             if (_burningTimeLeft > 0) return;
-            _spriteRenderer.color = Color.gray;
             isBurned = true;
             isBurning = false;
             ember.gameObject.SetActive(true);
