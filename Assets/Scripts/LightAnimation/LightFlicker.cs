@@ -69,7 +69,7 @@ namespace LightAnimation
             _flameValue = Mathf.MoveTowards(_flameValue, _targetFlameValue, Time.deltaTime * valueChangePerSecond);
 
             UpdateLightProperties(Time.deltaTime * valueChangePerSecond);
-            UpdateFlicker();
+            // UpdateFlicker();
         }
 
         private void UpdateLightProperties(float t)
@@ -84,29 +84,29 @@ namespace LightAnimation
             _light.pointLightInnerRadius = _innerRadius;
         }
 
-        private void UpdateFlicker()
-        {
-            var t = Time.time * speed + _seed;
-
-            // плавный шум
-            var n1 = Mathf.PerlinNoise(t, 0f) * 2f - 1f; // -1..1
-            var n2 = Mathf.PerlinNoise(0f, t) * 2f - 1f;
-            
-            // мерцание (независимо от _flameValue)
-            var flickerIntensity = intensityAmplitude * n1;
-            var flickerOuterRadius = radiusAmplitude * n2;
-            var flickerInnerRadius = radiusAmplitude * n2 * 0.5f;
-            
-            // применяем мерцание к текущим значениям
-            _light.intensity += flickerIntensity;
-            _light.pointLightOuterRadius += flickerOuterRadius;
-            _light.pointLightInnerRadius += flickerInnerRadius;
-
-            // лёгкое «теплохолодное» мерцание
-            var hueShift = hueJitter * n1;
-            Color.RGBToHSV(baseColor, out var h, out var s, out var v);
-            h = Mathf.Repeat(h + hueShift, 1f);
-            _light.color = Color.HSVToRGB(h, s, v);
-        }
+        // private void UpdateFlicker()
+        // {
+        //     var t = Time.time * speed + _seed;
+        //
+        //     // плавный шум
+        //     var n1 = Mathf.PerlinNoise(t, 0f) * 2f - 1f; // -1..1
+        //     var n2 = Mathf.PerlinNoise(0f, t) * 2f - 1f;
+        //     
+        //     // мерцание (независимо от _flameValue)
+        //     var flickerIntensity = intensityAmplitude * n1;
+        //     var flickerOuterRadius = radiusAmplitude * n2;
+        //     var flickerInnerRadius = radiusAmplitude * n2 * 0.5f;
+        //     
+        //     // применяем мерцание к текущим значениям
+        //     _light.intensity += flickerIntensity;
+        //     _light.pointLightOuterRadius += flickerOuterRadius;
+        //     _light.pointLightInnerRadius += flickerInnerRadius;
+        //
+        //     // лёгкое «теплохолодное» мерцание
+        //     var hueShift = hueJitter * n1;
+        //     Color.RGBToHSV(baseColor, out var h, out var s, out var v);
+        //     h = Mathf.Repeat(h + hueShift, 1f);
+        //     _light.color = Color.HSVToRGB(h, s, v);
+        // }
     }
 }
