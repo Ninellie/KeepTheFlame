@@ -11,10 +11,11 @@ using LampFuel;
 using LightAnimation;
 using PlayerHealth;
 using PlayerMovement;
+using PlayerSpriteFlipping;
+using PlayerSpriteAnimation;
 using Spawn;
 using TileFloorGeneration;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
 using VContainer;
 using VContainer.Unity;
@@ -65,6 +66,16 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<PlayerMover>();
         var movementInputHandler = player.GetComponent<PlayerMovementInputHandler>();
         builder.RegisterComponent(movementInputHandler);
+        
+        // Player Sprite Flipping
+        var playerSpriteRenderer = player.GetComponent<SpriteRenderer>();
+        builder.RegisterInstance(playerSpriteRenderer).Keyed("Player");
+        builder.RegisterEntryPoint<PlayerSpriteFlipper>();
+        
+        // Player Sprite Animation
+        var playerAnimator = player.GetComponent<Animator>();
+        builder.RegisterInstance(playerAnimator).Keyed("Player");
+        builder.RegisterEntryPoint<PlayerSpriteAnimator>();
         
         // Player position
         builder.RegisterInstance(player.transform).Keyed("Player");
