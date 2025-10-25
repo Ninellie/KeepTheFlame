@@ -14,12 +14,17 @@ using PlayerHealth;
 using PlayerMovement;
 using PlayerSpriteFlipping;
 using PlayerSpriteAnimation;
-using Spawn;
+using Spawning;
 using TileFloorGeneration;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using VContainer;
 using VContainer.Unity;
+
+public class Spark
+{
+    
+}
 
 public class GameLifetimeScope : LifetimeScope
 {
@@ -34,6 +39,7 @@ public class GameLifetimeScope : LifetimeScope
     
     [SerializeField] private SpawnerConfig fireflySpawnerConfig;
     [SerializeField] private SpawnerConfig firePitSpawnerConfig;
+    [SerializeField] private SpawnerConfig sparkSpawnerConfig;
     
     [Header("Prefab")]
     [SerializeField] private GameObject playerPrefab;
@@ -86,11 +92,17 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterInstance(Camera.main);
         if (Camera.main != null) Camera.main.transform.SetParent(player.transform);
         
+        // Spark Spawn
+        builder.RegisterInstance(fireflySpawnerConfig).Keyed(nameof(Spark));
+        builder.RegisterEntryPoint<FireflySpawner>().Keyed(nameof(Spark));
+        builder.Register<FireflyPool>(Lifetime.Scoped).Keyed(nameof(Spark));
+        builder.Register<SpawnTimer>(Lifetime.Scoped).Keyed(nameof(Spark));
+        
         // Firefly Spawn
         builder.RegisterInstance(fireflySpawnerConfig).Keyed(nameof(Firefly));
-        builder.RegisterEntryPoint<FireflySpawner>();
-        builder.Register<FireflyPool>(Lifetime.Singleton);
-        builder.Register<SpawnTimer>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<FireflySpawner>().Keyed(nameof(Firefly));
+        builder.Register<FireflyPool>(Lifetime.Scoped).Keyed(nameof(Firefly));
+        builder.Register<SpawnTimer>(Lifetime.Scoped).Keyed(nameof(Firefly));
         builder.Register<IDebugGUIWindow, DebugFireflySpawnerGUI>(Lifetime.Singleton);
         
         // Firefly Picking

@@ -1,5 +1,6 @@
 ﻿using DebugGUI;
 using UnityEngine;
+using VContainer;
 
 namespace FirefliesSpawn
 {
@@ -11,7 +12,9 @@ namespace FirefliesSpawn
         private readonly FireflyPool _fireflyPool;
         private readonly SpawnTimer _spawnTimer;
         
-        public DebugFireflySpawnerGUI(FireflyPool fireflyPool, SpawnTimer spawnTimer)
+        public DebugFireflySpawnerGUI(
+            [Key(nameof(Firefly))] FireflyPool fireflyPool,
+            [Key(nameof(Firefly))] SpawnTimer spawnTimer)
         {
             _fireflyPool = fireflyPool;
             _spawnTimer = spawnTimer;

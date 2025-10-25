@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FirefliesSpawn;
-using Spawn;
+using Spawning;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
 namespace FirePitSpawn
 {
-    public class FirePitPool : IStartable
+    public class FirePitPool : IStartable, IEntityPool
     {
         public int Size => _active.Count + _inactive.Count;
         public int Active => _active.Count;
@@ -50,7 +50,7 @@ namespace FirePitSpawn
             }
         }
         
-        public FirePit GetFromPool()
+        public IPooledEntity GetFromPool()
         {
             FirePit firefly;
             

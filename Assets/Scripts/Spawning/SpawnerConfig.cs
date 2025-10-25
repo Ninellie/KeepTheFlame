@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Spawn
+namespace Spawning
 {
     [CreateAssetMenu(menuName = "Config/Spawner")]
     public class SpawnerConfig : ScriptableObject

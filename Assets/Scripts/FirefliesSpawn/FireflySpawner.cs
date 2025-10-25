@@ -1,27 +1,38 @@
-﻿using Spawn;
+﻿using Spawning;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
 namespace FirefliesSpawn
 {
+
+    
+    
+    
     public class FireflySpawner : IFixedTickable, IStartable
     {
         private readonly FireflyPool _fireflyPool;
-        private readonly SpawnerConfig _spawnerConfig;
+        private readonly SpawnerConfig _config;
         private readonly Transform _playerTransform;
         private readonly Camera _mainCamera;
         private readonly SpawnTimer _timer;
 
-        public FireflySpawner(FireflyPool fireflyPool,[Key(nameof(Firefly))] SpawnerConfig spawnerConfig, 
+        public FireflySpawner(
+            [Key(nameof(Firefly))] FireflyPool fireflyPool,
+            [Key(nameof(Firefly))] SpawnerConfig config,
             [Key("Player")] Transform playerTransform,
-            Camera mainCamera, SpawnTimer timer)
+            Camera mainCamera)
         {
             _fireflyPool = fireflyPool;
-            _spawnerConfig = spawnerConfig;
+            _config = config;
             _playerTransform = playerTransform;
             _mainCamera = mainCamera;
-            _timer = timer;
+            _timer = new SpawnTimer();
+        }
+        
+        public void Start()
+        {
+            InitializeStartingFireflies();
         }
         
         public void FixedTick()
@@ -37,11 +48,6 @@ namespace FirefliesSpawn
             SpawnFirefly();
         }
         
-        public void Start()
-        {
-            InitializeStartingFireflies();
-        }
-        
         private void InitializeStartingFireflies()
         {
             // Спавним светлячков внутри видимой области камеры
@@ -50,7 +56,7 @@ namespace FirefliesSpawn
             var cameraRadius = Mathf.Sqrt(cameraWidth * cameraWidth + cameraHeight * cameraHeight) * 0.5f;
             
             // Минимальное расстояние от игрока (паддинг)
-            var minRadius = _spawnerConfig.spawnCircleOffset;
+            var minRadius = _config.spawnCircleOffset;
             
             // Спавним пока есть место в пуле и не заполнили экран
             var attempts = 0;
@@ -68,7 +74,7 @@ namespace FirefliesSpawn
                 var y = _playerTransform.position.y + radius * Mathf.Sin(angle);
                 var point = new Vector2(x, y);
                 
-                var sector = GetSector(point);
+                var sector = SpawnerTools.GetSector(point, _config);
                 
                 // Проверяем заполненность сектора
                 if (_fireflyPool.IsSectorFull(sector))
@@ -81,16 +87,15 @@ namespace FirefliesSpawn
                     
                 // Устанавливаем сектор, позицию и случайный поворот
                 firefly.Sector = sector;
-                firefly.transform.position = point;
-                firefly.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0f, 360f));
-                firefly.gameObject.SetActive(true);
+                firefly.Transform.position = point;
+                firefly.GameObject.SetActive(true);
             }
         }
 
         private float GetSpawnInterval()
         {
-            var interval = _spawnerConfig.interval;
-            var balanceFactor = _spawnerConfig.balanceFactor;
+            var interval = _config.interval;
+            var balanceFactor = _config.balanceFactor;
             var poolSizeScale = GetPoolSizeIntervalScale();
             
             return interval * poolSizeScale * balanceFactor;
@@ -114,35 +119,11 @@ namespace FirefliesSpawn
 
             return poolSizeScale;
         }
-
-        private Vector2 GetRandomPoint()
-        {
-            // Получаем размеры камеры
-            var cameraHeight = _mainCamera.orthographicSize * 2f;
-            var cameraWidth = cameraHeight * _mainCamera.aspect;
-            
-            // Радиус окружности, описанной вокруг прямоугольника камеры
-            var cameraRadius = Mathf.Sqrt(cameraWidth * cameraWidth + cameraHeight * cameraHeight) * 0.5f;
-            
-            // Внутренний и внешний радиусы для спавна
-            var innerRadius = cameraRadius + _spawnerConfig.spawnCircleOffset;
-            var outerRadius = innerRadius + _spawnerConfig.spawnCircleRadius;
-            
-            // Генерируем случайную точку в кольце
-            var angle = Random.Range(0f, 2f * Mathf.PI);
-            var radius = Mathf.Sqrt(Random.Range(innerRadius * innerRadius, outerRadius * outerRadius));
-            
-            // Конвертируем в декартовы координаты относительно игрока
-            var x = _playerTransform.position.x + radius * Mathf.Cos(angle);
-            var y = _playerTransform.position.y + radius * Mathf.Sin(angle);
-            
-            return new Vector2(x, y);
-        }
-
+        
         private void SpawnFirefly()
         {
-            var point = GetRandomPoint();
-            var sector = GetSector(point);
+            var point = SpawnerTools.GetRandomPoint(_mainCamera, _playerTransform, _config);
+            var sector = SpawnerTools.GetSector(point, _config);
             
             // Проверяем заполненность сектора
             if (_fireflyPool.IsSectorFull(sector))
@@ -155,16 +136,8 @@ namespace FirefliesSpawn
                 
             // Устанавливаем сектор, позицию и случайный поворот
             firefly.Sector = sector;
-            firefly.transform.position = point;
-            firefly.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0f, 360f));
-            firefly.gameObject.SetActive(true);
-        }
-
-        private Vector2Int GetSector(Vector2 position)
-        {
-            var x = Mathf.FloorToInt(position.x / _spawnerConfig.sectorSize);
-            var y = Mathf.FloorToInt(position.y / _spawnerConfig.sectorSize);
-            return new Vector2Int(x, y); 
+            firefly.Transform.position = point;
+            firefly.GameObject.SetActive(true);
         }
     }
  }

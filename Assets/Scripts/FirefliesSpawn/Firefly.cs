@@ -1,11 +1,15 @@
 ﻿using FirefliesPicking;
+using Spawning;
 using UnityEngine;
 
 namespace FirefliesSpawn
 {
-    public class Firefly : MonoBehaviour
+    public class Firefly : MonoBehaviour, IPooledEntity
     {
         public Vector2Int Sector { get; set; }
+        public Transform Transform => transform;
+        public GameObject GameObject => gameObject;
+        
         public float FuelAmount { get; private set; }
         
         private FireflyPool _pool;

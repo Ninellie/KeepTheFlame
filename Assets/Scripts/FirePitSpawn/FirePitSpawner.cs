@@ -1,27 +1,28 @@
-﻿using FirefliesSpawn;
-using Spawn;
+﻿using Spawning;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
 namespace FirePitSpawn
 {
+    
     public class FirePitSpawner : IFixedTickable, IStartable
     {
         public float TimeToNextSpawn { get; private set; }
         
-        private readonly FirePitPool _firePitPool;
-        private readonly SpawnerConfig _spawnerConfig;
+        private readonly FirePitPool _pool;
+        
+        private readonly SpawnerConfig _config;
         private readonly Transform _playerTransform;
         private readonly Camera _mainCamera;
 
-        public FirePitSpawner(FirePitPool firePitPool,
-            [Key(nameof(FirePit))] SpawnerConfig spawnerConfig, 
+        public FirePitSpawner(FirePitPool pool,
+            [Key(nameof(FirePit))] SpawnerConfig config, 
             [Key("Player")] Transform playerTransform,
             Camera mainCamera)
         {
-            _firePitPool = firePitPool;
-            _spawnerConfig = spawnerConfig;
+            _pool = pool;
+            _config = config;
             _playerTransform = playerTransform;
             _mainCamera = mainCamera;
         }
@@ -34,11 +35,9 @@ namespace FirePitSpawn
         public void FixedTick()
         {
             TimeToNextSpawn -= Time.deltaTime;
-            
             if (TimeToNextSpawn > 0) return;
             
-            var spawnInterval = GetSpawnInterval(_spawnerConfig);
-            
+            var spawnInterval = SpawnerTools.GetSpawnInterval(_config, _pool.Size, _pool.Active);
             TimeToNextSpawn = spawnInterval;
             
             SpawnFirePit();
@@ -52,13 +51,13 @@ namespace FirePitSpawn
             var cameraRadius = Mathf.Sqrt(cameraWidth * cameraWidth + cameraHeight * cameraHeight) * 0.5f;
             
             // Минимальное расстояние от игрока (паддинг)
-            var minRadius = _spawnerConfig.spawnCircleOffset;
+            var minRadius = _config.spawnCircleOffset;
             
             // Спавним пока есть место в пуле и не заполнили экран
             var attempts = 0;
-            var maxAttempts = _firePitPool.Size * 2; // избегаем бесконечного цикла
+            var maxAttempts = _pool.Size * 2; // избегаем бесконечного цикла
             
-            while (_firePitPool.Active < _firePitPool.Size / 2 && attempts < maxAttempts)
+            while (_pool.Active < _pool.Size / 2 && attempts < maxAttempts)
             {
                 attempts++;
                 
@@ -70,77 +69,42 @@ namespace FirePitSpawn
                 var y = _playerTransform.position.y + radius * Mathf.Sin(angle);
                 var point = new Vector2(x, y);
                 
-                var sector = GetSector(point);
+                var sector = SpawnerTools.GetSector(point, _config);
                 
                 // Проверяем заполненность сектора
-                if (_firePitPool.IsSectorFull(sector))
+                if (_pool.IsSectorFull(sector))
                     continue;
                     
                 // Получаем объект из пула
-                var firePit = _firePitPool.GetFromPool();
+                var firePit = _pool.GetFromPool();
                 if (firePit == null)
                     break;
                     
                 // Устанавливаем сектор и позицию
                 firePit.Sector = sector;
-                firePit.transform.position = point;
-                firePit.gameObject.SetActive(true);
+                firePit.Transform.position = point;
+                firePit.GameObject.SetActive(true);
             }
-        }
-
-        private float GetSpawnInterval(SpawnerConfig config)
-        {
-            var interval = config.interval;
-            var balanceFactor = config.balanceFactor;
-            var poolSizeScale = GetPoolSizeIntervalScale();
-            
-            return interval * poolSizeScale * balanceFactor;
-        }
-
-        private float GetPoolSizeIntervalScale()
-        {
-            float activeFireflies = _firePitPool.Active;
-            float poolSize = _firePitPool.Size;
-
-            float poolSizeScale;
-            
-            if (poolSize == 0)
-            {
-                poolSizeScale = 1f;
-            }
-            else
-            {
-                poolSizeScale = activeFireflies / poolSize;
-            }
-
-            return poolSizeScale;
         }
         
         private void SpawnFirePit()
         {
-            var point = SpawnTools.GetRandomPoint(_spawnerConfig, _mainCamera, _playerTransform);
-            var sector = GetSector(point);
+            var point = SpawnerTools.GetRandomPoint(_mainCamera, _playerTransform, _config);
+            var sector = SpawnerTools.GetSector(point, _config);
             
             // Проверяем заполненность сектора
-            if (_firePitPool.IsSectorFull(sector))
+            if (_pool.IsSectorFull(sector))
                 return;
                 
             // Получаем костёр из пула
-            var firePit = _firePitPool.GetFromPool();
+            var firePit = _pool.GetFromPool();
             if (firePit == null)
                 return;
                 
             // Устанавливаем сектор и позицию
             firePit.Sector = sector;
-            firePit.transform.position = point;
-            firePit.gameObject.SetActive(true);
-        }
-
-        private Vector2Int GetSector(Vector2 position)
-        {
-            var x = Mathf.FloorToInt(position.x / _spawnerConfig.sectorSize);
-            var y = Mathf.FloorToInt(position.y / _spawnerConfig.sectorSize);
-            return new Vector2Int(x, y); 
+            firePit.Transform.position = point;
+            firePit.GameObject.SetActive(true);
         }
     }
 }

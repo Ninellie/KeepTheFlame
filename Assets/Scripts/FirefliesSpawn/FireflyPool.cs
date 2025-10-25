@@ -2,13 +2,13 @@
 using System.Linq;
 using FirefliesPicking;
 using FireflyMovement;
-using Spawn;
+using Spawning;
 using UnityEngine;
 using VContainer;
 
 namespace FirefliesSpawn
 {
-    public class FireflyPool
+    public class FireflyPool : IEntityPool
     {
         private const float FuelAmount = 1;
         public int Size => _activeFireflies.Count + _inactiveFireflies.Count;
@@ -55,7 +55,7 @@ namespace FirefliesSpawn
             }
         }
         
-        public Firefly GetFromPool()
+        public IPooledEntity GetFromPool()
         {
             Firefly firefly;
             
@@ -77,6 +77,7 @@ namespace FirefliesSpawn
             
             _activeFireflies.Add(firefly);
             _fireflyMover.RegisterFirefly(firefly);
+            firefly.Transform.rotation = Quaternion.Euler(0, 0, Random.Range(0f, 360f));
             
             return firefly;
         }
