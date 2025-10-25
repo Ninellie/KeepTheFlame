@@ -1,6 +1,5 @@
 ﻿using FirefliesPicking;
 using UnityEngine;
-using VContainer;
 
 namespace FirefliesSpawn
 {

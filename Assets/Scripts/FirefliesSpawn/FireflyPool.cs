@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FirefliesPicking;
+using FireflyMovement;
 using Spawn;
 using UnityEngine;
 using VContainer;
@@ -19,12 +20,15 @@ namespace FirefliesSpawn
         private readonly Transform _playerTransform;
         private readonly SpawnerConfig _config;
         private readonly FireflyPicker _picker;
+        private readonly FireflyMover _fireflyMover;
         
-        public FireflyPool([Key(nameof(Firefly))] SpawnerConfig config, [Key("Player")] Transform playerTransform, FireflyPicker picker)
+        public FireflyPool([Key(nameof(Firefly))] SpawnerConfig config, 
+        [Key("Player")] Transform playerTransform, FireflyPicker picker, FireflyMover fireflyMover)
         {
             _config = config;
             _playerTransform = playerTransform;
             _picker = picker;
+            _fireflyMover = fireflyMover;
 
             Init();
         }
@@ -72,6 +76,7 @@ namespace FirefliesSpawn
             }
             
             _activeFireflies.Add(firefly);
+            _fireflyMover.RegisterFirefly(firefly);
             
             return firefly;
         }
@@ -85,6 +90,7 @@ namespace FirefliesSpawn
         public void ReturnToPool(Firefly firefly)
         {
             _activeFireflies.Remove(firefly);
+            _fireflyMover.UnregisterFirefly(firefly);
             firefly.gameObject.SetActive(false);
             _inactiveFireflies.Add(firefly);
         }
@@ -112,20 +118,15 @@ namespace FirefliesSpawn
         
         private void Cleanup()
         {
+            // Сначала возвращаем всех активных светлячков в пул
+            ReturnAllToPool();
+            
+            // Теперь уничтожаем всех неактивных светлячков
             if (_inactiveFireflies != null)
             {
                 foreach (var firefly in _inactiveFireflies.ToList())
                 {
                     _inactiveFireflies.Remove(firefly);
-                    Object.Destroy(firefly.gameObject);
-                }
-            }
-
-            if (_activeFireflies != null)
-            {
-                foreach (var firefly in _activeFireflies.ToList())
-                {
-                    _activeFireflies.Remove(firefly);
                     Object.Destroy(firefly.gameObject);
                 }
             }

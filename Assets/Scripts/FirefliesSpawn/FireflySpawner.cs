@@ -79,9 +79,10 @@ namespace FirefliesSpawn
                 if (firefly == null)
                     break;
                     
-                // Устанавливаем сектор и позицию
+                // Устанавливаем сектор, позицию и случайный поворот
                 firefly.Sector = sector;
                 firefly.transform.position = point;
+                firefly.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0f, 360f));
                 firefly.gameObject.SetActive(true);
             }
         }
@@ -152,9 +153,10 @@ namespace FirefliesSpawn
             if (firefly == null)
                 return;
                 
-            // Устанавливаем сектор и позицию
+            // Устанавливаем сектор, позицию и случайный поворот
             firefly.Sector = sector;
             firefly.transform.position = point;
+            firefly.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0f, 360f));
             firefly.gameObject.SetActive(true);
         }
 
