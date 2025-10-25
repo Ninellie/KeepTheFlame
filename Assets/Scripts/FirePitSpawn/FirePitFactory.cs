@@ -6,6 +6,9 @@ using VContainer;
 
 namespace FirePitSpawn
 {
+    /// <summary>
+    /// Занимается исключительно созданием объектов FirePit и их начальной инициализацией
+    /// </summary>
     public class FirePitFactory
     {
         private readonly GameObject _prefab;
@@ -25,7 +28,8 @@ namespace FirePitSpawn
         }
         
         /// <summary>
-        /// Создаёт инстанс объекта в текущей сцене, внедряет все нужные зависимости и возвращает готовый объект.
+        /// Создаёт инстанс объекта в текущей сцене, внедряет все нужные зависимости
+        /// и возвращает готовый выключенный объект.
         /// </summary>
         /// <returns></returns>
         public FirePit CreateInstance()
@@ -33,9 +37,8 @@ namespace FirePitSpawn
             var go = Object.Instantiate(_prefab);
             var firePit = go.GetComponent<FirePit>();
             firePit.InjectDependencies(_darknessPower, _fuelTank);
-            
+            firePit.gameObject.SetActive(false);
             go.GetComponent<Interactable>().InjectDependencies(_currentInteractableHolder);
-            go.gameObject.SetActive(false);
             return firePit;
         }
     }

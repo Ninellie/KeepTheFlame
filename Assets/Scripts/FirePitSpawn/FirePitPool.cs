@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using FirefliesSpawn;
 using Spawning;
 using UnityEngine;
 using VContainer;
@@ -20,8 +19,8 @@ namespace FirePitSpawn
         private readonly Transform _playerTransform;
         private readonly FirePitFactory _factory;
         
-        
-        public FirePitPool([Key(nameof(FirePit))] SpawnerConfig config,
+        public FirePitPool(
+            [Key(nameof(FirePit))] SpawnerConfig config,
             [Key("Player")] Transform playerTransform, 
             FirePitFactory factory)
         {
@@ -32,6 +31,11 @@ namespace FirePitSpawn
 
         public void Start()
         {
+            Init();
+        }
+
+        public void Init()
+        {
             Cleanup();
             
             // Создаем пул костров
@@ -41,7 +45,7 @@ namespace FirePitSpawn
                 _inactive.Add(firePit);
             }
         }
-
+        
         public void ReturnAllToPool()
         {
             foreach (var activeFirefly in _active.ToList())

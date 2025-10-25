@@ -5,10 +5,11 @@ using FireflyMovement;
 using Spawning;
 using UnityEngine;
 using VContainer;
+using VContainer.Unity;
 
 namespace FirefliesSpawn
 {
-    public class FireflyPool : IEntityPool
+    public class FireflyPool : IStartable, IEntityPool
     {
         private const float FuelAmount = 1;
         public int Size => _activeFireflies.Count + _inactiveFireflies.Count;
@@ -22,14 +23,20 @@ namespace FirefliesSpawn
         private readonly FireflyPicker _picker;
         private readonly FireflyMover _fireflyMover;
         
-        public FireflyPool([Key(nameof(Firefly))] SpawnerConfig config, 
-        [Key("Player")] Transform playerTransform, FireflyPicker picker, FireflyMover fireflyMover)
+        public FireflyPool(
+            [Key(nameof(Firefly))] SpawnerConfig config, 
+            [Key("Player")] Transform playerTransform,
+            FireflyPicker picker,
+            FireflyMover fireflyMover)
         {
             _config = config;
             _playerTransform = playerTransform;
             _picker = picker;
             _fireflyMover = fireflyMover;
-
+        }
+        
+        public void Start()
+        {
             Init();
         }
 
@@ -46,7 +53,7 @@ namespace FirefliesSpawn
                 _inactiveFireflies.Add(firefly);
             }
         }
-
+        
         public void ReturnAllToPool()
         {
             foreach (var activeFirefly in _activeFireflies.ToList())

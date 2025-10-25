@@ -1,4 +1,4 @@
-﻿namespace FirefliesSpawn
+﻿namespace Spawning
 {
     public class SpawnTimer
     {
