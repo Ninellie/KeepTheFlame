@@ -21,11 +21,6 @@ using UnityEngine.Tilemaps;
 using VContainer;
 using VContainer.Unity;
 
-public class Spark
-{
-    
-}
-
 public class GameLifetimeScope : LifetimeScope
 {
     [Header("Config")]
@@ -115,7 +110,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.Register<LampFlamePower>(Lifetime.Singleton);
         builder.RegisterEntryPoint<LampFlamer>();
         builder.Register<IDebugGUIWindow, DebugLampFlameGUI>(Lifetime.Singleton);
-        var lampLight = player.GetComponent<LightFlicker>(); 
+        var lampLight = player.GetComponentInChildren<LightFlicker>(); 
         builder.RegisterComponent(lampLight);
         builder.RegisterEntryPoint<LampFlameViewController>();
         
