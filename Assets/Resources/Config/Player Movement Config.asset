@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Player Movement Config
   m_EditorClassIdentifier: 
   maxValue: 1
-  minValue: 1
-  startValue: 1
+  minValue: 0.5
+  startValue: 0.5

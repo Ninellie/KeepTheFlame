@@ -15,4 +15,4 @@ MonoBehaviour:
   maxValue: 10
   minValue: 0
   startValue: 5
-  decayPerSecond: 0.25
+  decayPerSecond: 0.1
