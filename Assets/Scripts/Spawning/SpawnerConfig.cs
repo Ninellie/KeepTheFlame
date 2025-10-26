@@ -10,17 +10,16 @@ namespace Spawning
         
         [Header("Sector")]
         public float sectorSize;
-        public int maxSpawnsPerSector;
+        [Tooltip("Максимальное количество сущностей которые могут появится в одном секторе")]
+        public int sectorCapacity;
         
-        [Header("Spawn delay")]
+        [Header("Spawn interval")]
         public float interval;
-        
-        // Множитель интервала спавна. Чем он больше,
-        // тем меньше значение активных светлячков по отношению
-        // к общему количеству нужно, чтобы интервал был неизменённым.
-        // Так как интервал будет тем больше, чем ближе значение активных светлячков к максимальному.
-        // И соответственно в обратную сторону.
-        public float balanceFactor; 
+
+        // Чем меньше активных сущностей, тем быстрее появляются новые,
+        // так как интервал спавна умножается на отношение активных сущностей к размеру пула.
+        public bool dynamicInterval;
+        public int spawnsPerInterval;
         
         [Header("Area")]
         public float spawnCircleOffset;

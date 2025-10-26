@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b21a91b7d8cb941a9457cc5d5b6243, type: 3}
   m_Name: Fire Pit Spawner Config
   m_EditorClassIdentifier: 
-  poolSize: 100
-  sectorSize: 5
-  maxSpawnsPerSector: 1
-  interval: 0.1
-  balanceFactor: 1
+  poolSize: 50
+  sectorSize: 10
+  sectorCapacity: 1
+  interval: 1
+  dynamicInterval: 0
+  spawnsPerInterval: 1
   spawnCircleOffset: 5
   spawnCircleRadius: 10
   prefab: {fileID: 6151673042314242652, guid: be08f97aacf9e6c4ba6cb089d7415ca1, type: 3}

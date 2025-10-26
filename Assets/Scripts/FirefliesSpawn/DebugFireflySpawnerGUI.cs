@@ -10,14 +10,12 @@ namespace FirefliesSpawn
         public Rect Rect { get; set; } = new Rect(20, 20, 240, 120);
         public string Name { get; set; } = "Firefly Spawner Debug";
         
-        private readonly IEntityPool _pool;
+        private readonly EntityPool _pool;
         private readonly SpawnTimer _timer;
         
-        public DebugFireflySpawnerGUI(
-            [Key(nameof(Firefly))] IEntityPool pool,
-            FireflySpawner spawner)
+        public DebugFireflySpawnerGUI(FireflySpawner spawner)
         {
-            _pool = pool;
+            _pool = spawner.Pool;
             _timer = spawner.Timer;
         }
 

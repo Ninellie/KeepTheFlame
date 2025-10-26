@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Firefly Spawner Config
   m_EditorClassIdentifier: 
   poolSize: 100
-  sectorSize: 1
-  maxSpawnsPerSector: 1
+  sectorSize: 4
+  sectorCapacity: 1
   interval: 1
-  balanceFactor: 1
+  dynamicInterval: 1
+  spawnsPerInterval: 1
   spawnCircleOffset: 5
   spawnCircleRadius: 10
   prefab: {fileID: 6151673042314242652, guid: b6760e6300e34274ca482c4131d66272, type: 3}

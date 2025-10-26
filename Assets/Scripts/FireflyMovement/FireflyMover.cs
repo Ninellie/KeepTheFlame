@@ -7,7 +7,7 @@ namespace FireflyMovement
 {
     public class FireflyMover : IStartable, IFixedTickable
     {
-        private readonly List<Transform> _fireflyTransforms = new List<Transform>();
+        private readonly List<Transform> _fireflyTransforms = new();
         private readonly FireflyMovementConfig _config;
         
         // Movement parameters

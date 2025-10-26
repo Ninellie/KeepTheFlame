@@ -1,22 +1,21 @@
 ﻿using Darkness;
 using Interacting;
 using LampFuel;
+using Spawning;
 using UnityEngine;
 using VContainer;
 
 namespace FirePitSpawn
 {
-    /// <summary>
-    /// Занимается исключительно созданием объектов FirePit и их начальной инициализацией
-    /// </summary>
-    public class FirePitFactory
+    public class FirePitFactory : IEntityFactory
     {
         private readonly GameObject _prefab;
         private readonly DarknessPower _darknessPower;
         private readonly LampFuelTank _fuelTank;
         private readonly CurrentInteractableHolder _currentInteractableHolder;
 
-        public FirePitFactory([Key(nameof(FirePit))] GameObject prefab,
+        public FirePitFactory(
+            [Key(nameof(FirePit))] GameObject prefab,
             DarknessPower darknessPower, 
             LampFuelTank fuelTank, 
             CurrentInteractableHolder currentInteractableHolder)
@@ -27,12 +26,7 @@ namespace FirePitSpawn
             _fuelTank = fuelTank;
         }
         
-        /// <summary>
-        /// Создаёт инстанс объекта в текущей сцене, внедряет все нужные зависимости
-        /// и возвращает готовый выключенный объект.
-        /// </summary>
-        /// <returns></returns>
-        public FirePit CreateInstance()
+        public IPooledEntity CreateInstance()
         {
             var go = Object.Instantiate(_prefab);
             var firePit = go.GetComponent<FirePit>();

@@ -43,6 +43,10 @@ namespace FirePitSpawn
             _darknessResistancePerSecond = config.darknessResistancePerSecond;
             _fuelCost = config.fuelCost;
         }
+        
+        public void SetPool(EntityPool pool)
+        {
+        }
 
         private void Awake()
         {

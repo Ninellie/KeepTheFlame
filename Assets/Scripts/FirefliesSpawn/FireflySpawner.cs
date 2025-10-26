@@ -8,10 +8,10 @@ namespace FirefliesSpawn
     {
         public FireflySpawner(
             [Key(nameof(Firefly))] SpawnerConfig config,
-            [Key(nameof(Firefly))] IEntityPool pool, 
+            FireflyFactory factory,
             [Key("Player")] Transform playerTransform,
             Camera mainCamera)
-            : base(config, pool, playerTransform, mainCamera)
+            : base(config, factory, playerTransform, mainCamera)
         {
         }
     }

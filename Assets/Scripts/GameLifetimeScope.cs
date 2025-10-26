@@ -39,7 +39,7 @@ public class GameLifetimeScope : LifetimeScope
     
     [SerializeField] private SpawnerConfig fireflySpawnerConfig;
     [SerializeField] private SpawnerConfig firePitSpawnerConfig;
-    [SerializeField] private SpawnerConfig sparkSpawnerConfig;
+    [SerializeField] private SpawnerConfig lesserFireflySpawnerConfig;
     
     [Header("Prefab")]
     [SerializeField] private GameObject playerPrefab;
@@ -86,15 +86,13 @@ public class GameLifetimeScope : LifetimeScope
         if (Camera.main != null) Camera.main.transform.SetParent(player.transform);
         
         // Fire Pit Spawn
-        RegisterFirePitSpawner(builder);
-
-        // Spark Spawn
-        // builder.RegisterInstance(fireflySpawnerConfig).Keyed(nameof(Spark));
-        // builder.RegisterEntryPoint<SparkSpawner>();
-        // builder.Register<SparkPool>(Lifetime.Singleton).Keyed(nameof(Spark));
+        RegisterFirePitSpawner(builder, firePitSpawnerConfig);
+        
+        // Lesser firefly Spawn
+        RegisterLesserFireflySpawner(builder, lesserFireflySpawnerConfig);
         
         // Firefly Spawn
-        RegisterFireflySpawner(builder);
+        RegisterFireflySpawner(builder, fireflySpawnerConfig);
 
         // Firefly Picking
         builder.Register<FireflyPicker>(Lifetime.Singleton);
@@ -143,20 +141,29 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<FloorGenerator>();
     }
 
-    private void RegisterFireflySpawner(IContainerBuilder builder)
+    private void RegisterLesserFireflySpawner(IContainerBuilder builder, SpawnerConfig config)
     {
-        builder.RegisterInstance(fireflySpawnerConfig).Keyed(nameof(Firefly));
-        builder.RegisterEntryPoint<FireflyPool>().As(typeof(IEntityPool)).Keyed(nameof(Firefly));
+        builder.RegisterInstance(config).Keyed(nameof(LesserFirefly));
+        builder.RegisterInstance(config.prefab).Keyed(nameof(LesserFirefly));
+        builder.Register<LesserFireflyFactory>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<LesserFireflySpawner>().AsSelf();
+    }
+
+    private void RegisterFireflySpawner(IContainerBuilder builder, SpawnerConfig config)
+    {
+        builder.RegisterInstance(config).Keyed(nameof(Firefly));
+        builder.RegisterInstance(config.prefab).Keyed(nameof(Firefly));
+        builder.Register<FireflyFactory>(Lifetime.Singleton);
         builder.RegisterEntryPoint<FireflySpawner>().AsSelf();
+        
         builder.Register<IDebugGUIWindow, DebugFireflySpawnerGUI>(Lifetime.Singleton);
     }
 
-    private void RegisterFirePitSpawner(IContainerBuilder builder)
+    private void RegisterFirePitSpawner(IContainerBuilder builder, SpawnerConfig config)
     {
-        builder.RegisterInstance(firePitSpawnerConfig).Keyed(nameof(FirePit));
-        builder.RegisterInstance(firePitSpawnerConfig.prefab).Keyed(nameof(FirePit));
+        builder.RegisterInstance(config).Keyed(nameof(FirePit));
+        builder.RegisterInstance(config.prefab).Keyed(nameof(FirePit));
         builder.Register<FirePitFactory>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<FirePitPool>().As(typeof(IEntityPool)).Keyed(nameof(FirePit));
-        builder.RegisterEntryPoint<FirePitSpawner>();
+        builder.RegisterEntryPoint<FirePitSpawner>().AsSelf();
     }
 }

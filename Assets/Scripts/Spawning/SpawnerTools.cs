@@ -51,10 +51,9 @@ namespace Spawning
         public static float GetSpawnInterval(SpawnerConfig config, int size, int active)
         {
             var interval = config.interval;
-            var balanceFactor = config.balanceFactor;
+            if (!config.dynamicInterval) return interval;
             var poolSizeIntervalScale = size == 0 ? 1f : (float)active / size;
-            
-            return interval * poolSizeIntervalScale * balanceFactor;
+            return interval * poolSizeIntervalScale;
         }
     } 
 }

@@ -1,43 +1,44 @@
-﻿using FirefliesSpawn;
-using UnityEngine;
+﻿using UnityEngine;
 using VContainer.Unity;
 
 namespace Spawning
 {
     public class Spawner : IStartable, IFixedTickable
     {
-        public SpawnTimer Timer => _timer;
-        
+        public SpawnTimer Timer { get; }
+        public EntityPool Pool { get; }
+
         private readonly SpawnerConfig _config;
         private readonly Transform _playerTransform;
         private readonly Camera _mainCamera;
-        private readonly IEntityPool _pool;
-        
-        private readonly SpawnTimer _timer;
 
-        public Spawner(SpawnerConfig config, IEntityPool pool, Transform playerTransform, Camera mainCamera)
+        public Spawner(SpawnerConfig config, IEntityFactory factory, Transform playerTransform, Camera mainCamera)
         {
             _config = config;
-            _pool = pool;
+            Pool = new EntityPool(config, playerTransform, factory);
             _playerTransform = playerTransform;
             _mainCamera = mainCamera;
-            _timer = new SpawnTimer();
+            Timer = new SpawnTimer();
         }
 
         public void Start()
         {
+            Pool.Init();
             InitializeStartingEntities();
         }
 
         public void FixedTick()
         {
-            _timer.Tick(Time.deltaTime);
-            if (_timer.TimeToNextSpawn > 0) return;
+            Timer.Tick(Time.deltaTime);
+            if (Timer.TimeToNextSpawn > 0) return;
             
-            var spawnInterval = SpawnerTools.GetSpawnInterval(_config, _pool.Size, _pool.Active);
-            _timer.Set(spawnInterval);
-            
-            Spawn();
+            var spawnInterval = SpawnerTools.GetSpawnInterval(_config, Pool.Size, Pool.Active);
+            Timer.Set(spawnInterval);
+
+            for (int i = 0; i < _config.spawnsPerInterval; i++)
+            {
+                Spawn();
+            }
         }
 
         private void Spawn()
@@ -46,11 +47,11 @@ namespace Spawning
             var sector = SpawnerTools.GetSector(point, _config);
             
             // Проверяем заполненность сектора
-            if (_pool.IsSectorFull(sector))
+            if (Pool.IsSectorFull(sector))
                 return;
                 
             // Получаем сущность из пула
-            var entity = _pool.GetFromPool();
+            var entity = Pool.GetFromPool();
             if (entity == null)
                 return;
                 
@@ -72,9 +73,9 @@ namespace Spawning
             
             // Спавним пока есть место в пуле и не заполнили экран
             var attempts = 0;
-            var maxAttempts = _pool.Size * 2; // избегаем бесконечного цикла
+            var maxAttempts = Pool.Size * 2; // избегаем бесконечного цикла
             
-            while (_pool.Active < _pool.Size / 2 && attempts < maxAttempts)
+            while (Pool.Active < Pool.Size / 2 && attempts < maxAttempts)
             {
                 attempts++;
                 
@@ -89,11 +90,11 @@ namespace Spawning
                 var sector = SpawnerTools.GetSector(point, _config);
                 
                 // Проверяем заполненность сектора
-                if (_pool.IsSectorFull(sector))
+                if (Pool.IsSectorFull(sector))
                     continue;
                     
                 // Получаем объект из пула
-                var entity = _pool.GetFromPool();
+                var entity = Pool.GetFromPool();
                 if (entity == null)
                     break;
                     

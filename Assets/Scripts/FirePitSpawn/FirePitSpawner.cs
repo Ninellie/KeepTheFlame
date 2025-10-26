@@ -8,10 +8,10 @@ namespace FirePitSpawn
     {
         public FirePitSpawner(
             [Key(nameof(FirePit))] SpawnerConfig config,
-            [Key(nameof(FirePit))] IEntityPool pool, 
+            FirePitFactory factory,
             [Key("Player")] Transform playerTransform,
             Camera mainCamera)
-            : base(config, pool, playerTransform, mainCamera)
+            : base(config, factory, playerTransform, mainCamera)
         {
         }
     }
