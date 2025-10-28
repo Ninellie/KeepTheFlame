@@ -8,6 +8,7 @@ using FireflyMovement;
 using FirePitSpawn;
 using Interacting;
 using LampFlame;
+using LampFlameUi;
 using LampFuel;
 using LightAnimation;
 using PlayerHealth;
@@ -44,6 +45,9 @@ public class GameLifetimeScope : LifetimeScope
     
     protected override void Configure(IContainerBuilder builder)
     {
+        var flameUiView = FindFirstObjectByType<LampFlameUiView>();
+        builder.RegisterComponent(flameUiView);
+        
         // Debug
         var levelDebugGUIGameObject = new GameObject("[LevelDebugGUI]");
         var debugGUIPositioner = levelDebugGUIGameObject.AddComponent<DebugGUIController>();
