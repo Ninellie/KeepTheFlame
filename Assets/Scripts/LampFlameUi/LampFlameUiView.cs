@@ -1,5 +1,4 @@
-﻿using System;
-using LampFlame;
+﻿using LampFlame;
 using UnityEngine;
 using VContainer;
 
@@ -7,12 +6,11 @@ namespace LampFlameUi
 {
     public class LampFlameUiView : MonoBehaviour
     {
-        [SerializeField] private float _maxStartSpeed;
-        [SerializeField] private float _maxStartSize;
-        [SerializeField] private float _maxRateOverTime;
+        [SerializeField] private float maxStartSpeed = 7;
+        [SerializeField] private float maxStartSize = 5;
+        [SerializeField] private float maxRateOverTime = 20;
         
         private LampFlamePower _flame;
-        
         private ParticleSystem _particleSystem;
 
         private void Awake()
@@ -36,10 +34,10 @@ namespace LampFlameUi
         {
             var flamePowerPercent = (flamePower - _flame.Min) / (_flame.Max - _flame.Min);
             var main = _particleSystem.main;
-            main.startSpeedMultiplier = _maxStartSpeed * flamePowerPercent;
-            main.startSizeMultiplier = _maxStartSize * flamePowerPercent;
+            main.startSpeedMultiplier = maxStartSpeed * flamePowerPercent;
+            main.startSizeMultiplier = maxStartSize * flamePowerPercent;
             var emission = _particleSystem.emission;
-            emission.rateOverTimeMultiplier = _maxRateOverTime * flamePowerPercent;
+            emission.rateOverTimeMultiplier = maxRateOverTime * flamePowerPercent;
         }
     }
 }
