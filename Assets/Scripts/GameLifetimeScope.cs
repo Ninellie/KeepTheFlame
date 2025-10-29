@@ -1,10 +1,10 @@
 using Darkness;
 using DarknessDamage;
 using DebugGUI;
+using EntityMovement;
 using FirefliesFuelReplenish;
 using FirefliesPicking;
 using FirefliesSpawn;
-using FireflyMovement;
 using FirePitSpawn;
 using Interacting;
 using LampFlame;
@@ -31,7 +31,7 @@ public class GameLifetimeScope : LifetimeScope
     [SerializeField] private PlayerHealthConfig healthConfig;
     [SerializeField] private PlayerMovementConfig playerMovementConfig;
     [SerializeField] private DarknessDamageConfig darknessDamageConfig;
-    [SerializeField] private FireflyMovementConfig fireflyMovementConfig;
+    [SerializeField] private MovementConfig fireflyMovementConfig;
     
     [SerializeField] private SpawnerConfig fireflySpawnerConfig;
     [SerializeField] private SpawnerConfig firePitSpawnerConfig;
@@ -95,10 +95,6 @@ public class GameLifetimeScope : LifetimeScope
 
         // Firefly Picking
         builder.Register<FireflyPicker>(Lifetime.Singleton);
-        
-        // Firefly Movement
-        builder.RegisterInstance(fireflyMovementConfig);
-        builder.RegisterEntryPoint<FireflyMover>().AsSelf();
         
         // Lamp Fuel
         builder.RegisterInstance(lampFuelConfig);

@@ -15,8 +15,9 @@ GameObject:
   - component: {fileID: 935846869472585475}
   - component: {fileID: 849101027242116663}
   - component: {fileID: 1931817129544438343}
+  - component: {fileID: -61705385102484750}
   m_Layer: 0
-  m_Name: Spark
+  m_Name: Lesser Firefly
   m_TagString: Firefly
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -232,3 +233,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: c40b2259d65f394409db82523862500b, type: 2}
+--- !u!114 &-61705385102484750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6151673042314242652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4acd44582c51714db7179311412d9c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  config: {fileID: 11400000, guid: 9e4dea749c43ac6468415d90ac3d60fb, type: 2}
