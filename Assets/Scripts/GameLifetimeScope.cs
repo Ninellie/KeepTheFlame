@@ -45,9 +45,6 @@ public class GameLifetimeScope : LifetimeScope
     
     protected override void Configure(IContainerBuilder builder)
     {
-        var flameUiView = FindFirstObjectByType<LampFlameUiView>();
-        builder.RegisterComponent(flameUiView);
-        
         // Debug
         var levelDebugGUIGameObject = new GameObject("[LevelDebugGUI]");
         var debugGUIPositioner = levelDebugGUIGameObject.AddComponent<DebugGUIController>();
@@ -110,7 +107,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.Register<LampFlamePower>(Lifetime.Singleton);
         builder.RegisterEntryPoint<LampFlamer>();
         builder.Register<IDebugGUIWindow, DebugLampFlameGUI>(Lifetime.Singleton);
-        var lampLight = player.GetComponentInChildren<LightFlicker>(); 
+        var lampLight = player.GetComponentInChildren<LightTranslator>(); 
         builder.RegisterComponent(lampLight);
         builder.RegisterEntryPoint<LampFlameViewController>();
         
