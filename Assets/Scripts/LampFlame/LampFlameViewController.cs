@@ -5,18 +5,18 @@ namespace LampFlame
 {
     public class LampFlameViewController : ITickable
     {
-        private readonly LightFlicker _lampFlicker;
+        private readonly LightTranslator _lampTranslator;
         private readonly LampFlamePower _flame;
 
-        public LampFlameViewController(LightFlicker lampFlicker, LampFlamePower flame)
+        public LampFlameViewController(LightTranslator lampTranslator, LampFlamePower flame)
         {
-            _lampFlicker = lampFlicker;
+            _lampTranslator = lampTranslator;
             _flame = flame;
         }
         
         public void Tick()
         {
-            _lampFlicker.FlameValue = _flame.Value;
+            _lampTranslator.FlameValue = _flame.Value;
         }
     }
 }
