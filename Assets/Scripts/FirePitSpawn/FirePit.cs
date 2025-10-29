@@ -13,6 +13,7 @@ namespace FirePitSpawn
         [SerializeField] private FirePitConfig config;
         [SerializeField] private Light2D ember;
         [SerializeField] private Light2D fire;
+        [SerializeField] private float fireIntensity = 5;
         
         [ReadOnly] [SerializeField] private bool isBurned;
         [ReadOnly] [SerializeField] private bool isBurning;
@@ -24,30 +25,42 @@ namespace FirePitSpawn
         private DarknessPower _darknessPower;
         private LampFuelTank _fuelTank;
         private Interactable _interactable;
-        
-        private float _burningDuration;
-        private float _darknessResistancePerSecond;
-        private float _fuelCost;
 
         private float _burningTimeLeft;
 
-        public void InjectDependencies(DarknessPower darknessPower, LampFuelTank fuelTank)
+        private void FixedUpdate()
         {
-            _darknessPower = darknessPower;
-            _fuelTank = fuelTank;
+            if (!isBurning) return; // Выйти если не горит
+            if (isBurned) return; // Выйти если уже сгорел
+            
+            _burningTimeLeft -= Time.deltaTime;
+            _darknessPower.Decrease(config.darknessResistancePerSecond * Time.deltaTime);
+            var intensityScale = ParabolicNormalized(0, config.burningDuration, _burningTimeLeft);
+            fire.intensity = intensityScale * fireIntensity;
+            if (_burningTimeLeft > 0) return;
+            isBurned = true;
+            isBurning = false;
+            fire.gameObject.SetActive(false);
         }
         
-        public void Configure()
+        private void Burn()
         {
-            _burningDuration = config.burningDuration;
-            _darknessResistancePerSecond = config.darknessResistancePerSecond;
-            _fuelCost = config.fuelCost;
+            if (isBurning) return;
+            if (isBurned) return;
+            
+            // Если не хватает топлива
+            if (_fuelTank.Value < config.fuelCost) return;
+            
+            ember.gameObject.SetActive(false);
+            
+            fire.intensity = 0;
+            fire.gameObject.SetActive(true);
+            
+            _fuelTank.Subtract(config.fuelCost);
+            _burningTimeLeft = config.burningDuration;
+            isBurning = true;
         }
         
-        public void SetPool(EntityPool pool)
-        {
-        }
-
         private void Awake()
         {
             _interactable = GetComponent<Interactable>();
@@ -57,7 +70,6 @@ namespace FirePitSpawn
         {
             isBurning = false;
             isBurned = false;
-            Configure();
         }
 
         private void OnEnable()
@@ -69,37 +81,23 @@ namespace FirePitSpawn
         {
             _interactable.OnInteractAction -= Burn;
         }
-
-        private void Burn()
+        
+        private float ParabolicNormalized(float min, float max, float current)
         {
-            if (isBurning) return;
-            if (isBurned) return;
-            
-            // Если не хватает топлива
-            if (_fuelTank.Value < _fuelCost) return;
-            
-            ember.gameObject.SetActive(false);
-            fire.gameObject.SetActive(true);
-            
-            _fuelTank.Subtract(_fuelCost);
-            _burningTimeLeft = _burningDuration;
-            isBurning = true;
+            if (Mathf.Approximately(max, min))
+                return 0f; // защита от деления на 0
+
+            var t = Mathf.Clamp01((current - min) / (max - min));
+            return 4f * t * (1f - t);
         }
-
-        private void FixedUpdate()
+        public void InjectDependencies(DarknessPower darknessPower, LampFuelTank fuelTank)
         {
-            if (!isBurning) return; // Выйти если не горит
-            if (isBurned) return; // Выйти если уже сгорел
-            
-            var deltaTime = Time.deltaTime;
-            _burningTimeLeft -= deltaTime;
-            _darknessPower.Decrease(_darknessResistancePerSecond * deltaTime);
-
-            if (_burningTimeLeft > 0) return;
-            isBurned = true;
-            isBurning = false;
-            ember.gameObject.SetActive(true);
-            fire.gameObject.SetActive(false);
+            _darknessPower = darknessPower;
+            _fuelTank = fuelTank;
+        }
+        
+        public void SetPool(EntityPool pool)
+        {
         }
     }
 }
