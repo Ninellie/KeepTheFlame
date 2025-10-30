@@ -8,8 +8,8 @@ namespace FirefliesFuelReplenish
 {
     public class FireflyFuelReplenisher : IDisposable, IStartable
     {
-        private FireflyPicker _picker;
-        private LampFuelTank _fuelTank;
+        private readonly FireflyPicker _picker;
+        private readonly LampFuelTank _fuelTank;
 
         public FireflyFuelReplenisher(FireflyPicker picker, LampFuelTank fuelTank)
         {
