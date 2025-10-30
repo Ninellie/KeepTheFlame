@@ -8,7 +8,6 @@ using FirefliesSpawn;
 using FirePitSpawn;
 using Interacting;
 using LampFlame;
-using LampFlameUi;
 using LampFuel;
 using LightAnimation;
 using PlayerHealth;
