@@ -6,23 +6,24 @@ namespace FirefliesSpawn
 {
     public class Firefly : MonoBehaviour, IPooledEntity
     {
+        [SerializeField] private float fuelAmount;
+
+        public float FuelAmount
+        {
+            get => fuelAmount;
+            set => fuelAmount = value;
+        }
+        
         public Vector2Int Sector { get; set; }
         public Transform Transform => transform;
         public GameObject GameObject => gameObject;
-        public float FuelAmount { get; private set; }
-        
-        private FireflyPicker _picker;
-        private EntityPool _pool;
+        public EntityPool Pool { get; set; }
 
-        public void InjectDependencies(FireflyPicker picker, float fuelAmount)
+        private FireflyPicker _picker;
+
+        public void SetPicker(FireflyPicker picker)
         {
             _picker = picker;
-            FuelAmount = fuelAmount;
-        }
-    
-        public void SetPool(EntityPool pool)
-        {
-            _pool = pool;
         }
         
         private void OnTriggerEnter2D(Collider2D other)
@@ -30,7 +31,7 @@ namespace FirefliesSpawn
             if (!other.CompareTag("Player")) return;
             
             _picker.PickUp(this);
-            _pool.ReturnToPool(this);
+            Pool.ReturnToPool(this);
         }
 
         private void OnEnable()

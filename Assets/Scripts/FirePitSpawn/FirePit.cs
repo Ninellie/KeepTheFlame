@@ -21,6 +21,7 @@ namespace FirePitSpawn
         public Vector2Int Sector { get; set; }
         public Transform Transform => transform;
         public GameObject GameObject => gameObject;
+        public EntityPool Pool { get; set; }
 
         private DarknessPower _darknessPower;
         private LampFuelTank _fuelTank;
@@ -94,10 +95,6 @@ namespace FirePitSpawn
         {
             _darknessPower = darknessPower;
             _fuelTank = fuelTank;
-        }
-        
-        public void SetPool(EntityPool pool)
-        {
         }
     }
 }

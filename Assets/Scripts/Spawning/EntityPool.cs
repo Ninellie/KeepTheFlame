@@ -30,7 +30,7 @@ namespace Spawning
             for (var i = 0; i < _config.poolSize; i++)
             {
                 var entity = _factory.CreateInstance();
-                entity.SetPool(this);
+                entity.Pool = this;
                 _inactive.Add(entity);
             }
         }

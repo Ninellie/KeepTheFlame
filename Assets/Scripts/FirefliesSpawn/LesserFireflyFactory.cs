@@ -20,7 +20,8 @@ namespace FirefliesSpawn
         {
             var go = Object.Instantiate(_prefab);
             var firefly = go.GetComponent<Firefly>();
-            firefly.InjectDependencies(_picker,  0.1f);
+            firefly.SetPicker(_picker);
+            firefly.FuelAmount = 0.1f;
             firefly.gameObject.SetActive(false);
             return firefly;
         }
