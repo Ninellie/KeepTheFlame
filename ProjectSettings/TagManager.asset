@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Firefly
   - Fire Pit
+  - Tree
+  - PlayerFeet
   layers:
   - Default
   - TransparentFX
@@ -45,6 +47,12 @@ TagManager:
     locked: 0
   - name: Floor
     uniqueID: 371378663
+    locked: 0
+  - name: Entities
+    uniqueID: 1635814067
+    locked: 0
+  - name: Tree
+    uniqueID: 713869547
     locked: 0
   - name: FirePit
     uniqueID: 2942130373

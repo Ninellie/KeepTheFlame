@@ -83,7 +83,7 @@ ScriptedImporter:
     generateModelPrefab: 1
     generateAnimationClips: 1
     addSortingGroup: 1
-    addShadowCasters: 0
+    addShadowCasters: 1
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   asepriteImporterSettings:
@@ -98,11 +98,11 @@ ScriptedImporter:
     generateModelPrefab: 1
     generateAnimationClips: 1
     addSortingGroup: 1
-    addShadowCasters: 0
+    addShadowCasters: 1
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638929087572385782
+  platformSettingsDirtyTick: 638974871229895273
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -129,7 +129,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: Tree
     originalName: 
-    pivot: {x: 0.4864865, y: -0.042735044}
+    pivot: {x: 0.5, y: 0.15}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b21a91b7d8cb941a9457cc5d5b6243, type: 3}
   m_Name: Fire Pit Spawner Config
   m_EditorClassIdentifier: 
+  KeyName: FirePit
   poolSize: 50
   sectorSize: 10
   sectorCapacity: 1

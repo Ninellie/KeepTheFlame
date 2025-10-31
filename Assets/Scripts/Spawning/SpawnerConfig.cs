@@ -5,6 +5,8 @@ namespace Spawning
     [CreateAssetMenu(menuName = "Config/Spawner")]
     public class SpawnerConfig : ScriptableObject
     {
+        public string KeyName;
+        
         [Header("Pool")]
         public int poolSize;
         

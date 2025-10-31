@@ -336,9 +336,11 @@ MonoBehaviour:
   playerMovementConfig: {fileID: 11400000, guid: 13c878dc8d77b8f4ea1b462cc6ec425a, type: 2}
   darknessDamageConfig: {fileID: 11400000, guid: c76d20a434bac324a9b77acda6618ebf, type: 2}
   fireflyMovementConfig: {fileID: 11400000, guid: 841ab1234abe06a469170b3b3ab92b01, type: 2}
-  fireflySpawnerConfig: {fileID: 11400000, guid: c36362a65bcf31641a424bccab912d6d, type: 2}
-  firePitSpawnerConfig: {fileID: 11400000, guid: ebea054738d6dc04689078cb0c5d6dad, type: 2}
-  lesserFireflySpawnerConfig: {fileID: 11400000, guid: 6e939a7573e9c894cb469fe954914015, type: 2}
+  spawnerConfigList:
+  - {fileID: 11400000, guid: ebea054738d6dc04689078cb0c5d6dad, type: 2}
+  - {fileID: 11400000, guid: c36362a65bcf31641a424bccab912d6d, type: 2}
+  - {fileID: 11400000, guid: 6e939a7573e9c894cb469fe954914015, type: 2}
+  - {fileID: 11400000, guid: 4e1503d208bd9da469f36f9a78f6e7a3, type: 2}
   playerPrefab: {fileID: 8728212012612644347, guid: b7a08a0c0476e224dac121dc2a57f6f6, type: 3}
   floorTile: {fileID: 11400000, guid: a9a16b6171bc7614e97c288a327c055c, type: 2}
 --- !u!1 &685515599

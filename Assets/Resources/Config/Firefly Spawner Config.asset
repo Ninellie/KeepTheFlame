@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b21a91b7d8cb941a9457cc5d5b6243, type: 3}
   m_Name: Firefly Spawner Config
   m_EditorClassIdentifier: 
+  KeyName: Firefly
   poolSize: 100
-  sectorSize: 4
+  sectorSize: 6
   sectorCapacity: 1
   interval: 1
   dynamicInterval: 1

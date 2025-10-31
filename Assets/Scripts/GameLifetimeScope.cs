@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Darkness;
 using DarknessDamage;
 using DebugGUI;
@@ -14,6 +15,7 @@ using PlayerHealth;
 using PlayerMovement;
 using PlayerSpriteFlipping;
 using PlayerSpriteAnimation;
+using ScaryTreeSpawn;
 using Spawning;
 using TileFloorGeneration;
 using UnityEngine;
@@ -32,9 +34,7 @@ public class GameLifetimeScope : LifetimeScope
     [SerializeField] private DarknessDamageConfig darknessDamageConfig;
     [SerializeField] private MovementConfig fireflyMovementConfig;
     
-    [SerializeField] private SpawnerConfig fireflySpawnerConfig;
-    [SerializeField] private SpawnerConfig firePitSpawnerConfig;
-    [SerializeField] private SpawnerConfig lesserFireflySpawnerConfig;
+    [SerializeField] private List<SpawnerConfig> spawnerConfigList;
     
     [Header("Prefab")]
     [SerializeField] private GameObject playerPrefab;
@@ -80,14 +80,24 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterInstance(Camera.main);
         if (Camera.main != null) Camera.main.transform.SetParent(player.transform);
         
-        // Fire Pit Spawn
-        RegisterFirePitSpawner(builder, firePitSpawnerConfig);
+        RegisterSpawnerConfigs(builder);
         
-        // Lesser firefly Spawn
-        RegisterLesserFireflySpawner(builder, lesserFireflySpawnerConfig);
+        // Scary tree spawner
+        builder.Register<ScaryTreeFactory>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<ScaryTreeSpawner>().AsSelf();
         
-        // Firefly Spawn
-        RegisterFireflySpawner(builder, fireflySpawnerConfig);
+        // Fire Pit spawner
+        builder.Register<FirePitFactory>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<FirePitSpawner>().AsSelf();
+        
+        // Lesser Firefly spawner
+        builder.Register<LesserFireflyFactory>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<LesserFireflySpawner>().AsSelf();
+        
+        // Firefly spawner
+        builder.Register<FireflyFactory>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<FireflySpawner>().AsSelf();
+        builder.Register<IDebugGUIWindow, DebugFireflySpawnerGUI>(Lifetime.Singleton);
 
         // Firefly Picking
         builder.Register<FireflyPicker>(Lifetime.Singleton);
@@ -132,29 +142,12 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<FloorGenerator>();
     }
 
-    private void RegisterLesserFireflySpawner(IContainerBuilder builder, SpawnerConfig config)
+    private void RegisterSpawnerConfigs(IContainerBuilder builder)
     {
-        builder.RegisterInstance(config).Keyed(nameof(LesserFirefly));
-        builder.RegisterInstance(config.prefab).Keyed(nameof(LesserFirefly));
-        builder.Register<LesserFireflyFactory>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<LesserFireflySpawner>().AsSelf();
-    }
-
-    private void RegisterFireflySpawner(IContainerBuilder builder, SpawnerConfig config)
-    {
-        builder.RegisterInstance(config).Keyed(nameof(Firefly));
-        builder.RegisterInstance(config.prefab).Keyed(nameof(Firefly));
-        builder.Register<FireflyFactory>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<FireflySpawner>().AsSelf();
-        
-        builder.Register<IDebugGUIWindow, DebugFireflySpawnerGUI>(Lifetime.Singleton);
-    }
-
-    private void RegisterFirePitSpawner(IContainerBuilder builder, SpawnerConfig config)
-    {
-        builder.RegisterInstance(config).Keyed(nameof(FirePit));
-        builder.RegisterInstance(config.prefab).Keyed(nameof(FirePit));
-        builder.Register<FirePitFactory>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<FirePitSpawner>().AsSelf();
+        foreach (var config in spawnerConfigList)
+        {
+            builder.RegisterInstance(config).Keyed(config.KeyName);
+            builder.RegisterInstance(config.prefab).Keyed(config.KeyName);
+        }
     }
 }

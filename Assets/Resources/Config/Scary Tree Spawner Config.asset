@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 48b21a91b7d8cb941a9457cc5d5b6243, type: 3}
-  m_Name: Lesser Firefly Spawner Config
+  m_Name: Scary Tree Spawner Config
   m_EditorClassIdentifier: 
-  KeyName: LesserFirefly
+  KeyName: ScaryTree
   poolSize: 100
-  sectorSize: 1
-  sectorCapacity: 5
+  sectorSize: 3
+  sectorCapacity: 1
   interval: 0.3
   dynamicInterval: 1
   spawnsPerInterval: 15
   spawnCircleOffset: 5
   spawnCircleRadius: 10
-  prefab: {fileID: 6151673042314242652, guid: d1c4d5fe6ef86144a9f7e1b951233032, type: 3}
+  prefab: {fileID: 6151673042314242652, guid: 7b564016e4b8e7a438b1e4916667932e, type: 3}

@@ -113,7 +113,7 @@ MonoBehaviour:
   m_Intensity: 0
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000e7c92216c5585daf9b9f7aabe3e3ce08
+  m_ApplyToSortingLayers: 00000000e7c92216c5585daf9b9f7aabe3e3ce08ebc88c2a
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -157,6 +157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e6a4437a8109434999a67eef781fc1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fuelAmount: 0
 --- !u!58 &935846869472585475
 CircleCollider2D:
   m_ObjectHideFlags: 0
