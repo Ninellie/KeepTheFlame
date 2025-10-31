@@ -7,5 +7,8 @@ namespace LampFlame
     {
         [Range(0, 20)] public float maxValue = 10f;
         [Range(0, 20)] public float minValue = 0f;
+
+        [Tooltip("Позволяет изначально заблокировать изменения силы огня.")]
+        public bool IsLocked;
     }
 }

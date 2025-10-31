@@ -18,12 +18,12 @@ namespace LampFlame
         public void DrawWindow(int id)
         {
             GUILayout.Label($"Value: {_flame.Value:0.0} / {_flame.Max:0}");
-            GUILayout.Label($"Is Lit: {_flame.IsLit}");
+            GUILayout.Label($"Is Locked: {_flame.IsLocked}");
 
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Init")) _flame.Init();
+            if (GUILayout.Button("Lock")) _flame.IsLocked = !_flame.IsLocked;
             GUILayout.EndHorizontal();
-
+            
             var pct = Mathf.Approximately(_flame.Max, 0) ? 0f : _flame.Value / _flame.Max;
             var bar = GUILayoutUtility.GetRect(200, 18);
             GUI.Box(bar, GUIContent.none);
