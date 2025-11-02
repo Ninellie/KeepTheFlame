@@ -101,15 +101,15 @@ public class GameLifetimeScope : LifetimeScope
 
         // Firefly Picking
         builder.Register<FireflyPicker>(Lifetime.Singleton);
+                
+        // Firefly Lamp Fuel Replenish
+        builder.RegisterEntryPoint<FireflyFuelReplenisher>();
         
         // Lamp Fuel
         builder.RegisterInstance(lampFuelConfig);
         builder.RegisterEntryPoint<LampFuelBurner>();   
         builder.Register<LampFuelTank>(Lifetime.Singleton);
         builder.Register<IDebugGUIWindow, DebugLampFuelGUI>(Lifetime.Singleton);
-        
-        // Firefly Lamp Fuel Replenish
-        builder.RegisterEntryPoint<FireflyFuelReplenisher>();
         
         // Lamp Flame
         builder.RegisterInstance(lampFlameConfig);
