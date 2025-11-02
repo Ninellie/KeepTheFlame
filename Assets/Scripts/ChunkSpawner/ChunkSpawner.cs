@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using VContainer.Unity;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace ChunkSpawner
 {
@@ -17,11 +21,11 @@ namespace ChunkSpawner
         private readonly Transform _cameraTransform;
         private readonly Tilemap _tilemap;
         private readonly ChunkBoundaryWatcher _watcher;
+        private readonly ChunksCooldownsCounter _cooldowns;
         private int ChunkSize => _config.ChunkSize; // Размер чанка в тайлах
         
+        private List<Entity> _entities = new();
         private Vector2Int _currentChunk;
-
-        private ChunksCooldownsCounter _cooldowns;
         
         public ChunkSpawner(ChunkSpawnerConfig config, Camera camera, Tilemap tilemap,
             ChunkBoundaryWatcher watcher, ChunksCooldownsCounter cooldowns)
@@ -57,7 +61,7 @@ namespace ChunkSpawner
             {
                 if (!_cooldowns.IsOnCooldown(chunk))
                 {
-                    SpawnChunk(chunk);
+                    Spawn(chunk);
                 }
                 _cooldowns.SetCooldown(chunk, _config.ChunkSpawnCooldown);
             }
@@ -100,16 +104,47 @@ namespace ChunkSpawner
 
             return spawnPositions;
         }
-        
-        private static void SpawnChunk(Vector2Int chunkCoord)
-        {
-            Debug.Log($"[SPAWN] Чанк: {chunkCoord}");
-            
-        }
-    }
 
-    public class SpawnPools
-    {
+        private void ClearChunk(Vector2Int chunk)
+        {
+            var entitiesToRemove= _entities.Where(e => e.Chunk == chunk);
+            
+            foreach (var entity in entitiesToRemove)
+            {
+                _entities.Remove(entity);
+                entity.gameObject.SetActive(false);
+                Object.Destroy(entity.gameObject);
+            }
+        }
         
+        private void Spawn(Vector2Int chunk)
+        {
+            Debug.Log($"[SPAWN] Чанк: {chunk}");
+
+            ClearChunk(chunk);
+            
+            var chunkTiles = ChunkUtils.GetAllTilesInChunk(chunk, _config.ChunkSize);
+
+            var spawnChance = _config.GetSpawnChance();
+
+            var chunkObject = new GameObject();
+            
+            foreach (var chunkTile in chunkTiles)
+            {
+                if (Random.Range(0, 1) > spawnChance)
+                {
+                    continue;
+                }
+
+                var entityPrefab = _config.GetEntityPrefab();
+                
+                var position = _tilemap.CellToWorld((Vector3Int)chunkTile);
+                
+                var entity = Object.Instantiate(entityPrefab, position, Quaternion.identity, chunkObject.transform);
+                entity.Chunk = chunk;
+                
+                _entities.Add(entity);
+            }
+        }
     }
 }
