@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 849101027242116663}
   - component: {fileID: 1931817129544438343}
   - component: {fileID: -61705385102484750}
+  - component: {fileID: -6178443767610953706}
   m_Layer: 0
   m_Name: Lesser Firefly
   m_TagString: Firefly
@@ -80,7 +81,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 147776483
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -157,6 +158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e6a4437a8109434999a67eef781fc1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fuelAmount: 0
 --- !u!58 &935846869472585475
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -246,3 +248,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 9e4dea749c43ac6468415d90ac3d60fb, type: 2}
+--- !u!114 &-6178443767610953706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6151673042314242652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2284bbc3d824464afa814bcfcc5224e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Chunk>k__BackingField: {x: 0, y: 0}

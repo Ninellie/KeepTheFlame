@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 849101027242116663}
   - component: {fileID: 1931817129544438343}
   - component: {fileID: 815383276710984850}
+  - component: {fileID: 6278250078508422918}
   m_Layer: 0
   m_Name: Firefly
   m_TagString: Firefly
@@ -80,7 +81,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 147776483
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: -8126720178710505517, guid: 1327fe7c5cadb28458855a19b7634c5c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -247,3 +248,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 841ab1234abe06a469170b3b3ab92b01, type: 2}
+--- !u!114 &6278250078508422918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6151673042314242652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2284bbc3d824464afa814bcfcc5224e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Chunk>k__BackingField: {x: 0, y: 0}

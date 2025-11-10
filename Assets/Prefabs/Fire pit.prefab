@@ -130,6 +130,7 @@ GameObject:
   - component: {fileID: 6410015749107055881}
   - component: {fileID: 7909417962831346778}
   - component: {fileID: 1571492341921332977}
+  - component: {fileID: 7059887196772362313}
   m_Layer: 0
   m_Name: Fire pit
   m_TagString: Fire Pit
@@ -323,6 +324,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f2f950f274a4e5b8acf983a4eee8c54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7059887196772362313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6151673042314242652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2284bbc3d824464afa814bcfcc5224e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Chunk>k__BackingField: {x: 0, y: 0}
 --- !u!1 &6244397477058152733
 GameObject:
   m_ObjectHideFlags: 0

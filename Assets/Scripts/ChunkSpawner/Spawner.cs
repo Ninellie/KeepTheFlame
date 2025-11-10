@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using VContainer.Unity;
@@ -14,33 +12,32 @@ namespace ChunkSpawner
     /// ChunkSpawner слушает события пересечения игроком чанков и решает
     /// в каких чанках нужно произвести спавн пределами камеры.
     /// </summary>
-    public class ChunkSpawner : IStartable, IDisposable
+    public class Spawner : IStartable, IDisposable
     {
         private readonly ChunkSpawnerConfig _config;
         private readonly Camera _camera;
         private readonly Transform _cameraTransform;
         private readonly Tilemap _tilemap;
         private readonly ChunkBoundaryWatcher _watcher;
-        private readonly ChunksCooldownsCounter _cooldowns;
+        private readonly ChunksDestroyCooldownsCounter _destroyCooldowns;
         private int ChunkSize => _config.ChunkSize; // Размер чанка в тайлах
         
-        private List<Entity> _entities = new();
-        private Vector2Int _currentChunk;
+        private Vector2Int _currentChunkPosition;
         
-        public ChunkSpawner(ChunkSpawnerConfig config, Camera camera, Tilemap tilemap,
-            ChunkBoundaryWatcher watcher, ChunksCooldownsCounter cooldowns)
+        public Spawner(ChunkSpawnerConfig config, Camera camera, Tilemap tilemap,
+            ChunkBoundaryWatcher watcher, ChunksDestroyCooldownsCounter destroyCooldowns)
         {
             _config = config;
             _camera = camera;
             _cameraTransform = _camera.transform;
             _tilemap = tilemap;
             _watcher = watcher;
-            _cooldowns = cooldowns;
+            _destroyCooldowns = destroyCooldowns;
         }
         
         public void Start()
         {
-            _currentChunk = ChunkUtils.GetChunkFromWorldPosition(_tilemap, _cameraTransform.position, ChunkSize);
+            _currentChunkPosition = ChunkUtils.GetChunkFromWorldPosition(_tilemap, _cameraTransform.position, ChunkSize);
             _watcher.OnChunkBoundaryCrossed += OnChunkCrossed;
         }
         
@@ -51,19 +48,21 @@ namespace ChunkSpawner
         
         private void OnChunkCrossed(Vector2Int direction)
         {
-            _currentChunk = ChunkUtils.GetChunkFromWorldPosition(_tilemap, _cameraTransform.position, ChunkSize);
+            _currentChunkPosition = ChunkUtils.GetChunkFromWorldPosition(_tilemap, _cameraTransform.position, ChunkSize);
             
             var cameraChunks = ChunkUtils.GetCameraSizeInChunks(_camera, _tilemap, ChunkSize);
             
-            var chunksToSpawn = GetSpawnChunks(_currentChunk, cameraChunks, direction);
+            var chunksToSpawn = GetSpawnChunks(_currentChunkPosition, cameraChunks, direction);
             
-            foreach (var chunk in chunksToSpawn)
+            foreach (var chunkPos in chunksToSpawn)
             {
-                if (!_cooldowns.IsOnCooldown(chunk))
+                if (_destroyCooldowns.IsOnCooldown(chunkPos))
                 {
-                    Spawn(chunk);
+                    _destroyCooldowns.UpdateCooldown(chunkPos);
+                    continue;
                 }
-                _cooldowns.SetCooldown(chunk, _config.ChunkSpawnCooldown);
+                var chunk = CreateChunk(chunkPos);
+                Spawn(chunk);
             }
         }
 
@@ -104,46 +103,44 @@ namespace ChunkSpawner
 
             return spawnPositions;
         }
-
-        private void ClearChunk(Vector2Int chunk)
+        
+        private Chunk CreateChunk(Vector2Int chunkPos)
         {
-            var entitiesToRemove= _entities.Where(e => e.Chunk == chunk);
+            var chunkObject = new GameObject();
+            chunkObject.name = $"Chunk {chunkPos}";
+            var gizmoSquare = chunkObject.AddComponent<GizmoSquare>();
             
-            foreach (var entity in entitiesToRemove)
-            {
-                _entities.Remove(entity);
-                entity.gameObject.SetActive(false);
-                Object.Destroy(entity.gameObject);
-            }
+            // Узнать точку чанка
+            var bounds = ChunkUtils.GetChunkWorldBounds(chunkPos, _config.ChunkSize, _tilemap);
+            chunkObject.transform.position = bounds.min;
+            gizmoSquare.Set(bounds.min, bounds.max);
+            
+            var chunk = chunkObject.AddComponent<Chunk>();
+            chunk.BaseDestroyCooldown = _config.ChunkSpawnCooldown;
+            chunk.Position = chunkPos;
+            chunk.Tiles = ChunkUtils.GetAllTilesInChunk(chunkPos, _config.ChunkSize);;
+            chunk.SpawnChance = _config.GetSpawnChance();
+            
+            _destroyCooldowns.SetCooldown(chunk);
+            
+            return chunk;
         }
         
-        private void Spawn(Vector2Int chunk)
+        private void Spawn(Chunk chunk)
         {
-            Debug.Log($"[SPAWN] Чанк: {chunk}");
-
-            ClearChunk(chunk);
+            Debug.Log($"[SPAWN] Чанк: {chunk.Position}");
             
-            var chunkTiles = ChunkUtils.GetAllTilesInChunk(chunk, _config.ChunkSize);
-
-            var spawnChance = _config.GetSpawnChance();
-
-            var chunkObject = new GameObject();
-            
-            foreach (var chunkTile in chunkTiles)
+            foreach (var chunkTile in chunk.Tiles)
             {
-                if (Random.Range(0, 1) > spawnChance)
-                {
-                    continue;
-                }
-
+                var random = Random.Range(0f, 1f);
+                
+                if (random > chunk.SpawnChance) continue;
+                
                 var entityPrefab = _config.GetEntityPrefab();
                 
                 var position = _tilemap.CellToWorld((Vector3Int)chunkTile);
                 
-                var entity = Object.Instantiate(entityPrefab, position, Quaternion.identity, chunkObject.transform);
-                entity.Chunk = chunk;
-                
-                _entities.Add(entity);
+                Object.Instantiate(entityPrefab, position, Quaternion.identity, chunk.transform);
             }
         }
     }

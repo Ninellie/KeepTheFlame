@@ -5,12 +5,15 @@ using Random = UnityEngine.Random;
 
 namespace ChunkSpawner
 {
+    [CreateAssetMenu(menuName = "Config/ChunkSpawner")]
     public class ChunkSpawnerConfig : ScriptableObject
     {
         [Tooltip("Размер чанка в тайлах")]
         public int ChunkSize;
         public float ChunkSpawnCooldown;
         
+        [Header("Шанс спавна сущности на каждом тайле.")]
+        [Tooltip(" Выбирается случайное значение между минимумом и максимумом для чанка.")]
         [Range(0, 1)]
         [SerializeField]
         private float minSpawnChance;

@@ -1,12 +1,10 @@
-using System.Collections.Generic;
+using ChunkSpawner;
 using Darkness;
 using DarknessDamage;
 using DebugGUI;
 using EntityMovement;
 using FirefliesFuelReplenish;
 using FirefliesPicking;
-using FirefliesSpawn;
-using FirePitSpawn;
 using Interacting;
 using LampFlame;
 using LampFuel;
@@ -15,8 +13,6 @@ using PlayerHealth;
 using PlayerMovement;
 using PlayerSpriteFlipping;
 using PlayerSpriteAnimation;
-using ScaryTreeSpawn;
-using Spawning;
 using TileFloorGeneration;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -34,7 +30,7 @@ public class GameLifetimeScope : LifetimeScope
     [SerializeField] private DarknessDamageConfig darknessDamageConfig;
     [SerializeField] private MovementConfig fireflyMovementConfig;
     
-    [SerializeField] private List<SpawnerConfig> spawnerConfigList;
+    [SerializeField] private ChunkSpawnerConfig spawnerConfig;
     
     [Header("Prefab")]
     [SerializeField] private GameObject playerPrefab;
@@ -44,6 +40,18 @@ public class GameLifetimeScope : LifetimeScope
     
     protected override void Configure(IContainerBuilder builder)
     {
+        // Chunk spawner
+        builder.RegisterInstance(spawnerConfig);
+        builder.RegisterEntryPoint<ChunksDestroyCooldownsCounter>().AsSelf();
+        builder.RegisterEntryPoint<ChunkBoundaryWatcher>().AsSelf();
+        builder.RegisterEntryPoint<Spawner>();
+        
+        // Floor generation
+        var tilemap = CreateTilemap();
+        builder.RegisterInstance(tilemap);
+        builder.RegisterInstance(floorTile);
+        builder.RegisterEntryPoint<FloorGenerator>();
+        
         // Debug
         var levelDebugGUIGameObject = new GameObject("[LevelDebugGUI]");
         var debugGUIPositioner = levelDebugGUIGameObject.AddComponent<DebugGUIController>();
@@ -80,25 +88,6 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterInstance(Camera.main);
         if (Camera.main != null) Camera.main.transform.SetParent(player.transform);
         
-        RegisterSpawnerConfigs(builder);
-        
-        // Scary tree spawner
-        builder.Register<ScaryTreeFactory>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<ScaryTreeSpawner>().AsSelf();
-        
-        // Fire Pit spawner
-        builder.Register<FirePitFactory>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<FirePitSpawner>().AsSelf();
-        
-        // Lesser Firefly spawner
-        builder.Register<LesserFireflyFactory>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<LesserFireflySpawner>().AsSelf();
-        
-        // Firefly spawner
-        builder.Register<FireflyFactory>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<FireflySpawner>().AsSelf();
-        builder.Register<IDebugGUIWindow, DebugFireflySpawnerGUI>(Lifetime.Singleton);
-
         // Firefly Picking
         builder.Register<FireflyPicker>(Lifetime.Singleton);
                 
@@ -136,18 +125,19 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<DarknessDamageDealer>();
         builder.Register<DebugDarknessDamageGUI>(Lifetime.Singleton).AsImplementedInterfaces()
             .AsSelf();
-        
-        // Floor generation
-        builder.RegisterInstance(floorTile);
-        builder.RegisterEntryPoint<FloorGenerator>();
     }
-
-    private void RegisterSpawnerConfigs(IContainerBuilder builder)
+    
+    private Tilemap CreateTilemap()
     {
-        foreach (var config in spawnerConfigList)
-        {
-            builder.RegisterInstance(config).Keyed(config.KeyName);
-            builder.RegisterInstance(config.prefab).Keyed(config.KeyName);
-        }
+        var gridObject = new GameObject("FloorGrid");
+        var grid = gridObject.AddComponent<Grid>();
+        grid.cellSize = floorTile.sprite.bounds.size;
+            
+        var tilemapObject = new GameObject("FloorTilemap");
+        tilemapObject.transform.SetParent(gridObject.transform);
+        var tilemap = tilemapObject.AddComponent<Tilemap>();
+        var tilemapRenderer = tilemapObject.AddComponent<TilemapRenderer>();
+        tilemapRenderer.sortingLayerName = "Floor";
+        return tilemap;
     }
 }

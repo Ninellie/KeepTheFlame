@@ -163,5 +163,21 @@ namespace ChunkSpawner
 
             return chunks;
         }
+
+        public static Bounds GetChunkWorldBounds(Vector2Int chunkPos, int chunkSize, Tilemap tilemap)
+        {
+            var bottomLeftCell = (Vector3Int)(chunkPos * chunkSize);
+            var bottomLeftPos = tilemap.CellToWorld(bottomLeftCell);
+    
+            var topRightCell = (Vector3Int)(new Vector2Int(chunkPos.x + 1, chunkPos.y + 1) * chunkSize);
+            var topRightPos = tilemap.CellToWorld(topRightCell);
+    
+            var size = topRightPos - bottomLeftPos;
+            size.x = Mathf.Abs(size.x);
+            size.y = Mathf.Abs(size.y);
+    
+            var center = bottomLeftPos + size / 2f;
+            return new Bounds(center, size);
+        }
     }
 }

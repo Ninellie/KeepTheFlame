@@ -20,19 +20,19 @@ namespace ChunkSpawner
         private readonly Camera _camera;
         private readonly Transform _cameraTransform;
         private readonly Tilemap _tilemap;
-        private readonly ChunksCooldownsCounter _cooldowns;
+        private readonly ChunksDestroyCooldownsCounter _destroyCooldowns;
         private int ChunkSize => _config.ChunkSize;
         
         private Vector2Int _currentChunk;
 
         public ChunkBoundaryWatcher(ChunkSpawnerConfig config, Camera camera, Tilemap tilemap,
-            ChunksCooldownsCounter cooldowns)
+            ChunksDestroyCooldownsCounter destroyCooldowns)
         {
             _config = config;
             _camera = camera;
             _cameraTransform = camera.transform;
             _tilemap = tilemap;
-            _cooldowns = cooldowns;
+            _destroyCooldowns = destroyCooldowns;
         }
         
         public void Start()
@@ -41,19 +41,11 @@ namespace ChunkSpawner
             
             SetVisibleChunksOnCooldown();
         }
-
-        private void SetVisibleChunksOnCooldown()
-        {
-            var visibleChunks = ChunkUtils.GetVisibleChunks(_camera, _tilemap, ChunkSize);
-            
-            foreach (var chunk in visibleChunks)
-            {
-                _cooldowns.SetCooldown(chunk, _config.ChunkSpawnCooldown);
-            }
-        }
         
         public void Tick()
         {
+            SetVisibleChunksOnCooldown();
+            
             var previousChunk = _currentChunk;
             
             _currentChunk = ChunkUtils.GetChunkFromWorldPosition(_tilemap, _cameraTransform.position, ChunkSize);
@@ -80,6 +72,16 @@ namespace ChunkSpawner
                 case < 0:
                     OnChunkBoundaryCrossed?.Invoke(Vector2Int.down);
                     break;
+            }
+        }
+        
+        private void SetVisibleChunksOnCooldown()
+        {
+            var visibleChunks = ChunkUtils.GetVisibleChunks(_camera, _tilemap, ChunkSize);
+            
+            foreach (var chunk in visibleChunks)
+            {
+                _destroyCooldowns.UpdateCooldown(chunk);
             }
         }
     }

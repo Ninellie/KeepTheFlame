@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8d0a752da60488a8353b6268eaa1ff4, type: 3}
+  m_Name: Spawner Config
+  m_EditorClassIdentifier: 
+  ChunkSize: 10
+  ChunkSpawnCooldown: 30
+  minSpawnChance: 0.1
+  maxSpawnChance: 0.1
+  entities:
+  - Prefab: {fileID: 7059887196772362313, guid: be08f97aacf9e6c4ba6cb089d7415ca1, type: 3}
+    Weight: 5
+    TileSize: 1
+  - Prefab: {fileID: 6278250078508422918, guid: b6760e6300e34274ca482c4131d66272, type: 3}
+    Weight: 10
+    TileSize: 1
+  - Prefab: {fileID: -6178443767610953706, guid: d1c4d5fe6ef86144a9f7e1b951233032, type: 3}
+    Weight: 50
+    TileSize: 1
+  - Prefab: {fileID: 8967480005889739209, guid: 7b564016e4b8e7a438b1e4916667932e, type: 3}
+    Weight: 10
+    TileSize: 1

@@ -16,14 +16,16 @@ namespace TileFloorGeneration
         
         private Queue<Vector3Int> _positionsToFill;
         private HashSet<Vector3Int> _filledPositions;
-        private Tilemap _tilemap;
         private Vector3Int _centerTilePosition;
         
-        public FloorGenerator(Tile tile, Camera camera)
+        private readonly Tilemap _tilemap;
+        
+        public FloorGenerator(Tile tile, Tilemap tilemap)
         {
             _tile = tile;
-            _mainCamera = camera;
-            _tileSize = tile.sprite.bounds.size;
+            _tileSize = tilemap.layoutGrid.cellSize;
+            _tilemap = tilemap;
+            _mainCamera = Camera.main;
         }
 
         public void Start()
@@ -41,7 +43,6 @@ namespace TileFloorGeneration
                 }
             }
             
-            CreateTilemap();
             FillPositionsFromSet(_positionsToFill.Count);
             AddPositionsBeyondCamera(Vector2Int.zero, Offset);
         }
@@ -54,19 +55,6 @@ namespace TileFloorGeneration
                 AddPositionsBeyondCamera(direction, Offset);
             }
             FillPositionsFromSet(TilesPerFrame);
-        }
-
-        private void CreateTilemap()
-        {
-            var gridObject = new GameObject("FloorGrid");
-            var grid = gridObject.AddComponent<Grid>();
-            grid.cellSize = _tileSize;
-            
-            var tilemapObject = new GameObject("FloorTilemap");
-            tilemapObject.transform.SetParent(gridObject.transform);
-            _tilemap = tilemapObject.AddComponent<Tilemap>();
-            var tilemapRenderer = tilemapObject.AddComponent<TilemapRenderer>();
-            tilemapRenderer.sortingLayerName = "Floor";
         }
 
         private void FillPositionsFromSet(int count)
