@@ -1,6 +1,7 @@
 ﻿using FirefliesPicking;
 using Spawning;
 using UnityEngine;
+using VContainer;
 
 namespace FirefliesSpawn
 {
@@ -21,6 +22,7 @@ namespace FirefliesSpawn
 
         private FireflyPicker _picker;
 
+        [Inject]
         public void SetPicker(FireflyPicker picker)
         {
             _picker = picker;
@@ -31,7 +33,8 @@ namespace FirefliesSpawn
             if (!other.CompareTag("Player")) return;
             
             _picker.PickUp(this);
-            Pool.ReturnToPool(this);
+            Destroy(gameObject);
+            // Pool.ReturnToPool(this);
         }
 
         private void OnEnable()

@@ -21,7 +21,7 @@ namespace ScaryTreeSpawn
             var go = Object.Instantiate(_prefab);
             var scaryTree = go.GetComponent<ScaryTree>();
             scaryTree.Damage = 1;
-            scaryTree.PlayerHealthCounter = _playerHealthCounter;
+            // scaryTree.PlayerHealthCounter = _playerHealthCounter;
             scaryTree.gameObject.SetActive(false);
             return scaryTree;
         }

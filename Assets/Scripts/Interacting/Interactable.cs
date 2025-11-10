@@ -7,14 +7,6 @@ namespace Interacting
     {
         public event Action OnInteractAction;
         
-        // Singleton хранилище интерактивного объекта
-        private CurrentInteractableHolder _currentInteractable;
-
-        public void InjectDependencies(CurrentInteractableHolder currentInteractableHolder)
-        {
-            _currentInteractable = currentInteractableHolder;
-        }
-        
         public void Interact()
         {
             OnInteractAction?.Invoke();
@@ -23,15 +15,15 @@ namespace Interacting
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (!other.CompareTag("Player")) return;
-            
-            _currentInteractable.Set(this);
+            other.GetComponent<PlayerInteractor>().Interactable = this;
         }
 
         private void OnTriggerExit2D(Collider2D other)
         {
             if (!other.CompareTag("Player")) return;
-            
-            _currentInteractable.Clear();
+            var interactor = other.GetComponent<PlayerInteractor>();
+            if (interactor.Interactable != this) return;
+            interactor.Interactable = null;
         }
     }
 }

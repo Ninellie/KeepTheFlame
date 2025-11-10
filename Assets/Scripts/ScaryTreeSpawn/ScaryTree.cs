@@ -1,6 +1,7 @@
 ﻿using PlayerHealth;
 using Spawning;
 using UnityEngine;
+using VContainer;
 
 namespace ScaryTreeSpawn
 {
@@ -18,13 +19,19 @@ namespace ScaryTreeSpawn
         public GameObject GameObject => gameObject;
         public EntityPool Pool { get; set; }
 
-        public PlayerHealthCounter PlayerHealthCounter;
+        private PlayerHealthCounter _playerHealthCounter;
 
+        [Inject]
+        public void InjectDependencies(PlayerHealthCounter playerHealthCounter)
+        {
+            _playerHealthCounter = playerHealthCounter;
+        }
+        
         private void OnCollisionEnter2D(Collision2D other)
         {
             if (!other.collider.CompareTag("PlayerFeet")) return;
             
-            PlayerHealthCounter.Decrease(damage);
+            _playerHealthCounter.Decrease(damage);
         }
     }
 }

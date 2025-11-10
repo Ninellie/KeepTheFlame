@@ -57,9 +57,6 @@ public class GameLifetimeScope : LifetimeScope
         var debugGUIPositioner = levelDebugGUIGameObject.AddComponent<DebugGUIController>();
         builder.RegisterComponent(debugGUIPositioner);
         
-        // Interacting
-        builder.Register<CurrentInteractableHolder>(Lifetime.Singleton);
-        
         // Player
         var player = Instantiate(playerPrefab);
         var interactor = player.GetComponent<PlayerInteractor>();

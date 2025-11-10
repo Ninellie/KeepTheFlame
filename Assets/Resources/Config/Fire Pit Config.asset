@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fuelCost: 1
   burningDuration: 10
-  darknessResistancePerSecond: 0.2
+  darknessResistancePerSecond: 0.5

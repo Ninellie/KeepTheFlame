@@ -5,6 +5,7 @@ using Spawning;
 using TriInspector;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using VContainer;
 
 namespace FirePitSpawn
 {
@@ -28,7 +29,18 @@ namespace FirePitSpawn
         private Interactable _interactable;
 
         private float _burningTimeLeft;
+        
+        private void Awake()
+        {
+            _interactable = GetComponent<Interactable>();
+        }
 
+        private void Start()
+        {
+            isBurning = false;
+            isBurned = false;
+        }
+        
         private void FixedUpdate()
         {
             if (!isBurning) return; // Выйти если не горит
@@ -62,17 +74,6 @@ namespace FirePitSpawn
             isBurning = true;
         }
         
-        private void Awake()
-        {
-            _interactable = GetComponent<Interactable>();
-        }
-
-        private void Start()
-        {
-            isBurning = false;
-            isBurned = false;
-        }
-
         private void OnEnable()
         {
             _interactable.OnInteractAction += Burn;
@@ -83,7 +84,7 @@ namespace FirePitSpawn
             _interactable.OnInteractAction -= Burn;
         }
         
-        private float ParabolicNormalized(float min, float max, float current)
+        private static float ParabolicNormalized(float min, float max, float current)
         {
             if (Mathf.Approximately(max, min))
                 return 0f; // защита от деления на 0
@@ -91,6 +92,8 @@ namespace FirePitSpawn
             var t = Mathf.Clamp01((current - min) / (max - min));
             return 4f * t * (1f - t);
         }
+        
+        [Inject]
         public void InjectDependencies(DarknessPower darknessPower, LampFuelTank fuelTank)
         {
             _darknessPower = darknessPower;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using VContainer;
 using VContainer.Unity;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
@@ -23,9 +24,10 @@ namespace ChunkSpawner
         private int ChunkSize => _config.ChunkSize; // Размер чанка в тайлах
         
         private Vector2Int _currentChunkPosition;
+        private IObjectResolver _resolver;
         
         public Spawner(ChunkSpawnerConfig config, Camera camera, Tilemap tilemap,
-            ChunkBoundaryWatcher watcher, ChunksDestroyCooldownsCounter destroyCooldowns)
+            ChunkBoundaryWatcher watcher, ChunksDestroyCooldownsCounter destroyCooldowns, IObjectResolver resolver)
         {
             _config = config;
             _camera = camera;
@@ -33,6 +35,7 @@ namespace ChunkSpawner
             _tilemap = tilemap;
             _watcher = watcher;
             _destroyCooldowns = destroyCooldowns;
+            _resolver = resolver;
         }
         
         public void Start()
@@ -137,10 +140,9 @@ namespace ChunkSpawner
                 if (random > chunk.SpawnChance) continue;
                 
                 var entityPrefab = _config.GetEntityPrefab();
-                
                 var position = _tilemap.CellToWorld((Vector3Int)chunkTile);
-                
-                Object.Instantiate(entityPrefab, position, Quaternion.identity, chunk.transform);
+                var go = Object.Instantiate(entityPrefab, position, Quaternion.identity, chunk.transform);
+                _resolver.InjectGameObject(go.gameObject);
             }
         }
     }
