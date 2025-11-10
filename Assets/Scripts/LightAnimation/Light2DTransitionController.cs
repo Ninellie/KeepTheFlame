@@ -10,6 +10,7 @@ namespace LightAnimation
         [SerializeField] private Light2DTransitionConfig config;
     
         private Light2D _light;
+        private Tween _tween;
     
         private void Awake()
         {
@@ -20,9 +21,16 @@ namespace LightAnimation
         {
             _light.intensity = config.startValue;
             
-            DOTween.To(Get(), Set, config.endValue, config.duration)
+            _tween?.Kill();
+            _tween = DOTween.To(Get(), Set, config.endValue, config.duration)
                 .SetEase(config.ease)
                 .SetLoops(-1, config.loopType);
+        }
+
+        private void OnDisable()
+        {
+            _tween?.Kill();
+            _tween = null;
         }
 
         private void Set(float value)
