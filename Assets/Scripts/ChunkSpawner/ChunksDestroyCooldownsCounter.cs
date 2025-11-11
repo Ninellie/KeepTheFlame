@@ -11,17 +11,19 @@ namespace ChunkSpawner
     /// </summary>
     public class ChunksDestroyCooldownsCounter : ITickable
     {
-        // private readonly Dictionary<Vector2Int, float> _chunks = new();
-        
         private readonly List<Chunk> _chunks = new();
         
         public void Tick()
         {
+            _chunks.RemoveAll(chunk => chunk == null);
+            
             var delta = Time.deltaTime;
             var chunksToDestroy = new List<Chunk>();
 
             foreach (var chunk in _chunks)
             {
+                if (chunk == null) continue;
+                
                 chunk.DestroyCooldown -= delta;
                 if (chunk.DestroyCooldown <= 0)
                 {
@@ -32,13 +34,16 @@ namespace ChunkSpawner
             foreach (var chunk in chunksToDestroy)
             {
                 _chunks.Remove(chunk);
-                Object.Destroy(chunk.gameObject);
+                if (chunk != null)
+                {
+                    Object.Destroy(chunk.gameObject);
+                }
             }
         }
 
         public bool IsOnCooldown(Vector2Int chunk)
         {
-            return _chunks.Exists(x => x.Position == chunk);
+            return _chunks.Exists(x => x != null && x.Position == chunk);
         }
 
         public void SetCooldown(Chunk chunk)
@@ -50,7 +55,7 @@ namespace ChunkSpawner
         // Необходимо вызывать каждый раз когда камера видит чанк
         public void UpdateCooldown(Vector2Int chunkPos)
         {
-            var chunk = _chunks.Find(x => x.Position == chunkPos);
+            var chunk = _chunks.Find(x => x != null && x.Position == chunkPos);
             if (chunk != null)
             {
                 chunk.DestroyCooldown = chunk.BaseDestroyCooldown;
