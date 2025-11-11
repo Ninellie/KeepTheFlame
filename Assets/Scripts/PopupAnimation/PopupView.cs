@@ -52,5 +52,18 @@ namespace PopupAnimation
             _closingTweenMove = popup.transform.DOLocalMoveY(animationStartPosition.localPosition.y, closingDuration)
                 .OnComplete(() => popup.SetActive(false));
         }
+
+        private void OnDisable()
+        {
+            _openingTweenFade?.Kill();
+            _openingTweenMove?.Kill();
+            _closingTweenFade?.Kill();
+            _closingTweenMove?.Kill();
+            
+            _openingTweenFade = null;
+            _openingTweenMove = null;
+            _closingTweenFade = null;
+            _closingTweenMove = null;
+        }
     }
 }

@@ -27,7 +27,10 @@ namespace LampFlameUi
 
         private void OnDisable()
         {
-            _flame.OnChanged -= Set;
+            if (_flame != null)
+            {
+                _flame.OnChanged -= Set;
+            }
         }
 
         private void Set(float flamePower)

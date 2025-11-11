@@ -81,7 +81,10 @@ namespace FirePitSpawn
 
         private void OnDisable()
         {
-            _interactable.OnInteractAction -= Burn;
+            if (_interactable != null)
+            {
+                _interactable.OnInteractAction -= Burn;
+            }
         }
         
         private static float ParabolicNormalized(float min, float max, float current)
