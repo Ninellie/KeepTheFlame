@@ -1,7 +1,6 @@
 ﻿using Darkness;
 using Interacting;
 using LampFuel;
-using Spawning;
 using TriInspector;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -9,7 +8,7 @@ using VContainer;
 
 namespace FirePitSpawn
 {
-    public class FirePit : MonoBehaviour, IPooledEntity
+    public class FirePit : MonoBehaviour
     {
         [SerializeField] private FirePitConfig config;
         [SerializeField] private Light2D ember;
@@ -18,11 +17,6 @@ namespace FirePitSpawn
         
         [ReadOnly] [SerializeField] private bool isBurned;
         [ReadOnly] [SerializeField] private bool isBurning;
-        
-        public Vector2Int Sector { get; set; }
-        public Transform Transform => transform;
-        public GameObject GameObject => gameObject;
-        public EntityPool Pool { get; set; }
 
         private DarknessPower _darknessPower;
         private LampFuelTank _fuelTank;

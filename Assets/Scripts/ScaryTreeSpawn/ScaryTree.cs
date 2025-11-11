@@ -1,23 +1,12 @@
 ﻿using PlayerHealth;
-using Spawning;
 using UnityEngine;
 using VContainer;
 
 namespace ScaryTreeSpawn
 {
-    public class ScaryTree : MonoBehaviour, IPooledEntity
+    public class ScaryTree : MonoBehaviour
     {
         [SerializeField] private int damage;
-        
-        public int Damage
-        {
-            set => damage = value;
-        }
-        
-        public Vector2Int Sector { get; set; }
-        public Transform Transform => transform;
-        public GameObject GameObject => gameObject;
-        public EntityPool Pool { get; set; }
 
         private PlayerHealthCounter _playerHealthCounter;
 

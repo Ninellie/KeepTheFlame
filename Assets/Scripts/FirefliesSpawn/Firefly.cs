@@ -1,11 +1,10 @@
 ﻿using FirefliesPicking;
-using Spawning;
 using UnityEngine;
 using VContainer;
 
 namespace FirefliesSpawn
 {
-    public class Firefly : MonoBehaviour, IPooledEntity
+    public class Firefly : MonoBehaviour
     {
         [SerializeField] private float fuelAmount;
 
@@ -15,11 +14,6 @@ namespace FirefliesSpawn
             set => fuelAmount = value;
         }
         
-        public Vector2Int Sector { get; set; }
-        public Transform Transform => transform;
-        public GameObject GameObject => gameObject;
-        public EntityPool Pool { get; set; }
-
         private FireflyPicker _picker;
 
         [Inject]
@@ -34,7 +28,6 @@ namespace FirefliesSpawn
             
             _picker.PickUp(this);
             Destroy(gameObject);
-            // Pool.ReturnToPool(this);
         }
 
         private void OnEnable()
