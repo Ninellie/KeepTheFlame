@@ -1,4 +1,4 @@
-﻿using FirefliesPicking;
+﻿using LampFuel;
 using UnityEngine;
 using VContainer;
 
@@ -8,25 +8,18 @@ namespace FirefliesSpawn
     {
         [SerializeField] private float fuelAmount;
 
-        public float FuelAmount
-        {
-            get => fuelAmount;
-            set => fuelAmount = value;
-        }
-        
-        private FireflyPicker _picker;
+        private LampFuelTank _fuel;
 
         [Inject]
-        public void SetPicker(FireflyPicker picker)
+        public void InjectDependencies(LampFuelTank fuel)
         {
-            _picker = picker;
+            _fuel = fuel;
         }
         
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (!other.CompareTag("Player")) return;
-            
-            _picker.PickUp(this);
+            _fuel.Add(fuelAmount);
             Destroy(gameObject);
         }
 

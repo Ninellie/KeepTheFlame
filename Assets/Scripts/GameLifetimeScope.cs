@@ -3,8 +3,6 @@ using Darkness;
 using DarknessDamage;
 using DebugGUI;
 using EntityMovement;
-using FirefliesFuelReplenish;
-using FirefliesPicking;
 using Interacting;
 using LampFlame;
 using LampFuel;
@@ -84,12 +82,6 @@ public class GameLifetimeScope : LifetimeScope
         // Camera
         builder.RegisterInstance(Camera.main);
         if (Camera.main != null) Camera.main.transform.SetParent(player.transform);
-        
-        // Firefly Picking
-        builder.Register<FireflyPicker>(Lifetime.Singleton);
-                
-        // Firefly Lamp Fuel Replenish
-        builder.RegisterEntryPoint<FireflyFuelReplenisher>();
         
         // Lamp Fuel
         builder.RegisterInstance(lampFuelConfig);
