@@ -2,7 +2,7 @@
 using UnityEngine;
 using VContainer;
 
-namespace FirefliesSpawn
+namespace Entity
 {
     public class Firefly : MonoBehaviour
     {
