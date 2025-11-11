@@ -2,7 +2,7 @@
 using UnityEngine;
 using VContainer;
 
-namespace ScaryTreeSpawn
+namespace Entity
 {
     public class ScaryTree : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 ﻿using TriInspector;
 using UnityEngine;
 
-namespace FirePitSpawn
+namespace Entity
 {
     [CreateAssetMenu(menuName = "Config/FirePit")]
     public class FirePitConfig : ScriptableObject

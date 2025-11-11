@@ -1,4 +1,5 @@
 ﻿using Darkness;
+using Entity;
 using Interacting;
 using LampFuel;
 using TriInspector;
