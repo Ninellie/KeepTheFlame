@@ -2,15 +2,16 @@ using ChunkSpawner;
 using Darkness;
 using DarknessDamage;
 using DebugGUI;
+using Entity.Movement;
 using EntityMovement;
-using Interacting;
 using LampFlame;
 using LampFuel;
 using LightAnimation;
-using PlayerHealth;
-using PlayerMovement;
-using PlayerSpriteFlipping;
-using PlayerSpriteAnimation;
+using Player.Health;
+using Player.Interacting;
+using Player.Movement;
+using Player.SpriteAnimation;
+using Player.SpriteFlipping;
 using TileFloorGeneration;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -63,18 +64,18 @@ public class GameLifetimeScope : LifetimeScope
         // Movement
         builder.RegisterInstance(playerMovementConfig);
         builder.RegisterEntryPoint<PlayerMover>();
-        var movementInputHandler = player.GetComponent<PlayerMovementInputHandler>();
+        var movementInputHandler = player.GetComponent<MovementInputHandler>();
         builder.RegisterComponent(movementInputHandler);
         
         // Player Sprite Flipping
         var playerSpriteRenderer = player.GetComponent<SpriteRenderer>();
         builder.RegisterInstance(playerSpriteRenderer).Keyed("Player");
-        builder.RegisterEntryPoint<PlayerSpriteFlipper>();
+        builder.RegisterEntryPoint<SpriteFlipper>();
         
         // Player Sprite Animation
         var playerAnimator = player.GetComponent<Animator>();
         builder.RegisterInstance(playerAnimator).Keyed("Player");
-        builder.RegisterEntryPoint<PlayerSpriteAnimator>();
+        builder.RegisterEntryPoint<SpriteAnimator>();
         
         // Player position
         builder.RegisterInstance(player.transform).Keyed("Player");

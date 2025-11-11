@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace PlayerHealth
+namespace Player.Health
 {
     public class PlayerHealthCounter
     {

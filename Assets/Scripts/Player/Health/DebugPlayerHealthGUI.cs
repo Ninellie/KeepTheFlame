@@ -1,7 +1,7 @@
 ﻿using DebugGUI;
 using UnityEngine;
 
-namespace PlayerHealth
+namespace Player.Health
 {
     public class DebugPlayerHealthGUI : IDebugGUIWindow
     {

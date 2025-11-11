@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace PlayerHealth
+namespace Player.Health
 {
     [CreateAssetMenu(menuName = "Config/Player Health")]
     public class PlayerHealthConfig : ScriptableObject

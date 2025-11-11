@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace EntityMovement
+namespace Entity.Movement
 {
     [CreateAssetMenu(menuName = "Config/Movement")]
     public class MovementConfig : ScriptableObject

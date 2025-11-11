@@ -1,7 +1,7 @@
 ﻿using Darkness;
 using Entity;
-using Interacting;
 using LampFuel;
+using Player.Interacting;
 using TriInspector;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;

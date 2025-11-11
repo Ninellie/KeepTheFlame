@@ -2,9 +2,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace PlayerMovement
+namespace Player.Movement
 {
-    public class PlayerMovementInputHandler : MonoBehaviour
+    public class MovementInputHandler : MonoBehaviour
     {
         public event Action<Vector2> OnRun;
         public event Action OnIdle;

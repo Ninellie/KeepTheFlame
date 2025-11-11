@@ -1,28 +1,28 @@
+using Player.Movement;
 using UnityEngine;
-using VContainer.Unity;
-using PlayerMovement;
 using VContainer;
+using VContainer.Unity;
 
-namespace PlayerSpriteFlipping
+namespace Player.SpriteFlipping
 {
-    public class PlayerSpriteFlipper : IStartable
+    public class SpriteFlipper : IStartable
     {
-        private readonly PlayerMovementInputHandler _playerMovementInputHandler;
+        private readonly MovementInputHandler _movementInputHandler;
         private readonly SpriteRenderer _playerSpriteRenderer;
         
-        public PlayerSpriteFlipper(PlayerMovementInputHandler playerMovementInputHandler,
+        public SpriteFlipper(MovementInputHandler movementInputHandler,
             [Key("Player")] SpriteRenderer playerSpriteRenderer)
         {
-            _playerMovementInputHandler = playerMovementInputHandler;
+            _movementInputHandler = movementInputHandler;
             _playerSpriteRenderer = playerSpriteRenderer;
         }
 
         public void Start()
         {
-            _playerMovementInputHandler.OnRun += OnPlayerRun;
+            _movementInputHandler.OnRun += Run;
         }
         
-        private void OnPlayerRun(Vector2 direction)
+        private void Run(Vector2 direction)
         {
             if (direction.x < 0)
             {

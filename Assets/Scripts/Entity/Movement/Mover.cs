@@ -1,3 +1,4 @@
+using Entity.Movement;
 using UnityEngine;
 
 namespace EntityMovement
