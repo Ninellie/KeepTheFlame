@@ -10,6 +10,11 @@ namespace Entity
 
         private LampFuelTank _fuel;
 
+        private void OnEnable()
+        {
+            transform.rotation = Quaternion.Euler(0, 0, Random.Range(0f, 360f));
+        }
+        
         [Inject]
         public void InjectDependencies(LampFuelTank fuel)
         {
@@ -21,11 +26,6 @@ namespace Entity
             if (!other.CompareTag("Player")) return;
             _fuel.Add(fuelAmount);
             Destroy(gameObject);
-        }
-
-        private void OnEnable()
-        {
-            transform.rotation = Quaternion.Euler(0, 0, Random.Range(0f, 360f));
         }
     }
 }

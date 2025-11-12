@@ -6,11 +6,11 @@ namespace Darkness
     public class DarknessGatherer : IFixedTickable
     {
         public float PowerIncreaseRate => _powerIncreaseRateCurve.Evaluate(Time.timeSinceLevelLoad);
-
-        private AnimationCurve _powerIncreaseRateCurve { get; set; }
         
         private readonly DarknessPower _darkness;
         private readonly DarknessConfig _config;
+        
+        private AnimationCurve _powerIncreaseRateCurve { get; set; }
         
         public DarknessGatherer(DarknessPower darkness, DarknessConfig config)
         {

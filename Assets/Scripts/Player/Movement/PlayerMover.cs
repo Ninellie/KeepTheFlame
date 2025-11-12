@@ -12,8 +12,6 @@ namespace Player.Movement
             private set => _speed = Mathf.Clamp(value, MinSpeed, MaxSpeed);
         }
 
-        private float _speed;
-        
         public float MaxSpeed { get; private set; }
         public float MinSpeed { get; private set; }
         
@@ -21,6 +19,7 @@ namespace Player.Movement
         private readonly Transform _playerTransform;
         private readonly PlayerMovementConfig _playerMovementConfig;
         
+        private float _speed;
         private Vector2 _direction = Vector2.zero;
         
         public PlayerMover(MovementInputHandler movementInputHandler,

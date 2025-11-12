@@ -15,7 +15,7 @@ namespace Player.Movement
             if (value != Vector2.zero) OnRun?.Invoke(value);
             else OnIdle?.Invoke();
         }
-
+        
         private void Start()
         {
             var playerInput = gameObject.GetComponent<PlayerInput>();

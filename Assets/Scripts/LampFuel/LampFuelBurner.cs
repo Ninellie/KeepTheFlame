@@ -27,7 +27,7 @@ namespace LampFuel
             if (_config.decayPerSecond <= 0f) return;
             _fuelTank.Subtract(_config.decayPerSecond * UnityEngine.Time.deltaTime);
         }
-
+        
         public void Init()
         {
             DecayPerSecond = _config.decayPerSecond;

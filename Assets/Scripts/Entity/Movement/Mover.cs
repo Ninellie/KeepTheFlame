@@ -7,14 +7,14 @@ namespace EntityMovement
     {
         [SerializeField] private MovementConfig config;
 
-        private Transform _transform; 
+        private Transform _transform;
         
         private void Awake()
         {
             _transform = GetComponent<Transform>();
         }
 
-        public void FixedUpdate()
+        private void FixedUpdate()
         {
             if (config == null)
             {

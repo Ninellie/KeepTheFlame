@@ -23,7 +23,7 @@ namespace LampFlame
             Init();
         }
 
-        private void Init()
+        public void Init()
         {
             Max = _config.maxValue;
             Min = _config.minValue;

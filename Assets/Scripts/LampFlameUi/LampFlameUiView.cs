@@ -17,13 +17,6 @@ namespace LampFlameUi
         {
             _particleSystem = GetComponent<ParticleSystem>();
         }
-        
-        [Inject]
-        public void Inject(LampFlamePower flame)
-        {
-            _flame = flame;
-            _flame.OnChanged += Set;
-        }
 
         private void OnDisable()
         {
@@ -31,6 +24,13 @@ namespace LampFlameUi
             {
                 _flame.OnChanged -= Set;
             }
+        }
+        
+        [Inject]
+        public void Inject(LampFlamePower flame)
+        {
+            _flame = flame;
+            _flame.OnChanged += Set;
         }
 
         private void Set(float flamePower)

@@ -10,7 +10,7 @@ namespace DebugGUI
         [Inject]
         private IEnumerable<IDebugGUIWindow> _windows;
         
-        private bool _positioned = false;
+        private bool _positioned;
         
         private void OnGUI()
         {

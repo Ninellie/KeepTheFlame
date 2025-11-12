@@ -6,9 +6,9 @@ namespace Player.Health
     public class DebugPlayerHealthGUI : IDebugGUIWindow
     {
         public string Name { get; set; } = "Player Health Debug";
+        public Rect Rect { get; set; } = new Rect(20, 20, 240, 120);
         
         private readonly PlayerHealthCounter _playerHealthCounter;
-        public Rect Rect { get; set; } = new Rect(20, 20, 240, 120);
         
         public DebugPlayerHealthGUI(PlayerHealthCounter playerHealthCounter)
         {
@@ -34,9 +34,7 @@ namespace Player.Health
 
             GUI.DragWindow(new Rect(0, 0, 10000, 20));
         }
-
-
-
+        
         private void OnDestroy()
         {
             if (_playerHealthCounter != null) _playerHealthCounter.OnChanged -= null; // на случай подписок в будущем

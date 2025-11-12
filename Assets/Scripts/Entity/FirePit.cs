@@ -29,6 +29,11 @@ namespace FirePitSpawn
         {
             _interactable = GetComponent<Interactable>();
         }
+        
+        private void OnEnable()
+        {
+            _interactable.OnInteractAction += Burn;
+        }
 
         private void Start()
         {
@@ -50,6 +55,21 @@ namespace FirePitSpawn
             isBurning = false;
             fire.gameObject.SetActive(false);
         }
+
+        private void OnDisable()
+        {
+            if (_interactable != null)
+            {
+                _interactable.OnInteractAction -= Burn;
+            }
+        }
+        
+        [Inject]
+        public void InjectDependencies(DarknessPower darknessPower, LampFuelTank fuelTank)
+        {
+            _darknessPower = darknessPower;
+            _fuelTank = fuelTank;
+        }
         
         private void Burn()
         {
@@ -69,19 +89,6 @@ namespace FirePitSpawn
             isBurning = true;
         }
         
-        private void OnEnable()
-        {
-            _interactable.OnInteractAction += Burn;
-        }
-
-        private void OnDisable()
-        {
-            if (_interactable != null)
-            {
-                _interactable.OnInteractAction -= Burn;
-            }
-        }
-        
         private static float ParabolicNormalized(float min, float max, float current)
         {
             if (Mathf.Approximately(max, min))
@@ -89,13 +96,6 @@ namespace FirePitSpawn
 
             var t = Mathf.Clamp01((current - min) / (max - min));
             return 4f * t * (1f - t);
-        }
-        
-        [Inject]
-        public void InjectDependencies(DarknessPower darknessPower, LampFuelTank fuelTank)
-        {
-            _darknessPower = darknessPower;
-            _fuelTank = fuelTank;
         }
     }
 }

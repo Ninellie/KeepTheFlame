@@ -12,12 +12,11 @@ namespace Darkness.Damage
         public float DamageDealInterval { get; private set; }
         public float SecondsToNextDamage { get; private set; }
         
-        private bool _isFlameBurning = true;
-        
         private readonly DarknessDamageConfig _config;
         private readonly LampFlamePower _flame;
         private readonly PlayerHealthCounter _playerHealthCounter;
         
+        private bool _isFlameBurning = true;
         private Action _onExtinguishedHandler;
         private Action _onLitHandler;
         
@@ -52,7 +51,7 @@ namespace Darkness.Damage
         
         public void Init()
         {
-            DamageAmount =  _config.damage;
+            DamageAmount = _config.damage;
             DamageDealInterval = _config.damageDealInterval;
         }
         

@@ -18,7 +18,6 @@ namespace PopupAnimation
 
         private Tween _openingTweenMove;
         private Tween _openingTweenFade;
-        
         private Tween _closingTweenMove;
         private Tween _closingTweenFade;
         
@@ -27,6 +26,19 @@ namespace PopupAnimation
             popup.SetActive(false);
             text.color = new Color(text.color.r, text.color.g, text.color.b, 0f);
             popup.transform.localPosition = animationStartPosition.localPosition; 
+        }
+        
+        private void OnDisable()
+        {
+            _openingTweenFade?.Kill();
+            _openingTweenMove?.Kill();
+            _closingTweenFade?.Kill();
+            _closingTweenMove?.Kill();
+            
+            _openingTweenFade = null;
+            _openingTweenMove = null;
+            _closingTweenFade = null;
+            _closingTweenMove = null;
         }
         
         private void OnTriggerEnter2D(Collider2D other)
@@ -51,19 +63,6 @@ namespace PopupAnimation
             _closingTweenFade = text.DOFade(0, closingDuration);
             _closingTweenMove = popup.transform.DOLocalMoveY(animationStartPosition.localPosition.y, closingDuration)
                 .OnComplete(() => popup.SetActive(false));
-        }
-
-        private void OnDisable()
-        {
-            _openingTweenFade?.Kill();
-            _openingTweenMove?.Kill();
-            _closingTweenFade?.Kill();
-            _closingTweenMove?.Kill();
-            
-            _openingTweenFade = null;
-            _openingTweenMove = null;
-            _closingTweenFade = null;
-            _closingTweenMove = null;
         }
     }
 }

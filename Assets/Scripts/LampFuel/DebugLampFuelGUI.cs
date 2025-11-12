@@ -5,8 +5,8 @@ namespace LampFuel
 {
     public class DebugLampFuelGUI : IDebugGUIWindow
     {
-        public Rect Rect { get; set; } = new Rect(20, 20, 240, 120);
         public string Name { get; set; } = "Lamp Fuel Debug";
+        public Rect Rect { get; set; } = new Rect(20, 20, 240, 120);
         
         private readonly LampFuelTank _lamp;
         

@@ -5,8 +5,8 @@ namespace Darkness
 {
     public class DebugDarknessPowerGUI : IDebugGUIWindow
     {
-        public Rect Rect { get; set; } = new Rect(20, 20, 240, 120);
         public string Name { get; set; } = "Darkness Power Debug";
+        public Rect Rect { get; set; } = new Rect(20, 20, 240, 120);
         
         private readonly DarknessPower _darknessPower;
         

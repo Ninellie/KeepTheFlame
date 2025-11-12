@@ -19,12 +19,12 @@ namespace LightAnimation
 
         private void OnEnable()
         {
-            _light.intensity = config.startValue;
+            _light.intensity = config.StartValue;
             
             _tween?.Kill();
-            _tween = DOTween.To(Get(), Set, config.endValue, config.duration)
-                .SetEase(config.ease)
-                .SetLoops(-1, config.loopType);
+            _tween = DOTween.To(Get(), Set, config.EndValue, config.Duration)
+                .SetEase(config.Ease)
+                .SetLoops(-1, config.LoopType);
         }
 
         private void OnDisable()
