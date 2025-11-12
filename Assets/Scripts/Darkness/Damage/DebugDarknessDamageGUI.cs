@@ -1,7 +1,7 @@
 ﻿using DebugGUI;
 using UnityEngine;
 
-namespace DarknessDamage
+namespace Darkness.Damage
 {
     public class DebugDarknessDamageGUI : IDebugGUIWindow
     {

@@ -1,9 +1,8 @@
 using ChunkSpawner;
 using Darkness;
-using DarknessDamage;
+using Darkness.Damage;
 using DebugGUI;
 using Entity.Movement;
-using EntityMovement;
 using LampFlame;
 using LampFuel;
 using LightAnimation;

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace DarknessDamage
+namespace Darkness.Damage
 {
     [CreateAssetMenu(menuName = "Config/Darkness Damage")]
     public class DarknessDamageConfig : ScriptableObject

@@ -4,7 +4,7 @@ using Player.Health;
 using UnityEngine;
 using VContainer.Unity;
 
-namespace DarknessDamage
+namespace Darkness.Damage
 {
     public class DarknessDamageDealer : IFixedTickable, IDisposable
     {
