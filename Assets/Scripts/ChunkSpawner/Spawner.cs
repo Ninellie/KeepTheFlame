@@ -15,13 +15,14 @@ namespace ChunkSpawner
     /// </summary>
     public class Spawner : IStartable, IDisposable
     {
+        private int ChunkSize => _config.ChunkSize; // Размер чанка в тайлах
+        
         private readonly ChunkSpawnerConfig _config;
         private readonly Camera _camera;
         private readonly Transform _cameraTransform;
         private readonly Tilemap _tilemap;
         private readonly ChunkBoundaryWatcher _watcher;
         private readonly ChunksDestroyCooldownsCounter _destroyCooldowns;
-        private int ChunkSize => _config.ChunkSize; // Размер чанка в тайлах
         
         private Vector2Int _currentChunkPosition;
         private IObjectResolver _resolver;
@@ -121,7 +122,7 @@ namespace ChunkSpawner
             var chunk = chunkObject.AddComponent<Chunk>();
             chunk.BaseDestroyCooldown = _config.ChunkSpawnCooldown;
             chunk.Position = chunkPos;
-            chunk.Tiles = ChunkUtils.GetAllTilesInChunk(chunkPos, _config.ChunkSize);;
+            chunk.Tiles = ChunkUtils.GetAllTilesInChunk(chunkPos, _config.ChunkSize);
             chunk.SpawnChance = _config.GetSpawnChance();
             
             _destroyCooldowns.SetCooldown(chunk);

@@ -9,6 +9,7 @@ namespace ChunkSpawner
         [field:SerializeField] public float SpawnChance { get; set; }
         [field:SerializeField] public float DestroyCooldown { get; set; }
         [field:SerializeField] public float BaseDestroyCooldown { get; set; }
+        
         public List<Vector2Int> Tiles { get; set; } = new();
     }
 }

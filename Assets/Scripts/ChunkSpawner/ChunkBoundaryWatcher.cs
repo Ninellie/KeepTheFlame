@@ -16,12 +16,13 @@ namespace ChunkSpawner
         /// </summary>
         public event Action<Vector2Int> OnChunkBoundaryCrossed;
         
+        private int ChunkSize => _config.ChunkSize;
+        
         private readonly ChunkSpawnerConfig _config;
         private readonly Camera _camera;
         private readonly Transform _cameraTransform;
         private readonly Tilemap _tilemap;
         private readonly ChunksDestroyCooldownsCounter _destroyCooldowns;
-        private int ChunkSize => _config.ChunkSize;
         
         private Vector2Int _currentChunk;
 

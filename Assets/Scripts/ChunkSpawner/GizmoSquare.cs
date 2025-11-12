@@ -4,10 +4,11 @@ namespace ChunkSpawner
 {
     public class GizmoSquare : MonoBehaviour
     {
+        private readonly Color _gizmoColor = Color.green;
+        
         private Vector2 _bottomLeft;
         private Vector2 _topRight;
         private bool _isActive;
-        private readonly Color _gizmoColor = Color.green;
 
         public void Set(Vector2 bottomLeft, Vector2 topRight)
         {
