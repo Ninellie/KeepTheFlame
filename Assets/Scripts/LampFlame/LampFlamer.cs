@@ -1,5 +1,6 @@
 ﻿using Darkness;
 using LampFuel;
+using UnityEngine;
 using VContainer.Unity;
 
 namespace LampFlame
@@ -21,8 +22,9 @@ namespace LampFlame
         {
             var darknessPower = _darkness.Value;
             var fuel = _fuelTank.Value;
+            var maxFlamePower = _fuelTank.Max - darknessPower;
             
-            _flame.SetValue(fuel - darknessPower);
+            _flame.SetValue(Mathf.Min(fuel, maxFlamePower));
         }
     }
 }
