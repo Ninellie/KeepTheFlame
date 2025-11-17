@@ -12,6 +12,7 @@ using Player.Movement;
 using Player.SpriteAnimation;
 using Player.SpriteFlipping;
 using TileFloorGeneration;
+using UI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using VContainer;
@@ -108,6 +109,10 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterInstance(healthConfig);
         builder.Register<PlayerHealthCounter>(Lifetime.Singleton);
         builder.Register<IDebugGUIWindow, DebugPlayerHealthGUI>(Lifetime.Singleton);
+        
+        // UI
+        builder.RegisterEntryPoint<DamageScreenPulsar>();
+        builder.RegisterComponentInHierarchy<GameParametersIndicator>();
         
         // Darkness Damage
         builder.RegisterInstance(darknessDamageConfig);
