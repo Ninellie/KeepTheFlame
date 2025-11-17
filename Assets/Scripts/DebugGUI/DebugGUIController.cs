@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using VContainer;
 
 namespace DebugGUI
@@ -11,9 +12,20 @@ namespace DebugGUI
         private IEnumerable<IDebugGUIWindow> _windows;
         
         private bool _positioned;
+        private bool _isVisible = true;
+        
+        private void Update()
+        {
+            if (Keyboard.current != null && Keyboard.current.f1Key.wasPressedThisFrame)
+            {
+                _isVisible = !_isVisible;
+            }
+        }
         
         private void OnGUI()
         {
+            if (!_isVisible) return;
+            
             if (!_positioned)
             {
                 ArrangeWindows();
