@@ -43,6 +43,24 @@ namespace ChunkSpawner
         {
             _currentChunkPosition = ChunkUtils.GetChunkFromWorldPosition(_tilemap, _cameraTransform.position, ChunkSize);
             _watcher.OnChunkBoundaryCrossed += OnChunkCrossed;
+            
+            SpawnInitialChunks();
+        }
+        
+        private void SpawnInitialChunks()
+        {
+            var visibleChunks = ChunkUtils.GetVisibleChunks(_camera, _tilemap, ChunkSize, 1);
+            
+            foreach (var chunkPos in visibleChunks)
+            {
+                if (_destroyCooldowns.IsOnCooldown(chunkPos))
+                {
+                    _destroyCooldowns.UpdateCooldown(chunkPos);
+                    continue;
+                }
+                var chunk = CreateChunk(chunkPos);
+                Spawn(chunk);
+            }
         }
         
         public void Dispose()
