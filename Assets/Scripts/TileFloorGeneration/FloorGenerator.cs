@@ -9,6 +9,7 @@ namespace TileFloorGeneration
     {
         private const int TilesPerFrame = 20;
         private const int Offset = 2;
+        private const int RemovalOffset = 3;
         
         private readonly Tile _tile;
         private readonly Camera _mainCamera;
@@ -53,6 +54,7 @@ namespace TileFloorGeneration
             if (direction != Vector2Int.zero)
             {
                 AddPositionsBeyondCamera(direction, Offset);
+                RemoveTilesBeyondCamera(RemovalOffset);
             }
             FillPositionsFromSet(TilesPerFrame);
         }
@@ -172,6 +174,43 @@ namespace TileFloorGeneration
                         }
                     }
                 }
+            }
+        }
+
+        private void RemoveTilesBeyondCamera(int removalOffset)
+        {
+            var cameraHeight = 2f * _mainCamera.orthographicSize;
+            var cameraWidth = cameraHeight * _mainCamera.aspect;
+            var cameraPosition = _mainCamera.transform.position;
+            
+            var cameraLeft = cameraPosition.x - cameraWidth / 2;
+            var cameraRight = cameraPosition.x + cameraWidth / 2;
+            var cameraBottom = cameraPosition.y - cameraHeight / 2;
+            var cameraTop = cameraPosition.y + cameraHeight / 2;
+            
+            var startX = Mathf.FloorToInt(cameraLeft / _tileSize.x) - removalOffset;
+            var endX = Mathf.CeilToInt(cameraRight / _tileSize.x) + removalOffset;
+            var startY = Mathf.FloorToInt(cameraBottom / _tileSize.y) - removalOffset;
+            var endY = Mathf.CeilToInt(cameraTop / _tileSize.y) + removalOffset;
+            
+            var bounds = _tilemap.cellBounds;
+            var positionsToRemove = new List<Vector3Int>();
+            
+            foreach (var position in bounds.allPositionsWithin)
+            {
+                if (position.x < startX || position.x > endX || position.y < startY || position.y > endY)
+                {
+                    if (_tilemap.GetTile(position) != null)
+                    {
+                        positionsToRemove.Add(position);
+                    }
+                }
+            }
+            
+            foreach (var position in positionsToRemove)
+            {
+                _tilemap.SetTile(position, null);
+                _filledPositions.Remove(position);
             }
         }
     }
