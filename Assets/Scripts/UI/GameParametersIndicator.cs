@@ -18,7 +18,16 @@ namespace UI
         [SerializeField] private Color darknessColor = new(0.2f, 0.1f, 0.3f, 0.6f);
         [SerializeField] private Color healthColor = new(1f, 0.2f, 0.2f, 0.8f);
         [SerializeField] private Color boundaryColor = new(1f, 1f, 1f, 0.5f);
-        [SerializeField] private Vector2 position = new(100f, 100f);
+        
+        [Header("Position")]
+        [SerializeField] private UIPosition uiPosition = new UIPosition
+        {
+            AnchorMin = new Vector2(0f, 0f),
+            AnchorMax = new Vector2(0f, 0f),
+            Pivot = new Vector2(0.5f, 0.5f),
+            Offset = new Vector2(100f, 100f)
+        };
+        
         [Range(3, 64)]
         [SerializeField] private int segments = 64;
         [Range(-50f, 200f)]
@@ -62,6 +71,8 @@ namespace UI
             if (referenceResolution.y < 100f) referenceResolution.y = 100f;
             if (referenceResolution.x > 10000f) referenceResolution.x = 10000f;
             if (referenceResolution.y > 10000f) referenceResolution.y = 10000f;
+            
+            uiPosition?.OnValidate();
         }
         
         private void OnGUI()
@@ -72,11 +83,20 @@ namespace UI
         private void DrawIndicator()
         {
             var scale = GetScreenScale();
-            var scaledPosition = GetScaledPosition(position, scale);
             var scaledMaxRadius = maxRadius * scale;
             var scaledMinRadius = minRadius * scale;
             var scaledHealthIndicatorsOffset = healthIndicatorsOffset * scale;
             var scaledHealthIndicatorRadius = healthIndicatorRadius * scale;
+            
+            var totalRadius = scaledMaxRadius;
+            if (showHealthIndicators)
+            {
+                totalRadius = scaledMaxRadius + scaledHealthIndicatorsOffset + scaledHealthIndicatorRadius;
+            }
+            
+            var screenSize = new Vector2(Screen.width, Screen.height);
+            var elementSize = new Vector2(totalRadius * 2f, totalRadius * 2f);
+            var scaledPosition = uiPosition.CalculateScreenPosition(elementSize, screenSize);
             
             var fuelNormalized = GetNormalizedValue(_fuelTank.Value, _fuelTank.Min, _fuelTank.Max);
             var darknessNormalized = GetNormalizedValue(_darknessPower.Value, _darknessPower.Min, _darknessPower.Max);
@@ -335,11 +355,6 @@ namespace UI
             var scaleY = Screen.height / referenceResolution.y;
             var baseScale = Mathf.Min(scaleX, scaleY);
             return baseScale * scaleMultiplier;
-        }
-        
-        private Vector2 GetScaledPosition(Vector2 originalPosition, float scale)
-        {
-            return originalPosition * scale;
         }
         
         private static float GetNormalizedValue(float value, float min, float max)
