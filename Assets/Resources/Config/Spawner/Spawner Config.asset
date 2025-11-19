@@ -27,5 +27,5 @@ MonoBehaviour:
     Weight: 70
     TileSize: 1
   - Prefab: {fileID: 8967480005889739209, guid: 7b564016e4b8e7a438b1e4916667932e, type: 3}
-    Weight: 20
+    Weight: 70
     TileSize: 1
