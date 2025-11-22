@@ -1,36 +1,49 @@
-using Player.Movement;
+using System;
+using Input;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
 namespace Player.SpriteAnimation
 {
-    public class SpriteAnimator : IStartable
+    public class SpriteAnimator : IInitializable, IDisposable
     {
-        private readonly MovementInputHandler _movementInputHandler;
+        private readonly InputManager _inputManager;
         private readonly Animator _playerAnimator;
+        private readonly SpriteRenderer _playerSpriteRenderer;
         
-        public SpriteAnimator(MovementInputHandler movementInputHandler,
-            [Key("Player")] Animator playerAnimator)
+        public SpriteAnimator(InputManager inputManager, 
+            [Key("Player")] Animator playerAnimator, 
+            [Key("Player")]SpriteRenderer playerSpriteRenderer)
         {
-            _movementInputHandler = movementInputHandler;
             _playerAnimator = playerAnimator;
+            _inputManager = inputManager;
+            _playerSpriteRenderer = playerSpriteRenderer;
         }
 
-        public void Start()
+        public void Initialize()
         {
-            _movementInputHandler.OnRun += Run;
-            _movementInputHandler.OnIdle += Idle;
+            _inputManager.OnMove += OnMove;
         }
-        
-        private void Run(Vector2 direction)
+
+        public void Dispose()
         {
-            _playerAnimator.SetBool("IsRunning", true);
+            _inputManager?.Dispose();
         }
-        
-        private void Idle()
+
+        private void OnMove(Vector2 direction)
         {
-            _playerAnimator.SetBool("IsRunning", false);
+            var isRunning = direction != Vector2.zero;
+            _playerAnimator.SetBool("IsRunning", isRunning);
+            
+            if (direction.x < 0)
+            {
+                _playerSpriteRenderer.flipX = true;
+            }
+            else if (direction.x > 0)
+            {
+                _playerSpriteRenderer.flipX = false;
+            }
         }
     }
 }

@@ -1,19 +1,18 @@
-﻿using UnityEngine;
-using UnityEngine.InputSystem;
+﻿using Input;
+using UnityEngine;
+using VContainer;
 
 namespace Player.Interacting
 {
     public class PlayerInteractor : MonoBehaviour
     {
         public Interactable Interactable { get; set; }
+
+        [Inject] private InputManager _inputManager;
         
-        /// <summary>
-        /// PlayerInput Interact(CallbackContext context) на префабе игрока должен вызывать данный метод
-        /// </summary>
-        public void Interact(InputAction.CallbackContext context)
+        private void Start()
         {
-            if (Interactable == null) return;
-            Interactable.Interact();
+            _inputManager.OnInteract += ()=> Interactable?.Interact();
         }
     }
 }

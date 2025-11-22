@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
@@ -8,18 +9,34 @@ namespace DebugGUI
 {
     public class DebugGUIController : MonoBehaviour
     {
-        [Inject]
-        private IEnumerable<IDebugGUIWindow> _windows;
+        [Inject] private IEnumerable<IDebugGUIWindow> _windows;
+        [Inject] private InputManager _inputManager;
         
         private bool _positioned;
-        private bool _isVisible = true;
+        private bool _isVisible;
+        private InputAction _playerDebugAction;
+        private InputAction _uiDebugAction;
+        private bool _actionsSubscribed;
         
-        private void Update()
+        private void OnEnable()
         {
-            if (Keyboard.current != null && Keyboard.current.f1Key.wasPressedThisFrame)
-            {
-                _isVisible = !_isVisible;
-            }
+            if (_inputManager == null) return;
+            _inputManager.OnSwitchDebugMode += Toggle;   
+        }
+
+        private void Start()
+        {
+            _inputManager.OnSwitchDebugMode += Toggle;
+        }
+        
+        private void OnDisable()
+        {
+            _inputManager.OnSwitchDebugMode -= Toggle;
+        }
+
+        private void Toggle()
+        {
+            _isVisible = !_isVisible;
         }
         
         private void OnGUI()

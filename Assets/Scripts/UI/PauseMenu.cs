@@ -1,3 +1,4 @@
+using Input;
 using Pause;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -22,7 +23,7 @@ namespace UI
         [SerializeField] private Vector2 buttonSize = new(200f, 50f);
         
         [Header("Position")]
-        [SerializeField] private UIPosition uiPosition = new UIPosition
+        [SerializeField] private UIPosition uiPosition = new()
         {
             AnchorMin = new Vector2(0.5f, 0.5f),
             AnchorMax = new Vector2(0.5f, 0.5f),
@@ -37,7 +38,7 @@ namespace UI
         [SerializeField] private float scaleMultiplier = 1f;
         
         [Inject] private PauseManager _pauseManager;
-        [Inject] private UnityEngine.InputSystem.PlayerInput _playerInput;
+        [Inject] private InputManager _inputManager;
         
         private GUIStyle _textStyle;
         private GUIStyle _buttonStyle;
@@ -56,63 +57,12 @@ namespace UI
 
         private void OnEnable()
         {
-            SubscribeToActions();
-        }
-
-        private void Start()
-        {
-            SubscribeToActions();
+            _inputManager.OnRestart += RestartScene;
         }
         
         private void OnDisable()
         {
-            UnsubscribeFromActions();
-        }
-        
-        private void SubscribeToActions()
-        {
-            if (_actionsSubscribed) return;
-            if (_playerInput == null || _playerInput.actions == null) return;
-            
-            var uiMap = _playerInput.actions.FindActionMap("UI", false);
-            if (uiMap != null)
-            {
-                uiMap.Enable();
-                
-                _restartAction = uiMap.FindAction("Restart", false);
-                _pauseAction = uiMap.FindAction("Pause", false);
-                
-                if (_restartAction != null)
-                {
-                    _restartAction.performed += OnRestart;
-                }
-                    
-                if (_pauseAction != null)
-                {
-                    _pauseAction.performed += OnPause;
-                }
-            }
-                
-            _actionsSubscribed = true;
-        }
-        
-        private void UnsubscribeFromActions()
-        {
-            if (!_actionsSubscribed) return;
-            
-            if (_restartAction != null)
-            {
-                _restartAction.performed -= OnRestart;
-                _restartAction = null;
-            }
-                
-            if (_pauseAction != null)
-            {
-                _pauseAction.performed -= OnPause;
-                _pauseAction = null;
-            }
-            
-            _actionsSubscribed = false;
+            _inputManager.OnRestart -= RestartScene;
         }
         
         private void OnValidate()
@@ -134,22 +84,6 @@ namespace UI
             DrawPauseMenu();
         }
         
-        private void OnRestart(InputAction.CallbackContext context)
-            {
-            if (context.performed && _pauseManager != null && _pauseManager.IsPaused)
-                {
-                RestartScene();
-                }
-        }
-        
-        private void OnPause(InputAction.CallbackContext context)
-        {
-            if (context.performed && _pauseManager != null)
-            {
-                _pauseManager.TogglePause();
-            }
-        }
-        
         private void DrawPauseMenu()
         {
             var scale = GetScreenScale();
@@ -167,7 +101,7 @@ namespace UI
             _buttonStyle.normal.background = _buttonNormalTexture;
             _buttonStyle.hover.background = _buttonHoverTexture;
             
-            var text = "Pause";
+            const string text = "Pause";
             var content = new GUIContent(text);
             var textSize = _textStyle.CalcSize(content);
             
@@ -181,7 +115,9 @@ namespace UI
                 textPosition.y + textSize.y + scaledButtonSpacing
             );
             
-            if (GUI.Button(new Rect(buttonPosition.x, buttonPosition.y, scaledButtonSize.x, scaledButtonSize.y), "Restart", _buttonStyle))
+            if (GUI.Button(
+                    new Rect(buttonPosition.x, buttonPosition.y, scaledButtonSize.x, scaledButtonSize.y),
+                    "Restart", _buttonStyle))
             {
                 RestartScene();
             }
@@ -211,7 +147,7 @@ namespace UI
             _buttonHoverTexture = CreateColorTexture(buttonHoverColor);
         }
         
-        private Texture2D CreateColorTexture(Color color)
+        private static Texture2D CreateColorTexture(Color color)
         {
             var texture = new Texture2D(1, 1);
             texture.SetPixel(0, 0, color);
@@ -219,7 +155,7 @@ namespace UI
             return texture;
         }
         
-        private void RestartScene()
+        private static void RestartScene()
         {
             var currentScene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(currentScene.buildIndex);

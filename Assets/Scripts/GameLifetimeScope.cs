@@ -3,14 +3,15 @@ using Darkness;
 using Darkness.Damage;
 using DebugGUI;
 using Entity.Movement;
+using Input;
 using LampFlame;
 using LampFuel;
 using LightAnimation;
 using Player.Health;
 using Player.Interacting;
 using Player.Movement;
+using Pause;
 using Player.SpriteAnimation;
-using Player.SpriteFlipping;
 using TileFloorGeneration;
 using UI;
 using UnityEngine;
@@ -64,13 +65,10 @@ public class GameLifetimeScope : LifetimeScope
         // Movement
         builder.RegisterInstance(playerMovementConfig);
         builder.RegisterEntryPoint<PlayerMover>();
-        var movementInputHandler = player.GetComponent<MovementInputHandler>();
-        builder.RegisterComponent(movementInputHandler);
         
         // Player Sprite Flipping
         var playerSpriteRenderer = player.GetComponent<SpriteRenderer>();
         builder.RegisterInstance(playerSpriteRenderer).Keyed("Player");
-        builder.RegisterEntryPoint<SpriteFlipper>();
         
         // Player Sprite Animation
         var playerAnimator = player.GetComponent<Animator>();
@@ -113,12 +111,20 @@ public class GameLifetimeScope : LifetimeScope
         // UI
         builder.RegisterEntryPoint<DamageScreenPulsar>();
         builder.RegisterComponentInHierarchy<GameParametersIndicator>();
+        builder.RegisterComponentInHierarchy<GameTimer>();
+        
+        // Pause
+        builder.RegisterEntryPoint<PauseManager>().AsSelf();
+        builder.RegisterComponentInHierarchy<PauseMenu>();
         
         // Darkness Damage
         builder.RegisterInstance(darknessDamageConfig);
         builder.RegisterEntryPoint<DarknessDamageDealer>();
         builder.Register<DebugDarknessDamageGUI>(Lifetime.Singleton).AsImplementedInterfaces()
             .AsSelf();
+        
+        // Input
+        builder.RegisterEntryPoint<InputManager>().AsSelf();
     }
     
     private Tilemap CreateTilemap()
@@ -132,6 +138,25 @@ public class GameLifetimeScope : LifetimeScope
         var tilemap = tilemapObject.AddComponent<Tilemap>();
         var tilemapRenderer = tilemapObject.AddComponent<TilemapRenderer>();
         tilemapRenderer.sortingLayerName = "Floor";
+        
+        // Устанавливаем Lit материал для поддержки освещения Light2D в билде
+        var litMaterial = GetLitMaterial();
+        if (litMaterial != null)
+        {
+            tilemapRenderer.material = litMaterial;
+        }
+        
         return tilemap;
+    }
+    
+    private Material GetLitMaterial()
+    {
+        // Создаем материал программно с правильным шейдером для поддержки освещения Light2D
+        var shader = Shader.Find("Universal Render Pipeline/2D/Sprite-Lit-Default");
+        if (shader == null) return null;
+        var material = new Material(shader);
+        material.name = "FloorLitMaterial";
+        return material;
+
     }
 }
