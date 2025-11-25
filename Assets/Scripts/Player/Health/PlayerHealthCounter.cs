@@ -9,7 +9,7 @@ namespace Player.Health
         public int Max { get; private set; }
         
         public event System.Action<int> OnChanged;
-        public event System.Action<int> OnEmpty;
+        public event System.Action OnEmpty;
         
         private readonly PlayerHealthConfig _config;
 
@@ -34,12 +34,11 @@ namespace Player.Health
         private void SetValue(int v)
         {
             var clamped = Mathf.Clamp(v, Min, Max);
-            if (Mathf.Approximately(clamped, Value)) return;
+            if (clamped == Value) return;
             Value = clamped;
             OnChanged?.Invoke(Value);
-
-            if (Mathf.Approximately(Value, Min)) return;
-            OnEmpty?.Invoke(Value);
+            if (Value > Min) return;
+            OnEmpty?.Invoke();
         }
     }
 }
