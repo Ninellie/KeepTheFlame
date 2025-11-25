@@ -19,7 +19,7 @@ namespace Input
         private InputActionMap _playerMap;
         private InputActionMap _uiMap;
         private InputActionMap _gameEndMap;
-
+        
         public void Initialize()
         {
             InputSystem.actions.Disable();
@@ -67,6 +67,12 @@ namespace Input
         {
             _uiMap.Disable();
             _playerMap.Enable();
+        }
+
+        public void SwitchToGameEndMap()
+        {
+            _playerMap.Disable();
+            _gameEndMap.Enable();
         }
     }
 }
