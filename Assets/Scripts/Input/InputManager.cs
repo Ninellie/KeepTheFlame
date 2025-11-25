@@ -18,29 +18,36 @@ namespace Input
 
         private InputActionMap _playerMap;
         private InputActionMap _uiMap;
+        private InputActionMap _gameEndMap;
 
         public void Initialize()
         {
             InputSystem.actions.Disable();
-            _playerMap = InputSystem.actions.FindActionMap("Player");
-            _uiMap = InputSystem.actions.FindActionMap("UI");
-            SwitchToPlayerMap();
             
+            _playerMap = InputSystem.actions.FindActionMap("Player");
             _playerMap.FindAction("Pause").performed += _ => OnPause?.Invoke();
             _playerMap.FindAction("Move").performed += context => OnMove?.Invoke(context.ReadValue<Vector2>().normalized);
             _playerMap.FindAction("Move").canceled += _ => OnMove?.Invoke(Vector2.zero);
             _playerMap.FindAction("Interact").performed += _ => OnInteract?.Invoke();
             _playerMap.FindAction("Debug").performed += _ => OnSwitchDebugMode?.Invoke();
 
+            _uiMap = InputSystem.actions.FindActionMap("UI");
             _uiMap.FindAction("Unpause").performed += _ => OnUnpause?.Invoke();
             _uiMap.FindAction("Debug").performed += _ => OnSwitchDebugMode?.Invoke();
             _uiMap.FindAction("Restart").performed += _ => OnRestart?.Invoke();
+            
+            _gameEndMap = InputSystem.actions.FindActionMap("End");
+            _gameEndMap.FindAction("Restart").performed += _ => OnRestart?.Invoke();
+            _gameEndMap.FindAction("Debug").performed += _ => OnSwitchDebugMode?.Invoke();
+            
+            SwitchToPlayerMap();
         }
 
         public void Dispose()
         {
             _playerMap?.Dispose();
             _uiMap?.Dispose();
+            _gameEndMap.Dispose();
             
             OnPause = null;
             OnMove = null;
