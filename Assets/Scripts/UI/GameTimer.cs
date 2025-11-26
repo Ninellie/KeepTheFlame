@@ -10,7 +10,7 @@ namespace UI
         [SerializeField] private FontStyle fontStyle = FontStyle.Normal;
         
         [Header("Position")]
-        [SerializeField] private UIPosition uiPosition = new UIPosition
+        [SerializeField] private UIPosition uiPosition = new()
         {
             AnchorMin = new Vector2(0f, 1f),
             AnchorMax = new Vector2(0f, 1f),
@@ -30,7 +30,7 @@ namespace UI
         private void Awake()
         {
             CreateTextStyle();
-            _elapsedTime = 0f;
+            _elapsedTime = 600f;
         }
         
         private void OnValidate()
@@ -46,7 +46,7 @@ namespace UI
         
         private void Update()
         {
-            _elapsedTime += Time.deltaTime;
+            _elapsedTime -= Time.deltaTime;
         }
         
         private void OnGUI()
@@ -81,7 +81,7 @@ namespace UI
             };
         }
         
-        private string FormatTime(float timeInSeconds)
+        private static string FormatTime(float timeInSeconds)
         {
             var minutes = Mathf.FloorToInt(timeInSeconds / 60f);
             var seconds = Mathf.FloorToInt(timeInSeconds % 60f);
