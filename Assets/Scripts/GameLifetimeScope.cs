@@ -7,6 +7,7 @@ using Input;
 using LampFlame;
 using LampFuel;
 using LightAnimation;
+using Losing;
 using Player.Health;
 using Player.Interacting;
 using Player.Movement;
@@ -18,6 +19,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using VContainer;
 using VContainer.Unity;
+using Winning;
 
 public class GameLifetimeScope : LifetimeScope
 {
@@ -117,6 +119,14 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<PauseManager>().AsSelf();
         builder.RegisterComponentInHierarchy<PauseMenu>();
         
+        // Lose
+        builder.RegisterEntryPoint<LoseController>().AsSelf();
+        builder.RegisterComponentInHierarchy<LoseScreen>();
+        
+        // Win
+        builder.RegisterEntryPoint<WinController>().AsSelf();
+        builder.RegisterComponentInHierarchy<WinScreen>();
+
         // Darkness Damage
         builder.RegisterInstance(darknessDamageConfig);
         builder.RegisterEntryPoint<DarknessDamageDealer>();
