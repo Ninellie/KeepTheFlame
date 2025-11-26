@@ -99,7 +99,7 @@ namespace UI
             var scaledPosition = uiPosition.CalculateScreenPosition(elementSize, screenSize);
             
             var fuelNormalized = GetNormalizedValue(_fuelTank.Value, _fuelTank.Min, _fuelTank.Max);
-            var darknessNormalized = GetNormalizedValue(_darknessPower.Value, _darknessPower.Min, _darknessPower.Max);
+            var darknessNormalized = GetNormalizedValue(_darknessPower.Value, 0, _darknessPower.Max);
             
             if (useFillMode)
             {
