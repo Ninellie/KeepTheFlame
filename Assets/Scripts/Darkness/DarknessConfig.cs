@@ -5,9 +5,8 @@ namespace Darkness
     [CreateAssetMenu(menuName = "Config/Darkness Power")]
     public class DarknessConfig : ScriptableObject
     {
-        [Range(0, 1000)] public float maxValue = 100f;
-        [Range(-200, 200)] public float minValue = 0f;
-        [Range(0, 1000)] public float startValue = 5f;
+        [Range(0, 20)] public float maxValue = 10f;
+        [Range(0, 0)] public float startValue;
         
         public AnimationCurve PowerIncreaseRateCurve;
     }
