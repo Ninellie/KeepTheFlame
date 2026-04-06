@@ -8,7 +8,9 @@ namespace UI
     public class PauseMenu : MonoBehaviour
     {
         [SerializeField] private GameObject menu;
-        
+        [SerializeField] private int gameSceneIndex;
+        [SerializeField] private int mainMenuSceneIndex;
+
         [Inject] private PauseManager _pauseManager;
         [Inject] private InputManager _inputManager;
 
@@ -28,6 +30,7 @@ namespace UI
         public void Unpause()
         {
             _pauseManager.Unpause();
+            CloseMenu();
         }
 
         public void Restart()
